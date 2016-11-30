@@ -1,0 +1,15 @@
+.Rproj.user
+.Rhistory
+.RData
+*.o
+*.dll
+*.a
+*.exe
+*.zip
+/src/dparser.dll
+inst/doc
+/vignettes/.*.md
+/.Rhistory
+/R/.Rhistory
+/src/.Rhistory
+/src/dparser/.*
