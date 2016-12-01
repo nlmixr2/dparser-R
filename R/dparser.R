@@ -1,3 +1,4 @@
+rex::register_shortcuts("dparser");
 updateDparser <- function(){ # nocov start
     if (!file.exists(devtools::package_file("src/dparser"))){
         owd <- getwd();
