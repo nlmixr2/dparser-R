@@ -1,3 +1,46 @@
+##' A Scannerless GLR parser/parser generater
+##'
+##' This pakage is based on the C dparser
+##' https://github.com/jplevyak/dparser
+##'
+##' DParser is an simple but powerful tool for parsing.  You can
+##' specify the form of the text to be parsed using a combination of
+##' regular expressions and grammar productions.  Because of the
+##' parsing technique (technically a scannerless GLR parser based on
+##' the Tomita algorithm) there are no restrictions.  The grammar can
+##' be ambiguous, right or left recursive, have any number of null
+##' productions, and because there is no separate tokenizer, can
+##' include whitespace in terminals and have terminals which are
+##' prefixes of other terminals.  DParser handles not just well formed
+##' computer languages and data files, but just about any wacky
+##' situation that occurs in the real world.
+##'
+##' @section Features:
+##'
+##' \itemize{
+##' \item Powerful GLR parsing
+##' \item Simple EBNF-style grammars and regular expression terminals
+##' \item Priorities and associativities for token and rules
+##' \item Built-in error recovery
+##' \item Speculative actions (for semantic disambiguation)
+##' \item Auto-building of parse tree (optionally)
+##' \item Final actions as you go, or on the complete parse tree
+##' \item Tree walkers and default actions (multi-pass compilation support)
+##' \item Symbol table built for ambiguous parsing
+##' \item Partial parses, recursive parsing, parsing starting with any non-terminal
+##' \item Whitespace can be specified as a subgrammar
+##' \item External (C call interface) tokenizers and external terminal scanners
+##' \item Good asymptotically efficiency
+##' \item Comes with ANSI-C, Python and Verilog grammars
+##' \item Comes with full source
+##' \item Portable C for easy compilation and linking
+##' \item BSD licence, so you can included it in your application without worrying about licensing
+##' }
+##'
+##' The result is natural grammars and powerful parsing.
+##' @template grammar
+"_PACKAGE"
+
 rex::register_shortcuts("dparser");
 updateDparser <- function(){ # nocov start
     if (!file.exists(devtools::package_file("src/dparser"))){
@@ -315,6 +358,8 @@ paste(defs, collapse="\n"),paste(calls, collapse="")));
 ##'
 ##' @param use_r_header when TRUE, add R headers and swap printf for
 ##'     Rprintf. By default this is FALSE.
+##'
+##' @template grammar
 ##'
 ##' @return Nothing. Outputs files instead.
 ##'

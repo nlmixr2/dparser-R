@@ -18,3 +18,5 @@ dparser.*\.(zip|pdf)$
 ^/?src/.Rhistory
 ^/?src/dparser/.*$
 ^/?src/dparser$
+^/?man-roxygen$
+^/?man-roxygen/.*$
