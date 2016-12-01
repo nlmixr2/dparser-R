@@ -226,7 +226,7 @@ paste(defs, collapse="\n"),paste(calls, collapse="")));
         cat(sprintf("\tf: %s\n", f));
         file.copy(f, ttest, TRUE);
     }
-} # nocov stop
+} # nocov end
 
 ##' Make a dparser c file based on a grammer
 ##'
