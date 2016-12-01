@@ -26,7 +26,7 @@ for (file in files){
     cmd <- sprintf("%s/bin/R CMD SHLIB sample_parser.c %s ",
                    Sys.getenv("R_HOME"), base::basename(out));
     sh <- "system";
-    do.call(sh,list(cmd,ignore.stdout=FALSE,ignore.stderr=FALSE));
+    do.call(sh,list(cmd,ignore.stdout=TRUE,ignore.stderr=TRUE));
     unlink("Makevars");
     unlink(out);
     unlink(gsub("\\.c$",".h",out));

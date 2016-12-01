@@ -7,8 +7,9 @@ Authors@R: c(person("Matthew", "Fidler", email = "matthew.fidler@gmail.com", rol
 	   person("John", "Plevyak", 
       	   role = c("aut"), email = "jplevyak@gmail.com")
 	   )
+Imports:
+    rex
 Suggests:
-    rex,
     covr,
     testthat,
     devtools
