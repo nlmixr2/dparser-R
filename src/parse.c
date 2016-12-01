@@ -1881,9 +1881,9 @@ syntax_error_report_fn(struct D_Parser *ap) {
   if (z && z->pn->parse_node.start_loc.s != z->pn->parse_node.end)
     after = dup_str(z->pn->parse_node.start_loc.s, z->pn->parse_node.end);
   if (after)
-    fprintf(stderr, "%s:%d: syntax error after '%s'\n", fn, p->user.loc.line, after);
+    Rprintf( "%s:%d: syntax error after '%s'\n", fn, p->user.loc.line, after);
   else
-    fprintf(stderr, "%s:%d: syntax error\n", fn, p->user.loc.line);
+    Rprintf( "%s:%d: syntax error\n", fn, p->user.loc.line);
   if (after)
     Free(after);
   Free(fn);

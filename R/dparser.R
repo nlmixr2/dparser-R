@@ -60,6 +60,7 @@ updateDparser <- function(){ # nocov start
                 } else {
                     stop("something is wrong.")
                 }
+                d <- gsub("fprintf[(]stderr[ \t]*,", "Rprintf(", d);
             }
             if (f == "write_tables.c"){
                 w  <- which(regexpr('#include "dparse_tables.h"', d, fixed=TRUE) != -1);

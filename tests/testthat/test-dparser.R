@@ -1,7 +1,6 @@
 library(digest);
 files <- list.files(pattern=".*\\.test\\.g$")
-skipTests <- c("ansic.test.g: ansic.test.g.1",
-               "g50.test.g: g50.test.g.1");
+skipTests <- c("g50.test.g: g50.test.g.1");
 for (file in files){
     flags <- sprintf("%s.flags",file);
     if (file.exists(flags)){
