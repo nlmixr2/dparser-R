@@ -66,7 +66,6 @@
 ##' \itemize{\item Unicode literals can appear in strings or as charaters with U+ or u+.  For example:}
 ##'
 ##' \preformatted{
-##' 'φ' \{ printf("phi\n"); \}
 ##' U+03c9 \{ printf("omega\n"); \}
 ##' }
 ##' }
