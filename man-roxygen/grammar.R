@@ -1,8 +1,6 @@
 ##' @section Creating a Grammar for Parsing:
 ##' \describe{
-##' \item{Grammar Comments}{
-##'
-##' \itemize{\item Grammars can include C/C++ style comments}
+##' \item{Grammar Comments:}{Grammars can include C/C++ style comments
 ##'
 ##'  \bold{Example:}
 ##' \preformatted{
@@ -10,7 +8,10 @@
 ##' E: E '+' E | "[abc]";
 ##' /* is this right? */
 ##' }}
-##' \item{Grammar Productions}{
+##' \item{Grammar Productions:}{
+##'
+##' A production is the parts of your language your are trying to parse and are tpyically named.  See https://en.wikipedia.org/wiki/Top-down_parsing
+##'
 ##' \itemize{
 ##'
 ##' \item The first production is the root of your grammar (what you
@@ -39,7 +40,9 @@
 ##'  use the more familar and consistent '?' operator.  The square
 ##'  brackets are reserved for speculative actions (below).
 ##' }
-##' \item{Global C code in Grammars}{
+##' \item{Global C code in Grammars:}{
+##'
+##'  Since the main parsing of the language grammar is in C, intermixing C code with the grammar can be useful.
 ##'
 ##' \itemize{\item Global (or static) C code can be intermixed with productions by surrounding the code with brackets '\{\}'.}
 ##'
@@ -57,6 +60,9 @@
 ##' comply with R packages.
 ##' }
 ##' \item{Terminals}{
+##'
+##' The terminals are the peices of the language that are being parsed, like language keywords.
+##'
 ##' \itemize{\item Strings terminals are surrounded with single quotes.  For example:}
 ##'
 ##' \preformatted{
@@ -385,6 +391,8 @@
 ##' }
 ##'}
 ##' \item{Attributes and Action Specifiers}{
+##'
+##' Each of the language parser can have some global atrributes and actions associated with each part of the parsed code.
 ##'
 ##' \itemize{\item  Global State ($g)}
 ##'

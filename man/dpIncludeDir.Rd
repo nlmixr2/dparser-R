@@ -2,7 +2,7 @@
 % Please edit documentation in R/dparser.R
 \name{dpIncludeDir}
 \alias{dpIncludeDir}
-\title{RxODE C headers include directory}
+\title{Dparser C headers include directory}
 \usage{
 dpIncludeDir(...)
 }
@@ -10,16 +10,17 @@ dpIncludeDir(...)
 \item{...}{Additional parameters sent to file.path}
 }
 \value{
-RxODE include directory
+Dparser include directory
 }
 \description{
 Return the include directory
 }
 \details{
 The include directory has the headers that may be needed to build
-functions against the RxODE library.
+functions against the Dparser library.
 }
 \author{
 Matthew L. Fidler
 }
+\keyword{internal}
 

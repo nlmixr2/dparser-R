@@ -39,10 +39,11 @@
 ##'
 ##' The result is natural grammars and powerful parsing.
 ##' @template grammar
+##' @useDynLib dparser cDparser
 "_PACKAGE"
 
 rex::register_shortcuts("dparser");
-updateDparser <- function(){ # nocov start
+refresh <- function(){ # nocov start
     if (!file.exists(devtools::package_file("src/dparser"))){
         owd <- getwd();
         setwd(devtools::package_file("src"));
@@ -269,13 +270,33 @@ paste(defs, collapse="\n"),paste(calls, collapse="")));
         cat(sprintf("\tf: %s\n", f));
         file.copy(f, ttest, TRUE);
     }
+    sink(devtools::package_file("R/version.R"))
+    cat("##\' Version and repository for this dparser package.
+##\'
+##\' @return A character vector with the version and repository.
+##\' @author Matthew L. Fidler
+##\' @keywords internal
+##\' @export
+dpVersion <- function(){return(c(version=\"");
+    cat(gsub("Version: +", "", readLines(devtools::package_file("DESCRIPTION"), 2)[2]))
+    cat("\",repo=\"");
+    cat("https://github.com/")
+    tmp <- readLines(devtools::package_file(".git/config"))
+    cat(gsub("\\.git$", "", gsub(".*git@github.com:", "", tmp[which(tmp == '[remote "origin"]')[1]+1])))
+    cat("\"))}\n");
+    sink();
+    cat("Update README\n");
+    owd <- getwd();
+    on.exit({setwd(owd)});
+    setwd(devtools::package_file());
+    knitr::knit(devtools::package_file("README.Rmd"))
+    devtools::document();
+    devtools::load_all();
 } # nocov end
 
 ##' Make a dparser c file based on a grammer
 ##'
 ##' Uses a grammer file to create a c file for parsing.
-##'
-##' This is used internally to create the parser in trans
 ##'
 ##'  mkdparser is a scannerless GLR parser generator based on the
 ##'  Tomita algorithm. It is self-hosted and very easy to
@@ -365,10 +386,7 @@ paste(defs, collapse="\n"),paste(calls, collapse="")));
 ##'
 ##' @author Matthew L. Fidler for R interface, John Plevyak for
 ##'     dparser
-##'
-##' @keywords internal
 ##' @export
-##' @useDynLib dparser cDparser
 mkdparse <- function(file,outputFile,
                      set_op_priority_from_rule = FALSE,
                      right_recursive_BNF = FALSE,
@@ -432,12 +450,13 @@ mkdparse <- function(file,outputFile,
 ##' Return the include directory
 ##'
 ##' The include directory has the headers that may be needed to build
-##' functions against the RxODE library.
+##' functions against the Dparser library.
 ##'
-##' @title RxODE C headers include directory
+##' @title Dparser C headers include directory
 ##' @param ... Additional parameters sent to file.path
-##' @return RxODE include directory
+##' @return Dparser include directory
 ##' @author Matthew L. Fidler
+##' @keywords internal
 ##' @export
 dpIncludeDir <- function(...){
     incl <- system.file("include", package = "dparser");

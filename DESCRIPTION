@@ -12,6 +12,7 @@ Imports:
 Suggests:
     covr,
     testthat,
+    knitr,
     devtools
 Description: Dparser is a language parser.
 Depends:

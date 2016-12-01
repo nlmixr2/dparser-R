@@ -98,8 +98,6 @@ Make a dparser c file based on a grammer
 \details{
 Uses a grammer file to create a c file for parsing.
 
-This is used internally to create the parser in trans
-
 mkdparser is a scannerless GLR parser generator based on the
  Tomita algorithm. It is self-hosted and very easy to
  use. Grammars are written in a natural style of EBNF and regular
@@ -108,9 +106,7 @@ mkdparser is a scannerless GLR parser generator based on the
 \section{Creating a Grammar for Parsing}{
 
 \describe{
-\item{Grammar Comments}{
-
-\itemize{\item Grammars can include C/C++ style comments}
+\item{Grammar Comments:}{Grammars can include C/C++ style comments
 
  \bold{Example:}
 \preformatted{
@@ -118,7 +114,10 @@ mkdparser is a scannerless GLR parser generator based on the
 E: E '+' E | "[abc]";
 /* is this right? */
 }}
-\item{Grammar Productions}{
+\item{Grammar Productions:}{
+
+A production is the parts of your language your are trying to parse and are tpyically named.  See https://en.wikipedia.org/wiki/Top-down_parsing
+
 \itemize{
 
 \item The first production is the root of your grammar (what you
@@ -147,7 +146,9 @@ elem@1:3 for repeat 3 or between 1 and 3 times respectively.
  use the more familar and consistent '?' operator.  The square
  brackets are reserved for speculative actions (below).
 }
-\item{Global C code in Grammars}{
+\item{Global C code in Grammars:}{
+
+ Since the main parsing of the language grammar is in C, intermixing C code with the grammar can be useful.
 
 \itemize{\item Global (or static) C code can be intermixed with productions by surrounding the code with brackets '\{\}'.}
 
@@ -165,6 +166,9 @@ redefine \code{printf} to \code{Rprintf} to better
 comply with R packages.
 }
 \item{Terminals}{
+
+The terminals are the peices of the language that are being parsed, like language keywords.
+
 \itemize{\item Strings terminals are surrounded with single quotes.  For example:}
 
 \preformatted{
@@ -494,6 +498,8 @@ final action of any rule.
 }
 \item{Attributes and Action Specifiers}{
 
+Each of the language parser can have some global atrributes and actions associated with each part of the parsed code.
+
 \itemize{\item  Global State ($g)}
 
   Global state is declared by define'ing D_ParseNode_Globals (see the ANSI C grammar for a similar declaration for symbols). Global state can be accessed in any action with $g.  Because DParser handles ambiguous parsing global state can be accessed on different speculative parses.  In the future automatic splitting of global state may be implemented (if there is demand). Currently, the global state can be copied and assigned to $g to ensure that the changes made only effect subsequent speculative parses derived from the particular parse.
@@ -694,5 +700,4 @@ rees.  This may be of some assistence in disambiguating a grammar.
 Matthew L. Fidler for R interface, John Plevyak for
     dparser
 }
-\keyword{internal}
 
