@@ -217,8 +217,8 @@ d[seq(w2 + 1, length(d))]);
     fns <- sprintf("/*
 Header file for using internal C-level dparser functions in dparser-R (generated).
 */
-#ifndef __dparser_R_H__
-#define __dparser_R_H__
+#ifndef __dparser_H__
+#define __dparser_H__
 #include <R.h>
 #include <Rinternals.h>
 #include <Rdefines.h>
@@ -237,11 +237,11 @@ extern \"C\" {
 }
 #endif
 #endif\n", paste(fns, collapse="\n"));
-    sink(devtools::package_file("src/dparser_R.h"));
+    sink(devtools::package_file("src/dparser.h"));
     cat(fns);
     sink();
-    cat(sprintf("\tf: dparser_R.h\n"));
-    sink(devtools::package_file("src/dparser_R.c"));
+    cat(sprintf("\tf: dparser.h\n"));
+    sink(devtools::package_file("src/dparser.c"));
     cat(sprintf("/*
 Register C callables to R.
 */
@@ -263,7 +263,7 @@ void R_init_dparser(DllInfo *info){
 paste(sprintf("extern char * %s;\nvoid set_%s(char *x){\n  %s=x;\n}\n", globalCharVars, globalCharVars, globalCharVars), collapse="\n"),
 paste(defs, collapse="\n"),paste(calls, collapse="")));
     sink();
-    cat(sprintf("\tf: dparser_R.c\n"))
+    cat(sprintf("\tf: dparser.c\n"))
     dtest <- devtools::package_file("src/dparser/tests");
     ttest <- devtools::package_file("tests/testthat");
     for (f in list.files(dtest,"[.]g", full.names=TRUE)){

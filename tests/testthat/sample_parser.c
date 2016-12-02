@@ -8,7 +8,7 @@
 #include <Rinternals.h>
 #include <R_ext/Rdynload.h>
 #include <Rmath.h>
-#include <dparser_R.h>
+#include <dparser.h>
 
 #define SIZEOF_MY_PARSE_NODE    100     /* permit test cases up to this size */
 

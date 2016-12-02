@@ -1,8 +1,8 @@
 /*
 Header file for using internal C-level dparser functions in dparser-R (generated).
 */
-#ifndef __dparser_R_H__
-#define __dparser_R_H__
+#ifndef __dparser_H__
+#define __dparser_H__
 #include <R.h>
 #include <Rinternals.h>
 #include <Rdefines.h>
