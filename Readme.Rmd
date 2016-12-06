@@ -49,4 +49,11 @@ install.packages("devtools")
 devtools::install_github("mattfidler/dparser")
 ```
 
+### Differences between the R dparser port and the C-version of dparser
 
+There are a few differences between the R dparser port and the standard dparser:
+- The R version uses R memory managment instead of C's memory managment i.e. `malloc`
+- The R version is never called from the command line, so all command line interface is removed `arg.c`
+- The R version doesn't exit from the command (killing R), but errors out in R.
+- All outputs are using R's output interface instead of printing to `stdout`, or `stderr`.
+- Some convience functions are added to translate (and maybe parse) grammers within R.

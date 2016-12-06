@@ -1,3 +1,6 @@
+#if defined(__cplusplus)
+extern "C" {
+#endif
 /*
   Copyright 2002-2004 John Plevyak, All Rights Reserved
 */
@@ -279,4 +282,7 @@ void initialize_productions(Grammar *g);
 void finalize_productions(Grammar *g);
 int state_for_declaration(Grammar *g, int iproduction);
 
+#endif
+#if defined(__cplusplus)
+}
 #endif

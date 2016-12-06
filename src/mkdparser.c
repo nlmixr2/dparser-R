@@ -2,7 +2,7 @@
 #include <fcntl.h>
 #include <stdio.h>
 #include <string.h>
-#include <stdint.h>   /* dj: import intptr_t */
+#include <stdint.h> 
 #include "gramgram.h"
 #include "d.h"
 #include "mkdparse.h"

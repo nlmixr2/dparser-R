@@ -1,3 +1,6 @@
+#if defined(__cplusplus)
+extern "C" {
+#endif
 /*
   Copyright 2002-2004 John Plevyak, All Rights Reserved
 */
@@ -151,4 +154,7 @@ typedef struct ZNode {
 
 D_ParseNode * ambiguity_count_fn(D_Parser *pp, int n, D_ParseNode **v);
 
+#endif
+#if defined(__cplusplus)
+}
 #endif

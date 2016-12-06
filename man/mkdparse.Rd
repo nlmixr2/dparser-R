@@ -10,7 +10,7 @@ mkdparse(file, outputFile, set_op_priority_from_rule = FALSE,
   token_type = c("#define", "enum"), longest_match = FALSE,
   grammar_ident = "gram", ident_from_filename = FALSE, scanner_blocks = 4,
   write_line_directives = TRUE, write_header = c("IfEmpty", TRUE, FALSE),
-  rdebug = FALSE, verbose = TRUE, write_extension = "c",
+  rdebug = FALSE, verbose = FALSE, write_extension = "c",
   use_r_header = FALSE)
 }
 \arguments{

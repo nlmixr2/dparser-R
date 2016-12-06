@@ -10,6 +10,8 @@ Register C callables to R.
 #include "d.h"
 #include "mkdparse.h"
 #include "dparse.h"
+SEXP dparse_sexp(SEXP sexp_fileName, SEXP sexp_start_state, SEXP sexp_save_parse_tree, SEXP sexp_partial_parses, SEXP sexp_compare_stacks, SEXP sexp_commit_actions_interval, SEXP sexp_fixup, SEXP sexp_fixup_ebnf, SEXP sexp_nogreedy, SEXP sexp_noheight, SEXP sexp_use_filename, SEXP sexp_sizeof_parse_node, SEXP sexp_verbose, SEXP fn, SEXP env, D_ParserTables pt);
+
 extern int d_use_r_headers;
 void set_d_use_r_headers(int x){
   d_use_r_headers = x;
@@ -153,6 +155,7 @@ int write_c_tables(Grammar *g);
 int write_binary_tables(Grammar *g);
 int write_binary_tables_to_file(Grammar *g, FILE *fp);
 void R_init_dparser(DllInfo *info){
+  R_RegisterCCallable("dparser","dparse_sexp",(DL_FUNC) dparse_sexp);
   R_RegisterCCallable("dparser","set_d_file_name",(DL_FUNC) set_d_file_name);
   R_RegisterCCallable("dparser","get_d_debug_level",(DL_FUNC) get_d_debug_level);
   R_RegisterCCallable("dparser","get_d_verbose_level",(DL_FUNC) get_d_verbose_level);

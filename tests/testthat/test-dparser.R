@@ -12,6 +12,11 @@ for (file in files){
         flags <- list();
     }
     context(sprintf("Grammar %s", file));
+    ## sink("%s.check");
+    ## dparse_gram(file, function(name, value, pos, depth){
+    ##     cat(sprintf("name:%s;value:%s;pos:%s;depth:%s\n", name, value, pos, depth))
+    ## })
+    ## sink();
     out <- sprintf("%s.d_parser.c",file);
     flags$file <- file;
     flags$use_r_header <- TRUE;

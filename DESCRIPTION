@@ -8,12 +8,13 @@ Authors@R: c(person("Matthew", "Fidler", email = "matthew.fidler@gmail.com", rol
       	   role = c("aut"), email = "jplevyak@gmail.com")
 	   )
 Imports:
-    rex
+    rex,
+    digest
 Suggests:
     covr,
     testthat,
     knitr,
-    devtools
+    devtools,
 Description: Dparser is a language parser.
 Depends:
     R (>= 3.2.3)

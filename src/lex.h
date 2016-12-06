@@ -1,3 +1,6 @@
+#if defined(__cplusplus)
+extern "C" {
+#endif
 /*
   Copyright 2002-2004 John Plevyak, All Rights Reserved
 */
@@ -25,4 +28,7 @@ typedef struct ScanState {
 
 void build_scanners(struct Grammar *g);
 
+#endif
+#if defined(__cplusplus)
+}
 #endif

@@ -1,3 +1,6 @@
+#if defined(__cplusplus)
+extern "C" {
+#endif
 /*
   Copyright 2002-2004 John Plevyak, All Rights Reserved
 */
@@ -23,4 +26,7 @@ BinaryTables * read_binary_tables_from_file(FILE *fp, D_ReductionCode spec_code,
 BinaryTables * read_binary_tables_from_string(unsigned char *buf, D_ReductionCode spec_code, D_ReductionCode final_code);
 void free_BinaryTables(BinaryTables * binary_tables);
 
+#endif
+#if defined(__cplusplus)
+}
 #endif

@@ -664,6 +664,22 @@ void set_d_file_name(char *x){
   return fun(x);
 }
 
+SEXP
+ 
+dparse_sexp(SEXP sexp_fileName, SEXP sexp_start_state, SEXP sexp_save_parse_tree, SEXP sexp_partial_parses, SEXP sexp_compare_stacks, SEXP sexp_commit_actions_interval, SEXP sexp_fixup, SEXP sexp_fixup_ebnf, SEXP sexp_nogreedy, SEXP sexp_noheight, SEXP sexp_use_filename, SEXP sexp_sizeof_parse_node, SEXP sexp_verbose, SEXP fn, SEXP env, D_ParserTables pt
+){
+  static SEXP
+ 
+(*fun)(SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, D_ParserTables
+)=NULL;
+  if (fun == NULL) fun = (SEXP
+
+ (*)(SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, D_ParserTables
+)) R_GetCCallable("dparser","dparse_sexp");
+  return fun(sexp_fileName, sexp_start_state, sexp_save_parse_tree, sexp_partial_parses, sexp_compare_stacks, sexp_commit_actions_interval, sexp_fixup, sexp_fixup_ebnf, sexp_nogreedy, sexp_noheight, sexp_use_filename, sexp_sizeof_parse_node, sexp_verbose, fn, env, pt
+);
+}
+
 #if defined(__cplusplus)
 }
 #endif

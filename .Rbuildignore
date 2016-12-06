@@ -20,3 +20,5 @@ dparser.*\.(zip|pdf)$
 ^/?src/dparser$
 ^/?man-roxygen$
 ^/?man-roxygen/.*$
+^/?build$
+^/?build/.*$
