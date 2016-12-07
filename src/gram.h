@@ -271,8 +271,7 @@ Production *new_internal_production(Grammar *g, Production *p);
 Elem * dup_elem(Elem *e, Rule *r);
 void add_declaration(Grammar *g, char *start, char *end, uint kind, uint line);
 void add_pass(Grammar *g, char *start, char *end, uint kind, uint line);
-void add_pass_code(Grammar *g, Rule *r, char *pass_start, char *pass_end,
-		   char *code_start, char *code_end, uint line, uint pass_line);
+void add_pass_code(Grammar *g, Rule *r, char *pass_start, char *pass_end, char *code_start, char *code_end, uint line, uint pass_line);
 D_Pass *find_pass(Grammar *g, char *start, char *end);
 void conditional_EBNF(Grammar *g); /* applied to g->e,g->r,g->p */
 void star_EBNF(Grammar *g); /* ditto */

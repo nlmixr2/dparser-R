@@ -112,6 +112,7 @@ Production *new_internal_production(Grammar *g, Production *p);
 Elem * dup_elem(Elem *e, Rule *r);
 void add_declaration(Grammar *g, char *start, char *end, uint kind, uint line);
 void add_pass(Grammar *g, char *start, char *end, uint kind, uint line);
+void add_pass_code(Grammar *g, Rule *r, char *pass_start, char *pass_end, char *code_start, char *code_end, uint line, uint pass_line);
 D_Pass *find_pass(Grammar *g, char *start, char *end);
 void conditional_EBNF(Grammar *g); 
 void star_EBNF(Grammar *g); 
@@ -154,6 +155,7 @@ char *escape_string_single_quote(char *s);
 int write_c_tables(Grammar *g);
 int write_binary_tables(Grammar *g);
 int write_binary_tables_to_file(Grammar *g, FILE *fp);
+
 void R_init_dparser(DllInfo *info){
   R_RegisterCCallable("dparser","dparse_sexp",(DL_FUNC) dparse_sexp);
   R_RegisterCCallable("dparser","set_d_file_name",(DL_FUNC) set_d_file_name);
@@ -209,6 +211,7 @@ void R_init_dparser(DllInfo *info){
   R_RegisterCCallable("dparser","star_EBNF ",(DL_FUNC) star_EBNF );
   R_RegisterCCallable("dparser","conditional_EBNF ",(DL_FUNC) conditional_EBNF );
   R_RegisterCCallable("dparser","find_pass",(DL_FUNC) find_pass);
+  R_RegisterCCallable("dparser","add_pass_code",(DL_FUNC) add_pass_code);
   R_RegisterCCallable("dparser","add_pass",(DL_FUNC) add_pass);
   R_RegisterCCallable("dparser","add_declaration",(DL_FUNC) add_declaration);
   R_RegisterCCallable("dparser","dup_elem",(DL_FUNC) dup_elem);

@@ -346,6 +346,12 @@ void add_pass(Grammar *g, char *start, char *end, uint kind, uint line){
   return fun(g, start, end, kind, line);
 }
 
+void add_pass_code(Grammar *g, Rule *r, char *pass_start, char *pass_end, char *code_start, char *code_end, uint line, uint pass_line){
+  static void (*fun)(Grammar*, Rule*, char*, char*, char*, char*, uint, uint)=NULL;
+  if (fun == NULL) fun = (void (*)(Grammar*, Rule*, char*, char*, char*, char*, uint, uint)) R_GetCCallable("dparser","add_pass_code");
+  return fun(g, r, pass_start, pass_end, code_start, code_end, line, pass_line);
+}
+
 D_Pass *find_pass(Grammar *g, char *start, char *end){
   static D_Pass *(*fun)(Grammar*, char*, char*)=NULL;
   if (fun == NULL) fun = (D_Pass* (*)(Grammar*, char*, char*)) R_GetCCallable("dparser","find_pass");
@@ -678,6 +684,30 @@ dparse_sexp(SEXP sexp_fileName, SEXP sexp_start_state, SEXP sexp_save_parse_tree
 )) R_GetCCallable("dparser","dparse_sexp");
   return fun(sexp_fileName, sexp_start_state, sexp_save_parse_tree, sexp_partial_parses, sexp_compare_stacks, sexp_commit_actions_interval, sexp_fixup, sexp_fixup_ebnf, sexp_nogreedy, sexp_noheight, sexp_use_filename, sexp_sizeof_parse_node, sexp_verbose, fn, env, pt
 );
+}
+
+void
+d_fail(const char *str, ...) {
+  char nstr[256];
+  char outstr[256*2];
+  va_list ap;
+  va_start(ap, str);
+  snprintf(nstr, 255, "Parser Fail: %s", str);
+  vsprintf(outstr, nstr, ap);
+  va_end(ap);
+  error(outstr);
+}
+
+void
+d_warn(const char *str, ...) {
+  char nstr[256];
+  char outstr[256*2];
+  va_list ap;
+  va_start(ap, str);
+  snprintf(nstr, 255, "%s", str);
+  vsprintf(outstr, nstr, ap);
+  va_end(ap);
+  warning(outstr);
 }
 
 #if defined(__cplusplus)

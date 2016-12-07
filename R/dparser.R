@@ -77,6 +77,12 @@ refresh <- function(){ # nocov start
                 ## Fix headers to work with C++
                 d[1] <- sprintf('#if defined(__cplusplus)\nextern "C" {\n#endif\n%s', d[1]);
                 d[length(d)] <- sprintf('%s\n#if defined(__cplusplus)\n}\n#endif\n', d[length(d)]);
+                if (f == "gram.h"){
+                    ## Fix add_pass_code to be on one line.
+                    w <- which(regexpr("void add_pass_code", d) != -1);
+                    d[w] <- sprintf("%s %s", d[w], gsub("^[ \t]*", "", d[w + 1]));
+                    d <- d[-(w + 1)];
+                }
             }
             if (f == "d.h"){
                 w <- which(regexpr('#define (REALLOC|MALLOC|FREE|CALLOC)', d) != -1);
@@ -240,6 +246,30 @@ Header file for using internal C-level dparser functions in dparser-R (generated
 extern \"C\" {
 #endif
 %s
+void
+d_fail(const char *str, ...) {
+  char nstr[256];
+  char outstr[256*2];
+  va_list ap;
+  va_start(ap, str);
+  snprintf(nstr, 255, \"Parser Fail: %%s\", str);
+  vsprintf(outstr, nstr, ap);
+  va_end(ap);
+  error(outstr);
+}
+
+void
+d_warn(const char *str, ...) {
+  char nstr[256];
+  char outstr[256*2];
+  va_list ap;
+  va_start(ap, str);
+  snprintf(nstr, 255, \"%%s\", str);
+  vsprintf(outstr, nstr, ap);
+  va_end(ap);
+  warning(outstr);
+}
+
 #if defined(__cplusplus)
 }
 #endif
@@ -265,6 +295,7 @@ Register C callables to R.
 %s
 %s
 %s
+
 void R_init_dparser(DllInfo *info){
 %s}
 ",dparser, paste(sprintf("extern int %s;\nvoid set_%s(int x){\n  %s = x;\n}\nint get_%s(){\n return %s;\n}\n", globalIntVars, globalIntVars, globalIntVars, globalIntVars, globalIntVars), collapse="\n"),
@@ -759,16 +790,8 @@ dparse_gram <- function(file,
                         use_file_name=TRUE,
                         parse_size=1024,
                         verbose_level=0){
-
-    lst <- dpGetFile(substitute(file));
-    if (missing(use_file_name)){
-        use_file_name <- as.integer(lst$use_file_name);
-    } else {
-        use_file_name       <- as.integer(use_file_name);
-    }
-    if (!lst$use_file_name){
-        on.exit(unlink(lst$file));
-    }
+    lst <- dpGetFile(file);
+    file <- lst$file;
     start_state         <- as.integer(start_state);
     save_parse_tree     <- as.integer(save_parse_tree);
     save_parse_tree     <- as.integer(save_parse_tree);
@@ -778,6 +801,14 @@ dparse_gram <- function(file,
     fixup_ebnf          <- as.integer(fixup_ebnf);
     nogreedy            <- as.integer(nogreedy);
     noheight            <- as.integer(noheight);
+    if (missing(use_file_name)){
+        use_file_name <- as.integer(lst$use_file_name);
+    } else {
+        use_file_name       <- as.integer(use_file_name);
+    }
+    if (!lst$use_file_name){
+        on.exit(unlink(lst$file));
+    }
     .Call(dparse_dparser_gram,
           file,
           start_state,
