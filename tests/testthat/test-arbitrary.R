@@ -65,3 +65,4 @@ test_that("function specification works", {
     expect_equal(t3, t3c);
 })
 unlink("tran.g-3");
+gc();

@@ -40,6 +40,7 @@
 ##' The result is natural grammars and powerful parsing.
 ##' @template grammar
 ##' @useDynLib dparser cDparser dparse_dparser_gram
+##' @importFrom methods new
 "_PACKAGE"
 
 rex::register_shortcuts("dparser");
@@ -585,6 +586,69 @@ dpGetFile <- function(file, fileext=""){
     return(ret);
 }
 
+
+##' A S4 class for dparser functions
+##'
+##' The data here is the function to be called.
+##'
+##' @slot env contains the environment where the grammar name and dll
+##'     files are stored.
+##' @slot .Data is the function data
+##'
+##'@keywords internal
+##'@export
+setClass("dparserFunction",
+         representation(
+             env="environment"
+         ),
+         contains="function")
+
+##' Print the s4 object
+##' @param x dparserFunction to print.
+##' @keywords internal
+##' @export
+setMethod("print", signature=(x="dparserFunction"),
+          function(x){
+    cat("An object of class 'dparserFunction'\n");
+    dat <- x@.Data;
+    print(dat);
+    grammar <- x@env$grammar;
+    dll.file <- x@env$dll.file;
+    cat(sprintf("Grammar File: %s\nDll File: %s\n", grammar, dll.file));
+})
+
+gc.items <- c()
+
+##' Garbage collection for dpaser functions
+##'
+##' This will delete the dynamically created dll upon garbage
+##' collection.
+##'
+##' @param env Environment that is being garbage collected.
+##' @return Nothing.
+##' @author Matthew L. Fidler
+##' @keywords internal
+##' @export
+gc.dparser <- function(env){
+    dll.file <- env$dll.file;
+    if (!is.na(gc.items[dll.file])){
+        if (gc.items[dll.file] > 1){
+            tmp <- gc.items;
+            tmp[dll.file] <- tmp[dll.file] - 1;
+            assignInMyNamespace("gc.items", tmp);
+        } else {
+            if (file.exists(dll.file)){
+                rc <- try(dyn.unload(dll.file), silent = TRUE);
+                unlink(dll.file)
+            }
+            tmp <- gc.items;
+            tmp <- tmp[names(tmp) != dll.file];
+            assignInMyNamespace("gc.items", tmp);
+        }
+    }
+
+}
+
 ##' Create R-based Dparser tree walking function based on grammar
 ##'
 ##' @param grammar Dparser grammar
@@ -744,7 +808,22 @@ dparse <- function(grammar,
         return(invisible());
     });
     body(fun) <- body;
-    return(fun);
+    ret <- new("dparserFunction", env=new.env());
+    ret@.Data <- fun;
+    ret@env$grammar <- normalizePath(grammar)
+    ret@env$dll.file <- normalizePath(dll.file)
+    ## Cleanup
+    if (any(names(gc.items) == ret@env$dll.file)){
+        tmp <- gc.items;
+        tmp[ret@env$dll.file] <- tmp[ret@env$dll.file] + 1;
+        assignInMyNamespace("gc.items", tmp);
+    } else {
+        tmp <- gc.items;
+        tmp[ret@env$dll.file] <- 1
+        assignInMyNamespace("gc.items", tmp);
+    }
+    reg.finalizer(ret@env, gc.dparser, onexit=TRUE);
+    return(ret);
 }
 
 ##' R Parser for dparser grammar

@@ -85,9 +85,9 @@ SEXP cDparser(SEXP fileName,
   if (d_rdebug_grammar_level == 0) {
     if (write_c_tables(g) < 0)
       d_fail("unable to write C tables '%s'", grammar_pathname);
-  } else
+  } else {
     print_rdebug_grammar(g, grammar_pathname);
-
+  }
   free_D_Grammar(g);
   g = 0;
   d_use_r_headers = 0;
