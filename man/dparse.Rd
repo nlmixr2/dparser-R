@@ -53,6 +53,24 @@ A function that allows parsing of a file based on the
 \description{
 Create R-based Dparser tree walking function based on grammar
 }
+\section{Garbage collection}{
+
+
+There are two user options that control if the dlls for the
+grammars created by dparser will be deleted upon garbage
+collection or R exit if they are not associated with any active
+objects.  These are:
+
+\describe{
+
+\item{\code{dpaser.rm.unnamed.parser.dll}:}{when \code{TRUE}, this remove parsers
+that are created from strings, or other memory-based items in R.}
+
+\item{\code{dpaser.rm.unnamed.parser.dll}:}{when \code{TRUE}, this
+removes parsers created from grammar files.}
+
+}
+}
 \seealso{
 \code{\link{dparse_gram}}, \code{\link{mkdparse}}
 }

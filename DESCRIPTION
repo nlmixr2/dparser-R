@@ -8,10 +8,10 @@ Authors@R: c(person("Matthew", "Fidler", email = "matthew.fidler@gmail.com", rol
       	   role = c("aut"), email = "jplevyak@gmail.com")
 	   )
 Imports:
-    rex,
     digest,
     methods
 Suggests:
+    rex,
     covr,
     testthat,
     knitr,

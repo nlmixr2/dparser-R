@@ -4,7 +4,7 @@
 \alias{dpGetFile}
 \title{Get file for dparser arguments}
 \usage{
-dpGetFile(file, fileext = "")
+dpGetFile(file, fileext = "", envir = parent.frame(1))
 }
 \arguments{
 \item{file}{- File to handle.  This file can be:
@@ -23,14 +23,18 @@ the contents of the expressions is put into a temporary file.
 }}
 
 \item{fileext}{file extension of temporary file to create}
+
+\item{envir}{Environment to deparse variables}
 }
 \value{
-a list of two elements:
+a list of three elements:
 \describe{
 
 \item{\code{file}}{The file name of etiher the tempoary file or the real file}
 
-\item{code{use_file_name}}{If the file name was used (\code{TRUE}), or a temporary file was created(\code{FALSE})}
+\item{\code{use_file_name}}{If the file name was used (\code{TRUE}), or a temporary file was created(\code{FALSE})}
+
+\item{\code{md5}}{md5 of the model}
 
 }
 }
