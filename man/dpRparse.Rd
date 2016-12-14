@@ -2,18 +2,17 @@
 % Please edit documentation in R/Rparse.R
 \name{dpRparse}
 \alias{dpRparse}
-\title{Rcpp code for R parser}
+\title{C code for R parser}
 \usage{
 dpRparse()
 }
 \value{
-A string for generating Rcpp tree walker
+A string for generating C tree walker
 }
 \description{
-Rcpp code for R parser
+C code for R parser
 }
 \author{
 Matthew L. Fidler
 }
 \keyword{internal}
-

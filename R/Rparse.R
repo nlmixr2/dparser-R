@@ -1,6 +1,6 @@
-##' Rcpp code for R parser
+##' C code for R parser
 ##'
-##' @return A string for generating Rcpp tree walker
+##' @return A string for generating C tree walker
 ##' @author Matthew L. Fidler
 ##' @keywords internal
 ##' @export
