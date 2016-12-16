@@ -666,3 +666,13 @@ rees.  This may be of some assistence in disambiguating a grammar.
 }
 }
 
+\author{
+\strong{Maintainer}: Matthew Fidler \email{matthew.fidler@gmail.com}
+
+Authors:
+\itemize{
+  \item Wenping Wang \email{Wenping.wang@outlook.com}
+  \item John Plevyak \email{jplevyak@gmail.com}
+}
+
+}

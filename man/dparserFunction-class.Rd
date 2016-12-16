@@ -15,5 +15,5 @@ files are stored.}
 
 \item{\code{.Data}}{is the function data}
 }}
-\keyword{internal}
 
+\keyword{internal}

@@ -147,7 +147,7 @@ refresh <- function(){ # nocov start
 ##'     (\code{write_extension="c"} by default)
 ##'
 ##' @param use_r_header when TRUE, add R headers and swap printf for
-##'     Rprintf. By default this is FALSE.
+##'     Rprintf. By default this is TRUE.
 ##'
 ##' @template grammar
 ##'
@@ -172,7 +172,7 @@ mkdparse <- function(file,outputFile,
                      rdebug = FALSE,
                      verbose = FALSE,
                      write_extension="c",
-                     use_r_header = FALSE
+                     use_r_header = TRUE
                      ){
     file <- gsub("\\\\","/",file);
     if (missing(write_header) || write_header == "IfEmpty"){
@@ -332,13 +332,13 @@ setClass("dparserFunction",
 ##' @param x dparserFunction to print.
 ##' @keywords internal
 ##' @export
-setMethod("print", signature=(x="dparserFunction"),
-          function(x){
+setMethod("show", signature=(object="dparserFunction"),
+          function(object){
     cat("An object of class 'dparserFunction'\n");
-    dat <- x@.Data;
+    dat <- object@.Data;
     print(dat);
-    grammar <- x@env$grammar;
-    dll.file <- x@env$dll.file;
+    grammar <- object@env$grammar;
+    dll.file <- object@env$dll.file;
     cat(sprintf("Grammar File: %s\nDll File: %s\n", grammar, dll.file));
 })
 
@@ -566,84 +566,3 @@ dparse <- function(grammar,
     return(ret);
 }
 
-##' R Parser for dparser grammar
-##'
-##' This is a parser that takes a dparser grammer and walks the
-##' grammar function.
-##'
-##' @param file File to be parsed
-##' @param fn Function to be called at each production element.  This function should have the form fn(name,value,pos,depth).
-##' \describe{
-##'
-##' \item{\code{name}}{ represents the element name, usually a
-##' production name.}
-##'
-##' \item{\code{value}}{ reperesnts the value of the element at the
-##' current position.}
-##'
-##' \item{\code{pos}}{ is an integer reperesnting the token position.
-##' When pos=-1, this is the whole token before looking at children.
-##' Otherwise, the first part of the production terminal is numbered
-##' from 0 to the end of the terminal. }
-##'
-##' \item{\code{depth}}{ is an integer reperesnting the depth of parsing}
-##'
-##' }
-##' @param envir Environment where the function \code{fn} is called
-##' @inheritParams dparse
-##' @return Nothing is returned
-##' @author Matthew L. Fidler
-##' @export
-dparse_gram <- function(file,
-                        fn,
-                        envir=parent.frame(),
-                        start_state=0,
-                        save_parse_tree=TRUE,
-                        partial_parses=FALSE,
-                        compare_stacks=TRUE,
-                        commit_actions_interval=100,
-                        fixup=TRUE,
-                        fixup_ebnf=FALSE,
-                        nogreedy=FALSE,
-                        noheight=FALSE,
-                        use_file_name=TRUE,
-                        parse_size=1024,
-                        verbose_level=0){
-    lst <- dpGetFile(file, envir=parent.frame(1));
-    file <- lst$file;
-    start_state         <- as.integer(start_state);
-    save_parse_tree     <- as.integer(save_parse_tree);
-    save_parse_tree     <- as.integer(save_parse_tree);
-    partial_parses      <- as.integer(partial_parses);
-    dont_compare_stacks <- as.integer(!compare_stacks);
-    notfixup            <- as.integer(!fixup);
-    fixup_ebnf          <- as.integer(fixup_ebnf);
-    nogreedy            <- as.integer(nogreedy);
-    noheight            <- as.integer(noheight);
-    if (missing(use_file_name)){
-        use_file_name <- as.integer(lst$use_file_name);
-    } else {
-        use_file_name       <- as.integer(use_file_name);
-    }
-    if (!lst$use_file_name){
-        on.exit(unlink(lst$file));
-    }
-    .Call(dparse_dparser_gram,
-          file,
-          start_state,
-          save_parse_tree,
-          partial_parses,
-          compare_stacks,
-          as.integer(commit_actions_interval),
-          fixup,
-          fixup_ebnf,
-          nogreedy,
-          noheight,
-          use_file_name,
-          as.integer(parse_size),
-          as.integer(verbose_level),
-          fn,
-          envir,
-          PACKAGE="dparser");
-    return(invisible());
-}

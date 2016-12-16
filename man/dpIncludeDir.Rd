@@ -23,4 +23,3 @@ functions against the Dparser library.
 Matthew L. Fidler
 }
 \keyword{internal}
-

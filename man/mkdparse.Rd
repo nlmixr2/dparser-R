@@ -11,7 +11,7 @@ mkdparse(file, outputFile, set_op_priority_from_rule = FALSE,
   grammar_ident = "gram", ident_from_filename = FALSE, scanner_blocks = 4,
   write_line_directives = TRUE, write_header = c("IfEmpty", TRUE, FALSE),
   rdebug = FALSE, verbose = FALSE, write_extension = "c",
-  use_r_header = FALSE)
+  use_r_header = TRUE)
 }
 \arguments{
 \item{file}{File name of grammer to parse.}
@@ -87,7 +87,7 @@ to .cpp with the option \code{write_extension="cpp"}.
 (\code{write_extension="c"} by default)}
 
 \item{use_r_header}{when TRUE, add R headers and swap printf for
-Rprintf. By default this is FALSE.}
+Rprintf. By default this is TRUE.}
 }
 \value{
 Nothing. Outputs files instead.
@@ -696,8 +696,8 @@ rees.  This may be of some assistence in disambiguating a grammar.
 
 }
 }
+
 \author{
 Matthew L. Fidler for R interface, John Plevyak for
     dparser
 }
-
