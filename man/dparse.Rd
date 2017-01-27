@@ -8,7 +8,7 @@ dparse(grammar, start_state = 0, save_parse_tree = TRUE,
   partial_parses = FALSE, compare_stacks = TRUE,
   commit_actions_interval = 100, fixup = TRUE, fixup_ebnf = FALSE,
   nogreedy = FALSE, noheight = FALSE, use_file_name = TRUE,
-  parse_size = 1024, verbose_level = 0, ...)
+  parse_size = 1024, verbose_level = 0, children_first = TRUE, ...)
 }
 \arguments{
 \item{grammar}{Dparser grammar}
@@ -39,8 +39,12 @@ TRUE)}
 \item{verbose_level}{the level of verbosity when creating parser
 (default 0)}
 
+\item{children_first}{When TRUE, parse the children before the
+parent (default TRUE).}
+
 \item{...}{Paramters sent to \code{\link{mkdparse}}, with the
-exception of \code{use_r_header} which is forced to be \code{TRUE}.}
+exception of \code{use_r_header} which is forced to be
+\code{TRUE}.}
 }
 \value{
 A function that allows parsing of a file based on the

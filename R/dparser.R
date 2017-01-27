@@ -47,7 +47,7 @@
 ##' @template garbage
 ##'
 ##' @template grammar
-##' @useDynLib dparser cDparser dparse_dparser_gram
+##' @useDynLib dparser cDparser
 ##' @importFrom methods new
 "_PACKAGE"
 .onLoad <- function(libname, pkgname){ ## nocov start
@@ -397,8 +397,11 @@ gc.dparser <- function(env){
 ##' @param parse_size Parser size (default 1024)
 ##' @param verbose_level the level of verbosity when creating parser
 ##'     (default 0)
+##' @param children_first When TRUE, parse the children before the
+##'     parent (default TRUE).
 ##' @param ... Paramters sent to \code{\link{mkdparse}}, with the
-##'     exception of \code{use_r_header} which is forced to be \code{TRUE}.
+##'     exception of \code{use_r_header} which is forced to be
+##'     \code{TRUE}.
 ##'
 ##' @return A function that allows parsing of a file based on the
 ##'     grammar supplied. An example of a a function that would be
@@ -423,7 +426,9 @@ dparse <- function(grammar,
                    noheight=FALSE,
                    use_file_name=TRUE,
                    parse_size=1024,
-                   verbose_level=0, ...){
+                   verbose_level=0,
+                   children_first=TRUE,
+                   ...){
     lst <- dpGetFile(substitute(grammar), ".g", envir=parent.frame(1));
     grammar <- lst$file;
     if (missing(use_file_name)){
@@ -490,25 +495,31 @@ dparse <- function(grammar,
     }
     dyn.load(dll.file);
     fun <- eval(bquote(function(file,
-                           fn,
-                           envir=parent.frame(),
-                           ##
-                           start_state=.(start_state),
-                           save_parse_tree=.(save_parse_tree),
-                           partial_parses=.(partial_parses),
-                           compare_stacks=.(compare_stacks),
-                           commit_actions_interval=.(commit_actions_interval),
-                           fixup=.(fixup),
-                           fixup_ebnf=.(fixup_ebnf),
-                           nogreedy=.(nogreedy),
-                           noheight=.(noheight),
-                           use_file_name=.(use_file_name),
-                           parse_size=.(parse_size),
-                           verbose_level=.(verbose_level)){
+                                fn,
+                                skip_fn,
+                                envir=parent.frame(),
+                                ##
+                                start_state=.(start_state),
+                                save_parse_tree=.(save_parse_tree),
+                                partial_parses=.(partial_parses),
+                                compare_stacks=.(compare_stacks),
+                                commit_actions_interval=.(commit_actions_interval),
+                                fixup=.(fixup),
+                                fixup_ebnf=.(fixup_ebnf),
+                                nogreedy=.(nogreedy),
+                                noheight=.(noheight),
+                                use_file_name=.(use_file_name),
+                                parse_size=.(parse_size),
+                                verbose_level=.(verbose_level),
+                                children_first=.(children_first)
+                                ){
         NULL;
     }));
     sym <- getNativeSymbolInfo(sprintf('dparse_%s', gram), PACKAGE=pkg);
     body <- bquote({
+        if (missing(skip_fn)){
+            skip_fn <- quote(dparser::dpDefaultSkip);
+        }
         lst <- dpGetFile(substitute(file), envir=parent.frame(1));
         file <- lst$file;
         start_state         <- as.integer(start_state);
@@ -529,21 +540,23 @@ dparse <- function(grammar,
             on.exit(unlink(lst$file));
         }
         .(quote(.Call))(.(sym$address),
-              file,
-              start_state,
-              save_parse_tree,
-              partial_parses,
-              compare_stacks,
-              as.integer(commit_actions_interval),
-              fixup,
-              fixup_ebnf,
-              nogreedy,
-              noheight,
-              use_file_name,
-              as.integer(parse_size),
-              as.integer(verbose_level),
-              fn,
-              envir);
+            file,
+            start_state,
+            save_parse_tree,
+            partial_parses,
+            compare_stacks,
+            as.integer(commit_actions_interval),
+            fixup,
+            fixup_ebnf,
+            nogreedy,
+            noheight,
+            use_file_name,
+            as.integer(parse_size),
+            as.integer(verbose_level),
+            as.integer(children_first),
+            fn,
+            skip_fn,
+            envir);
         return(invisible());
     });
     body(fun) <- body;
@@ -566,3 +579,24 @@ dparse <- function(grammar,
     return(ret);
 }
 
+##' Default skip function for darsing grammar
+##'
+##' This function is to determine if children are parsed or skipped.
+##' By default, all children are parsed.
+##'
+##' @param name Production Name
+##'
+##' @param value Production Value
+##'
+##' @param pos terminal position.  Negative values are parsed before
+##'     children are parsed.  A value of -1 means there are no
+##'     children nodes.  A value of -2 means there are children nodes.
+##'     Otherwise, the terminal position is numbered starting at 0.
+##' @param depth Parsing Depth
+##' @return FALSE.  If a comparable function returns TRUE, the
+##'     children are not parsed.
+##' @author Matthew L. Fidler
+##' @export
+dpDefaultSkip <- function(name,value,pos,depth){
+    return(FALSE)
+}

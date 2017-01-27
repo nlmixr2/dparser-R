@@ -46,18 +46,58 @@ void callparsefn(char *name, char *value, int pos, int depth, SEXP fn, SEXP env)
   UNPROTECT(1);
 }
 
-void parsetree(D_ParserTables pt, D_ParseNode *pn, int depth, SEXP fn, SEXP env){
+int callskipchildrenfn(char *name, char *value, int pos, int depth, SEXP skip_fn, SEXP env){
+  /*
+    Need to construct a call to
+    skip_fn(name = name, value = value, pos = pos, depth = depth)
+  */
+  SEXP s, t;
+  int ret;
+  t = s = PROTECT(allocList(5));
+  SET_TYPEOF(s, LANGSXP);
+  SETCAR(t, skip_fn); t = CDR(t);
+  // name = name
+  SETCAR(t, mkString(name)); 
+  SET_TAG(t, install("name")); t = CDR(t);
+  // value = value
+  SETCAR(t, mkString(value));
+  SET_TAG(t, install("value")); t = CDR(t);
+  // pos = pos
+  SETCAR(t, ScalarInteger(pos));  
+  SET_TAG(t, install("pos")); t = CDR(t);
+  // depth=depth
+  SETCAR(t, ScalarInteger(depth));
+  SET_TAG(t, install("depth")); t = CDR(t);
+  ret=INTEGER(eval(s, env))[0];
+  UNPROTECT(1);
+  return ret;
+}
+
+void parsetree(D_ParserTables pt, D_ParseNode *pn, int depth, SEXP fn, SEXP skip_fn, SEXP env,
+	       int children_first){
   char *name = (char*)pt.symbols[pn->symbol].name;
-  int nch = d_get_number_of_children(pn), i;
+  int nch = d_get_number_of_children(pn), i, skipchild;
   char *value = (char*)rc_dup_str(pn->start_loc.s, pn->end);
-  callparsefn(name, value, -1, depth, fn, env);
+  if (nch == 0){
+    callparsefn(name, value, -1, depth, fn, env);
+  } else {
+    callparsefn(name, value, -2, depth, fn, env);
+  }
   if (nch != 0){
     for (i = 0; i < nch; i++) {
       D_ParseNode *xpn = d_get_child(pn,i);
       char *v = (char*)rc_dup_str(xpn->start_loc.s, xpn->end);
-      callparsefn(name, v, i, depth, fn, env);
+      skipchild = callskipchildrenfn(name, v, i, depth, skip_fn, env);
+      if (children_first && !skipchild){
+	parsetree(pt, xpn, depth+1, fn, skip_fn, env, children_first);
+      }
+      if (!skipchild){
+	callparsefn(name, v, i, depth, fn, env);
+      }
+      if (!children_first && !skipchild){
+        parsetree(pt, xpn, depth+1, fn, skip_fn, env, children_first);
+      }
       Free(v);
-      parsetree(pt, xpn, depth+1, fn, env);
     }
   }
   Free(value);
@@ -76,12 +116,15 @@ SEXP dparse_sexp(SEXP sexp_fileName,
 		 SEXP sexp_use_filename,
 		 SEXP sexp_sizeof_parse_node,
 		 SEXP sexp_verbose,
+		 SEXP sexp_children_first,
 		 SEXP fn,
+		 SEXP skip_fn,
 		 SEXP env,
 		 D_ParserTables pt){
   char *buf = NULL;
   D_Parser *p;
   D_ParseNode *pn = NULL;
+  int children_first;
   p = new_D_Parser(&pt, INTEGER(sexp_sizeof_parse_node)[0]);
   p->save_parse_tree = INTEGER(sexp_save_parse_tree)[0];
   p->ambiguity_fn = ambiguity_count_fn;
@@ -97,10 +140,11 @@ SEXP dparse_sexp(SEXP sexp_fileName,
   buf = sbuf_read(d_file_name);
   d_verbose_level = INTEGER(sexp_verbose)[0];
   d_use_file_name = INTEGER(sexp_use_filename)[0];
+  children_first = INTEGER(sexp_children_first)[0];
   pn = dparse(p, buf, strlen(buf));
   d_verbose_level = 0;
   if (pn && !p->syntax_errors) {
-    parsetree(pt, pn, 0, fn, env);
+    parsetree(pt, pn, 0, fn, skip_fn, env, children_first);
   } else {
     if (!p->syntax_errors){
       if (d_use_file_name){
@@ -120,41 +164,5 @@ SEXP dparse_sexp(SEXP sexp_fileName,
       }
     }
   }
-  return R_NilValue;
-}
-
-extern D_ParserTables parser_tables_dparser_gram;
-
-SEXP dparse_dparser_gram(SEXP sexp_fileName,
-			 SEXP sexp_start_state,
-			 SEXP sexp_save_parse_tree,
-			 SEXP sexp_partial_parses,
-			 SEXP sexp_compare_stacks,
-			 SEXP sexp_commit_actions_interval,
-			 SEXP sexp_fixup,
-			 SEXP sexp_fixup_ebnf,
-			 SEXP sexp_nogreedy,
-			 SEXP sexp_noheight,
-			 SEXP sexp_use_filename,
-			 SEXP sexp_sizeof_parse_node,
-			 SEXP sexp_verbose,
-			 SEXP fn,
-			 SEXP env){
-  dparse_sexp(sexp_fileName,
-              sexp_start_state,
-              sexp_save_parse_tree,
-              sexp_partial_parses,
-              sexp_compare_stacks,
-              sexp_commit_actions_interval,
-              sexp_fixup,
-              sexp_fixup_ebnf,
-              sexp_nogreedy,
-              sexp_noheight,
-              sexp_use_filename,
-              sexp_sizeof_parse_node,
-              sexp_verbose,
-              fn,
-              env,
-              parser_tables_dparser_gram);
   return R_NilValue;
 }
