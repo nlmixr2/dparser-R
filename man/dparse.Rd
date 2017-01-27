@@ -48,9 +48,7 @@ exception of \code{use_r_header} which is forced to be
 }
 \value{
 A function that allows parsing of a file based on the
-    grammar supplied. An example of a a function that would be
-    returned is the dparser grammar function
-    \code{\link{dparse_gram}}.  This function would be able to
+    grammar supplied. This function would be able to
     parse arbitary grammars the way you may want with your own
     user supplied function.
 }
@@ -77,5 +75,5 @@ removes parsers created from grammar files.}
 }
 
 \seealso{
-\code{\link{dparse_gram}}, \code{\link{mkdparse}}
+\code{\link{mkdparse}}
 }

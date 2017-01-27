@@ -404,15 +404,13 @@ gc.dparser <- function(env){
 ##'     \code{TRUE}.
 ##'
 ##' @return A function that allows parsing of a file based on the
-##'     grammar supplied. An example of a a function that would be
-##'     returned is the dparser grammar function
-##'     \code{\link{dparse_gram}}.  This function would be able to
+##'     grammar supplied. This function would be able to
 ##'     parse arbitary grammars the way you may want with your own
 ##'     user supplied function.
 ##'
 ##' @template garbage
 ##'
-##' @seealso \code{\link{dparse_gram}}, \code{\link{mkdparse}}
+##' @seealso \code{\link{mkdparse}}
 ##' @export
 dparse <- function(grammar,
                    start_state=0,

@@ -271,7 +271,12 @@ paste(defs, collapse="\n"),paste(calls, collapse="")));
 ##\' @keywords internal
 ##\' @export
 dpVersion <- function(){return(c(version=\"");
-    cat(gsub("Version: +", "", readLines(devtools::package_file("DESCRIPTION"), 2)[2]))
+ver <- readLines(devtools::package_file("DESCRIPTION"));
+ver <- ver[regexpr("Version:", ver) != -1];
+ver <- ver[1];
+cat(gsub("Version: +", "", ver))
+cat("\",build=\"");
+cat(build);
     cat("\",repo=\"");
     cat("https://github.com/")
     tmp <- readLines(devtools::package_file(".git/config"))
