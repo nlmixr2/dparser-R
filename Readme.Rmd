@@ -46,7 +46,7 @@ tools, then install devtools:
 
 ```
 install.packages("devtools")
-devtools::install_github("mattfidler/dparser")
+devtools::install_github("mattfidler/dparser-R")
 ```
 
 ### Differences between the R dparser port and the C-version of dparser
