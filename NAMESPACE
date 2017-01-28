@@ -3,6 +3,7 @@
 export(dpDefaultSkip)
 export(dpGetFile)
 export(dpIncludeDir)
+export(dpReload)
 export(dpRparse)
 export(dpVersion)
 export(dparse)

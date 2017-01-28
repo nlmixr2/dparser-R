@@ -598,3 +598,19 @@ dparse <- function(grammar,
 dpDefaultSkip <- function(name,value,pos,depth){
     return(FALSE)
 }
+##' Reload the R dparser dll
+##'
+##' This can be useful if parsing one grammar seems to affect another
+##' grammar.
+##'
+##' @author Matthew L. Fidler
+##' @export
+dpReload <- function(){
+    tmp <- getLoadedDLLs()$dparser
+    class(tmp) <- "list";
+    dyn.unload(tmp$path);
+    ret <- is.null(getLoadedDLLs()$dparser)
+    dyn.load(tmp$path);
+    ret <- ret && !is.null(getLoadedDLLs()$dparser)
+    return(ret)
+}
