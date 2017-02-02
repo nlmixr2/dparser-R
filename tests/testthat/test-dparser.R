@@ -1,5 +1,8 @@
 library(digest);
 files <- list.files(pattern=".*\\.test\\.g$")
+if (!identical(Sys.getenv("NOT_CRAN"), "true")){
+    files <- files[1:3]; ## Only do 3 tests on CRAN.
+}
 skipTests <- c("g50.test.g: g50.test.g.1");
 for (file in files){
     flags <- sprintf("%s.flags",file);
