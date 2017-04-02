@@ -156,7 +156,15 @@ int write_c_tables(Grammar *g);
 int write_binary_tables(Grammar *g);
 int write_binary_tables_to_file(Grammar *g, FILE *fp);
 
+SEXP cDparser(SEXP fileName, SEXP sexp_output_file, SEXP set_op_priority_from_rule , SEXP right_recursive_BNF , SEXP states_for_whitespace , SEXP states_for_all_nterms , SEXP tokenizer , SEXP longest_match , SEXP sexp_grammar_ident , SEXP scanner_blocks , SEXP write_line_directives , SEXP rdebug, SEXP verbose, SEXP sexp_write_extension, SEXP write_header, SEXP token_type, SEXP use_r_header);
+
 void R_init_dparser(DllInfo *info){
+  R_CallMethodDef callMethods[]  = {
+    {"cDparser", (DL_FUNC) &cDparser, 17},
+    {NULL, NULL, 0}
+  };
+  R_registerRoutines(info, NULL, callMethods, NULL, NULL);
+  R_useDynamicSymbols(info, FALSE);
   R_RegisterCCallable("dparser","dparse_sexp",(DL_FUNC) dparse_sexp);
   R_RegisterCCallable("dparser","set_d_file_name",(DL_FUNC) set_d_file_name);
   R_RegisterCCallable("dparser","get_d_debug_level",(DL_FUNC) get_d_debug_level);

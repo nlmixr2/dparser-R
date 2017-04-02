@@ -1,6 +1,6 @@
-[![Build Status](https://travis-ci.org/mattfidler/dparser-R.svg?branch=master)](https://travis-ci.org/mattfidler/dparser-R)
-[![AppVeyor Build Status](https://ci.appveyor.com/api/projects/status/github/mattfidler/dparser-R?branch=master&svg=true)](https://ci.appveyor.com/project/mattfidler/dparser-R)
-[![codecov.io](https://codecov.io/github/mattfidler/dparser-R/coverage.svg?branch=master)](https://codecov.io/github/mattfidler/dparser-R?branch=master)
+[![Build Status](https://travis-ci.org/nlmixrdevelopment/dparser-R.svg?branch=master)](https://travis-ci.org/nlmixrdevelopment/dparser-R)
+[![AppVeyor Build Status](https://ci.appveyor.com/api/projects/status/github/nlmixrdevelopment/dparser-R?branch=master&svg=true)](https://ci.appveyor.com/project/nlmixrdevelopment/dparser-R)
+[![codecov.io](https://codecov.io/github/nlmixrdevelopment/dparser-R/coverage.svg?branch=master)](https://codecov.io/github/nlmixrdevelopment/dparser-R?branch=master)
 [![CRAN version](http://www.r-pkg.org/badges/version/dparser)](https://cran.r-project.org/package=dparser)
 
 ## Installing dparser R package (Adapted from Rik Schoemaker's instructions for nlmixr)
@@ -46,7 +46,7 @@ tools, then install devtools:
 
 ```
 install.packages("devtools")
-devtools::install_github("mattfidler/dparser-R")
+devtools::install_github("nlmixrdevelopment/dparser-R")
 ```
 
 ### Differences between the R dparser port and the C-version of dparser
