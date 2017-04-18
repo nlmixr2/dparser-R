@@ -49,6 +49,7 @@
 ##' @template grammar
 ##' @useDynLib dparser cDparser
 ##' @importFrom methods new
+##' @importFrom utils assignInMyNamespace
 "_PACKAGE"
 .onLoad <- function(libname, pkgname){ ## nocov start
     op.dparser <- list(dpaser.rm.named.parser.dll=FALSE,
@@ -324,16 +325,14 @@ dpGetFile <- function(file, fileext="", envir=parent.frame(1)){
 ##'@export
 setClass("dparserFunction",
          representation(
-             env="environment"
-         ),
+             env="environment"),
          contains="function")
 
 ##' Print the s4 object
 ##' @param x dparserFunction to print.
 ##' @keywords internal
-##' @export
-setMethod("show", signature=(object="dparserFunction"),
-          function(object){
+##' @aliases show,dparserFunction-method
+setMethod("show", "dparserFunction", function(object){
     cat("An object of class 'dparserFunction'\n");
     dat <- object@.Data;
     print(dat);
