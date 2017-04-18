@@ -23,7 +23,7 @@ dparse(grammar, start_state = 0, save_parse_tree = TRUE,
 
 \item{commit_actions_interval}{Commit Interval (default 100)}
 
-\item{fixup}{Fixup Internal Productions (default FALSE)}
+\item{fixup}{Fix-up Internal Productions (default FALSE)}
 
 \item{fixup_ebnf}{Fixup EBNF Productions (default FALSE)}
 
@@ -42,14 +42,14 @@ TRUE)}
 \item{children_first}{When TRUE, parse the children before the
 parent (default TRUE).}
 
-\item{...}{Paramters sent to \code{\link{mkdparse}}, with the
+\item{...}{Parameters sent to \code{\link{mkdparse}}, with the
 exception of \code{use_r_header} which is forced to be
 \code{TRUE}.}
 }
 \value{
 A function that allows parsing of a file based on the
     grammar supplied. This function would be able to
-    parse arbitary grammars the way you may want with your own
+    parse arbitrary grammars the way you may want with your own
     user supplied function.
 }
 \description{

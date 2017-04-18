@@ -30,7 +30,7 @@ the contents of the expressions is put into a temporary file.
 a list of three elements:
 \describe{
 
-\item{\code{file}}{The file name of etiher the tempoary file or the real file}
+\item{\code{file}}{The file name of either the temporary file or the real file}
 
 \item{\code{use_file_name}}{If the file name was used (\code{TRUE}), or a temporary file was created(\code{FALSE})}
 

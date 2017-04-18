@@ -1,6 +1,6 @@
-##' A Scannerless GLR parser/parser generater
+##' A Scannerless GLR parser/parser generator
 ##'
-##' This pakage is based on the C dparser
+##' This package is based on the C dparser
 ##' https://github.com/jplevyak/dparser
 ##'
 ##' DParser is an simple but powerful tool for parsing.  You can
@@ -34,7 +34,7 @@
 ##' \item Comes with ANSI-C, Python and Verilog grammars
 ##' \item Comes with full source
 ##' \item Portable C for easy compilation and linking
-##' \item BSD licence, so you can included it in your application without worrying about licensing
+##' \item BSD license, so you can included it in your application without worrying about licensing
 ##' }
 ##'
 ##' The result is natural grammars and powerful parsing.
@@ -269,7 +269,7 @@ dpIncludeDir <- function(...){
 ##' @return a list of three elements:
 ##' \describe{
 ##'
-##' \item{\code{file}}{The file name of etiher the tempoary file or the real file}
+##' \item{\code{file}}{The file name of either the temporary file or the real file}
 ##'
 ##' \item{\code{use_file_name}}{If the file name was used (\code{TRUE}), or a temporary file was created(\code{FALSE})}
 ##'
@@ -387,7 +387,7 @@ gc.dparser <- function(env){
 ##' @param partial_parses Partial Parses (default FALSE)
 ##' @param compare_stacks Compare Stacks (default TRUE)
 ##' @param commit_actions_interval Commit Interval (default 100)
-##' @param fixup Fixup Internal Productions (default FALSE)
+##' @param fixup Fix-up Internal Productions (default FALSE)
 ##' @param fixup_ebnf Fixup EBNF Productions (default FALSE)
 ##' @param nogreedy No Greediness for Disambiguation (default FALSE)
 ##' @param noheight No Height for Disambiguation (default FALSE)
@@ -398,13 +398,13 @@ gc.dparser <- function(env){
 ##'     (default 0)
 ##' @param children_first When TRUE, parse the children before the
 ##'     parent (default TRUE).
-##' @param ... Paramters sent to \code{\link{mkdparse}}, with the
+##' @param ... Parameters sent to \code{\link{mkdparse}}, with the
 ##'     exception of \code{use_r_header} which is forced to be
 ##'     \code{TRUE}.
 ##'
 ##' @return A function that allows parsing of a file based on the
 ##'     grammar supplied. This function would be able to
-##'     parse arbitary grammars the way you may want with your own
+##'     parse arbitrary grammars the way you may want with your own
 ##'     user supplied function.
 ##'
 ##' @template garbage

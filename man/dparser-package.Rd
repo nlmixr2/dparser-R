@@ -4,9 +4,9 @@
 \name{dparser-package}
 \alias{dparser}
 \alias{dparser-package}
-\title{A Scannerless GLR parser/parser generater}
+\title{A Scannerless GLR parser/parser generator}
 \description{
-This pakage is based on the C dparser
+This package is based on the C dparser
 https://github.com/jplevyak/dparser
 }
 \details{
@@ -42,7 +42,7 @@ situation that occurs in the real world.
 \item Comes with ANSI-C, Python and Verilog grammars
 \item Comes with full source
 \item Portable C for easy compilation and linking
-\item BSD licence, so you can included it in your application without worrying about licensing
+\item BSD license, so you can included it in your application without worrying about licensing
 }
 
 The result is natural grammars and powerful parsing.
