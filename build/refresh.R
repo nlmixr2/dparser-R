@@ -250,7 +250,15 @@ Register C callables to R.
 %s
 %s
 
+SEXP cDparser(SEXP fileName, SEXP sexp_output_file, SEXP set_op_priority_from_rule , SEXP right_recursive_BNF , SEXP states_for_whitespace , SEXP states_for_all_nterms , SEXP tokenizer , SEXP longest_match , SEXP sexp_grammar_ident , SEXP scanner_blocks , SEXP write_line_directives , SEXP rdebug, SEXP verbose, SEXP sexp_write_extension, SEXP write_header, SEXP token_type, SEXP use_r_header);
+
 void R_init_dparser(DllInfo *info){
+  R_CallMethodDef callMethods[]  = {
+    {\"cDparser\", (DL_FUNC) &cDparser, 17},
+    {NULL, NULL, 0}
+  };
+  R_registerRoutines(info, NULL, callMethods, NULL, NULL);
+  R_useDynamicSymbols(info, FALSE);
 %s}
 ",dparser, paste(sprintf("extern int %s;\nvoid set_%s(int x){\n  %s = x;\n}\nint get_%s(){\n return %s;\n}\n", globalIntVars, globalIntVars, globalIntVars, globalIntVars, globalIntVars), collapse="\n"),
 paste(sprintf("extern char * %s;\nvoid set_%s(char *x){\n  %s=x;\n}\n", globalCharVars, globalCharVars, globalCharVars), collapse="\n"),

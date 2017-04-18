@@ -1,12 +1,8 @@
 Package: dparser
 Title: Port of dparser package
-Version: 0.0.0.9000
+Version: 0.1.0
 Authors@R: c(person("Matthew", "Fidler", email = "matthew.fidler@gmail.com", role = c("aut", "cre")),
-	   person("Wenping", "Wang", 
-      	   role = c("aut"), email = "Wenping.wang@outlook.com"),
-	   person("John", "Plevyak", 
-      	   role = c("aut"), email = "jplevyak@gmail.com")
-	   )
+	   person("John", "Plevyak", role = c("aut"), email = "jplevyak@gmail.com"))
 Imports:
     digest,
     methods
