@@ -1,5 +1,5 @@
 [![Build Status](https://travis-ci.org/nlmixrdevelopment/dparser-R.svg?branch=master)](https://travis-ci.org/nlmixrdevelopment/dparser-R)
-[![AppVeyor Build Status](https://ci.appveyor.com/api/projects/status/github/nlmixrdevelopment/dparser-R?branch=master&svg=true)](https://ci.appveyor.com/project/nlmixrdevelopment/dparser-R)
+[![AppVeyor Build Status](https://ci.appveyor.com/api/projects/status/github/mattfidler/dparser-R-a9wpj?branch=master&svg=true)](https://ci.appveyor.com/project/mattfidler/dparser-R-a9wpj)
 [![codecov.io](https://codecov.io/github/nlmixrdevelopment/dparser-R/coverage.svg?branch=master)](https://codecov.io/github/nlmixrdevelopment/dparser-R?branch=master)
 [![CRAN version](http://www.r-pkg.org/badges/version/dparser)](https://cran.r-project.org/package=dparser)
 

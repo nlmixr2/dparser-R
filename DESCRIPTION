@@ -1,5 +1,5 @@
 Package: dparser
-Title: Port of dparser package
+Title: Port of Dparser Package
 Version: 0.1.0
 Authors@R: c(person("Matthew", "Fidler", email = "matthew.fidler@gmail.com", role = c("aut", "cre")),
 	   person("John", "Plevyak", role = c("aut"), email = "jplevyak@gmail.com"))
@@ -12,7 +12,7 @@ Suggests:
     testthat,
     knitr,
     devtools,
-Description: Dparser is a language parser.
+Description: A Scannerless GLR parser/parser generator based on the Tomita algorithm.
 Depends:
     R (>= 3.2.3)
 License: BSD_3_clause + file LICENSE
