@@ -47,7 +47,7 @@
 ##' @template garbage
 ##'
 ##' @template grammar
-##' @useDynLib dparser cDparser
+##' @useDynLib dparser, .registration=TRUE
 ##' @importFrom methods new
 ##' @importFrom utils assignInMyNamespace
 "_PACKAGE"
