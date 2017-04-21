@@ -455,7 +455,8 @@ dparse <- function(grammar,
     if (file.exists(dll.file)){
         dyn.load(dll.file);
         sym <- getNativeSymbolInfo(sprintf('dparse_%s_digest', gram), PACKAGE=pkg);
-        tst <- .Call(sym,PACKAGE=pkg);
+        tst.fn <- eval(bquote(function()(.(quote(.Call))(.(sym), PACKAGE=.(pkg)))));
+        tst <- tst.fn();
         if (tst != md5){
             dyn.unload(dll.file);
             unlink(dll.file);
