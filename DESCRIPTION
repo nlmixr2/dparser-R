@@ -19,7 +19,7 @@ Description: A Scannerless GLR parser/parser generator.  Note that GLR standing 
    RxODE's ODE mini-language Wang, Hallow, and James 2015 <DOI:10.1002/psp4.12052>) or to parse other languages like NONMEM to automatically translate
    them to R code.   To use this in your code, add a LinkingTo 'dparser' in your DESCRIPTION file and instead of using '#include <dparse.h>' use
    '#include <dparser.h>'.  This also provides a R-based port of the make_dparser <http://dparser.sourceforge.net/d/make_dparser.cat> command called
-   'mkdparser'.  Additionally you can parse an arbitrary grammer within R using the 'dparse' function.
+   'mkdparser'.  Additionally you can parse an arbitrary grammar within R using the 'dparse' function.
 Depends:
     R (>= 3.2.3)
 License: BSD_3_clause + file LICENSE
