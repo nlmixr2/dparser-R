@@ -1,11 +1,12 @@
 context("Test that the environment works")
 
-f <- dparse("tran.g");
+test_that("parent environment is correct",{
+    skip_on_os("solaris")
+    f <- dparse("tran.g");
 
-env <- new.env();
-env$test <- "found";
+    env <- new.env();
+    env$test <- "found";
 
-test_that("parent environment is correct",
           f("
     b       = -1
     d/dt(X) = a*X + Y*Z;
@@ -17,6 +18,6 @@ test_that("parent environment is correct",
 ", function(name, value, pos, depth){
     expect_true(any(ls(envir=parent.frame(1)) == "test"));
     ## cat(sprintf("name:%s;value:%s;pos:%s;depth:%s\n", name, value, pos, depth));
-}, envir=env))
+}, envir=env)})
 
 

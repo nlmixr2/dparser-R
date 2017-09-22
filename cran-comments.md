@@ -3,61 +3,86 @@
 * ubuntu 12.04 (on travis-ci), R 3.3.3 and R 3.2.4, R devel
 * Mac OS X 10.11.6 (El Capitan) (on travis-ci), R 3.2.4 
 * Appveyor  Windows install (64 bit 32 bit release, old release and stable)
+* R winbuilder (release, development, and oldrel)
 
-## R CMD check results
+## Previous comments
 
-0 errors | 0 warnings | 2 note
 
-They are listed below:
+This passes checking ok now, but pls make the Description more complete:
+write out GLR, add a reference for Tomita algorithm, ideally using a
+DOI: write
+
+   Authors (year) <DOI:.....>
+
+(with no space after 'DOI:').
+
+Finally, the title mentions a 'Dparser' package (should be in single
+quotes), so pls explain that in the Description too, ideally giving a
+URL for it written as <http....>, e.g.
+
+  the 'Dparser' package ........ (see <http...> for more information)
+
+
+Updated, as requested
+
+## Older comments
+
+You mis-use file LICENSE: for BSD_3_clause this should only be the
+completed template, see
+<https://www.r-project.org/Licenses/BSD_3_clause>.
+
+FIXED
+
+Re compilation warnings, with GCC 6 I get
+
+* checking whether package dparser can be installed ... [10s/10s] WARNING
+Found the following significant warnings:
+  read_binary.c:44:12: warning: pointer of type void * used in arithmetic [-Wpointer-arith]
+  read_binary.c:50:34: warning: pointer of type void * used in arithmetic [-Wpointer-arith]
+
+FIXED
+
+Otoh, I get
+
+* checking tests ... [5s/5s] ERROR
+  Running testthat.R
+Running the tests in tests/testthat.R failed.
+Last 13 lines of output:
+  x[1]: "g10.test.g.1:1: syntax error after 'c'"
+  y[1]: "5 states 3 scans 3 shifts 1 reductions 0 compares 0 ambiguities"
+
+  x[2]: "fatal error, 'g10.test.g.1' line 1"
+  y[2]: "( a  b  c )"
+
+
+  testthat results ================================================================
+  OK: 590 SKIPPED: 0 FAILED: 1
+  1. Failure: g10.test.g: g10.test.g.1 (@test-dparser.R#96)
+
+  Error: testthat unit tests failed
+  In addition: Warning message:
+  In body(fun) : argument is not a function
+  Execution halted
+  
+FIXED
+
+
+* checking foreign function calls ... NOTE
+…
+
+Registration problem:
+   symbol 'sym' in the local frame:
+    .Call(sym, PACKAGE = pkg)
+See chapter 'System and foreign language interfaces' in the 'Writing R
+Extensions' manual.
 
 NOTE
 Registration problem:
   symbol 'sym' in the local frame:
    .Call(sym, PACKAGE = pkg)
    
-The parsers are generated based on the grammar and then compiled.
-Therefore, this is not registered until after the parser has been
-generated.
-
-NOTE Maintainer: 'Matthew Fidler <matthew.fidler@gmail.com>'
-
-New submission
-
-License components with restrictions and base license permitting such:
-  BSD_3_clause + file LICENSE
-File 'LICENSE':
-  BSD 3-Clause License
-  
-  R interface portion Copyright (c) 2016, Matthew Fidler
-  Overall dparser Copyright (c) 1994-2015 John Bradley Plevyak
-  All rights reserved.
-  
-  Redistribution and use in source and binary forms, with or without
-  modification, are permitted provided that the following conditions are met:
-  
-  * Redistributions of source code must retain the above copyright notice, this
-    list of conditions and the following disclaimer.
-  
-  * Redistributions in binary form must reproduce the above copyright notice,
-    this list of conditions and the following disclaimer in the documentation
-    and/or other materials provided with the distribution.
-  
-  * Neither the name of the copyright holder nor the names of its
-    contributors may be used to endorse or promote products derived from
-    this software without specific prior written permission.
-  
-  THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
-  AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
-  IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
-  DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE
-  FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
-  DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
-  SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
-  CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
-  OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
-  OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
-  
-This matches the license of dparser.  
+FIXED
+function within a blockquote.
 
 * checking foreign function calls 
 
@@ -68,6 +93,5 @@ No foreign function calls.
 ## Reverse dependencies
 
 This is a new release, so there are no reverse dependencies.
-
 
 * All maintainers were notified of the CRAN submission.

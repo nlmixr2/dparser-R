@@ -53,7 +53,9 @@ A function that allows parsing of a file based on the
     user supplied function.
 }
 \description{
-Create R-based Dparser tree walking function based on grammar
+Note R-based dparser tree walking works on Windows (with R tools)
+Mac, or Linux. Linking to arbitrary c grammars works on any
+platform.
 }
 \section{Garbage collection}{
 

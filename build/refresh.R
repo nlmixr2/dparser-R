@@ -170,11 +170,13 @@ dparser <- "SEXP dparse_sexp(SEXP sexp_fileName, SEXP sexp_start_state, SEXP sex
                 argsTot <- strsplit(fnArg, comSep)[[1]];
                 args <- gsub(argRex, "\\1\\2", argsTot, perl=TRUE);
                 arge <- gsub(argRex, "\\3", argsTot, perl=TRUE);
-                fn <- sprintf("%s %s%s(%s){\n  static %s %s(*fun)(%s)=NULL;\n  if (fun == NULL) fun = (%s%s (*)(%s)) R_GetCCallable(\"dparser\",\"%s\");\n  return fun(%s);\n}\n",
+                fn <- sprintf("%s %s%s(%s){\n  static %s %s(*fun)(%s)=NULL;\n  if (fun == NULL) fun = (%s%s (*)(%s)) R_GetCCallable(\"dparser\",\"%s\");\n  %sfun(%s);\n}\n",
                               fnType, stars, fnName, fnArg,
                               fnType, stars, paste(args, collapse=", "),
                               fnType, stars, paste(args, collapse=", "),
-                              fnName, paste(arge, collapse=", "));
+                              fnName,
+                              ifelse(regexpr("void", fnType) != -1, "", "return "),
+                              paste(arge, collapse=", "));
                 fns <- c(fns, fn);
                 call <- sprintf("  R_RegisterCCallable(\"dparser\",\"%s\",(DL_FUNC) %s);\n", fnName, fnName);
                 calls <- c(call, calls);

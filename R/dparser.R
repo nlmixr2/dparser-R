@@ -381,6 +381,10 @@ gc.dparser <- function(env){
 
 ##' Create R-based Dparser tree walking function based on grammar
 ##'
+##' Note R-based dparser tree walking works on Windows (with R tools)
+##' Mac, or Linux. Linking to arbitrary c grammars works on any
+##' platform.
+##'
 ##' @param grammar Dparser grammar
 ##' @param start_state Start State (default 0)
 ##' @param save_parse_tree Save Parse Tree (default TRUE)

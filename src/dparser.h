@@ -25,7 +25,7 @@ D_Parser *new_D_Parser(struct D_ParserTables *t, int sizeof_ParseNode_User){
 void   free_D_Parser (D_Parser *p ){
   static void   (*fun)(D_Parser* )=NULL;
   if (fun == NULL) fun = (void   (*)(D_Parser* )) R_GetCCallable("dparser","free_D_Parser ");
-  return fun(p );
+  fun(p );
 }
 
 D_ParseNode *dparse(D_Parser *p, char *buf, int buf_len){
@@ -37,13 +37,13 @@ D_ParseNode *dparse(D_Parser *p, char *buf, int buf_len){
 void free_D_ParseNode(D_Parser *p, D_ParseNode *pn){
   static void (*fun)(D_Parser*, D_ParseNode*)=NULL;
   if (fun == NULL) fun = (void (*)(D_Parser*, D_ParseNode*)) R_GetCCallable("dparser","free_D_ParseNode");
-  return fun(p, pn);
+  fun(p, pn);
 }
 
 void free_D_ParseTreeBelow(D_Parser *p, D_ParseNode *pn){
   static void (*fun)(D_Parser*, D_ParseNode*)=NULL;
   if (fun == NULL) fun = (void (*)(D_Parser*, D_ParseNode*)) R_GetCCallable("dparser","free_D_ParseTreeBelow");
-  return fun(p, pn);
+  fun(p, pn);
 }
 
 int d_get_number_of_children(D_ParseNode *pn){
@@ -79,7 +79,7 @@ char  * d_ws_after (D_Parser *p, D_ParseNode *pn ){
 void d_pass(D_Parser *p, D_ParseNode *pn, int pass_number){
   static void (*fun)(D_Parser*, D_ParseNode*, int)=NULL;
   if (fun == NULL) fun = (void (*)(D_Parser*, D_ParseNode*, int)) R_GetCCallable("dparser","d_pass");
-  return fun(p, pn, pass_number);
+  fun(p, pn, pass_number);
 }
 
 int resolve_amb_greedy(D_Parser *dp, int n, D_ParseNode **v){
@@ -97,7 +97,7 @@ char *d_dup_pathname_str(const char *str){
 void parse_whitespace(struct D_Parser *p, d_loc_t *loc, void **p_globals){
   static void (*fun)(struct D_Parser*, d_loc_t*, void**)=NULL;
   if (fun == NULL) fun = (void (*)(struct D_Parser*, d_loc_t*, void**)) R_GetCCallable("dparser","parse_whitespace");
-  return fun(p, loc, p_globals);
+  fun(p, loc, p_globals);
 }
 
 D_Scope *new_D_Scope(D_Scope *parent){
@@ -139,7 +139,7 @@ D_Scope *scope_D_Scope(D_Scope *current, D_Scope *scope){
 void free_D_Scope(D_Scope *st, int force){
   static void (*fun)(D_Scope*, int)=NULL;
   if (fun == NULL) fun = (void (*)(D_Scope*, int)) R_GetCCallable("dparser","free_D_Scope");
-  return fun(st, force);
+  fun(st, force);
 }
 
 D_Sym *new_D_Sym(D_Scope *st, char *name, char *end, int sizeof_D_Sym){
@@ -151,7 +151,7 @@ D_Sym *new_D_Sym(D_Scope *st, char *name, char *end, int sizeof_D_Sym){
 void free_D_Sym(D_Sym *sym){
   static void (*fun)(D_Sym*)=NULL;
   if (fun == NULL) fun = (void (*)(D_Sym*)) R_GetCCallable("dparser","free_D_Sym");
-  return fun(sym);
+  fun(sym);
 }
 
 D_Sym *find_D_Sym(D_Scope *st, char *name, char *end){
@@ -199,7 +199,7 @@ D_Sym *next_D_Sym_in_Scope(D_Scope **st, D_Sym **sym){
 void print_scope(D_Scope *st){
   static void (*fun)(D_Scope*)=NULL;
   if (fun == NULL) fun = (void (*)(D_Scope*)) R_GetCCallable("dparser","print_scope");
-  return fun(st);
+  fun(st);
 }
 
 Grammar *new_D_Grammar(char *pathname){
@@ -211,7 +211,7 @@ Grammar *new_D_Grammar(char *pathname){
 void free_D_Grammar(Grammar *g){
   static void (*fun)(Grammar*)=NULL;
   if (fun == NULL) fun = (void (*)(Grammar*)) R_GetCCallable("dparser","free_D_Grammar");
-  return fun(g);
+  fun(g);
 }
 
 int build_grammar(Grammar *g){
@@ -229,31 +229,31 @@ int parse_grammar(Grammar *g, char *pathname, char *str){
 void print_grammar(Grammar *g){
   static void (*fun)(Grammar*)=NULL;
   if (fun == NULL) fun = (void (*)(Grammar*)) R_GetCCallable("dparser","print_grammar");
-  return fun(g);
+  fun(g);
 }
 
 void print_rdebug_grammar(Grammar *g, char *pathname){
   static void (*fun)(Grammar*, char*)=NULL;
   if (fun == NULL) fun = (void (*)(Grammar*, char*)) R_GetCCallable("dparser","print_rdebug_grammar");
-  return fun(g, pathname);
+  fun(g, pathname);
 }
 
 void print_states(Grammar *g){
   static void (*fun)(Grammar*)=NULL;
   if (fun == NULL) fun = (void (*)(Grammar*)) R_GetCCallable("dparser","print_states");
-  return fun(g);
+  fun(g);
 }
 
 void print_rule(Rule *r){
   static void (*fun)(Rule*)=NULL;
   if (fun == NULL) fun = (void (*)(Rule*)) R_GetCCallable("dparser","print_rule");
-  return fun(r);
+  fun(r);
 }
 
 void print_term(Term *t){
   static void (*fun)(Term*)=NULL;
   if (fun == NULL) fun = (void (*)(Term*)) R_GetCCallable("dparser","print_term");
-  return fun(t);
+  fun(t);
 }
 
 Production *lookup_production(Grammar *g, char *name, int len){
@@ -277,7 +277,7 @@ Elem *new_elem_nterm(Production *p, Rule *r){
 void new_declaration(Grammar *g, Elem *e, uint kind){
   static void (*fun)(Grammar*, Elem*, uint)=NULL;
   if (fun == NULL) fun = (void (*)(Grammar*, Elem*, uint)) R_GetCCallable("dparser","new_declaration");
-  return fun(g, e, kind);
+  fun(g, e, kind);
 }
 
 Production *new_production(Grammar *g, char *name){
@@ -307,7 +307,7 @@ Elem *new_ident(char *s, char *e, Rule *r){
 void new_token(Grammar *g, char *s, char *e){
   static void (*fun)(Grammar*, char*, char*)=NULL;
   if (fun == NULL) fun = (void (*)(Grammar*, char*, char*)) R_GetCCallable("dparser","new_token");
-  return fun(g, s, e);
+  fun(g, s, e);
 }
 
 Elem *new_code(Grammar *g, char *s, char *e, Rule *r){
@@ -319,7 +319,7 @@ Elem *new_code(Grammar *g, char *s, char *e, Rule *r){
 void add_global_code(Grammar *g, char *start, char *end, int line){
   static void (*fun)(Grammar*, char*, char*, int)=NULL;
   if (fun == NULL) fun = (void (*)(Grammar*, char*, char*, int)) R_GetCCallable("dparser","add_global_code");
-  return fun(g, start, end, line);
+  fun(g, start, end, line);
 }
 
 Production *new_internal_production(Grammar *g, Production *p){
@@ -337,19 +337,19 @@ Elem *dup_elem(Elem *e, Rule *r){
 void add_declaration(Grammar *g, char *start, char *end, uint kind, uint line){
   static void (*fun)(Grammar*, char*, char*, uint, uint)=NULL;
   if (fun == NULL) fun = (void (*)(Grammar*, char*, char*, uint, uint)) R_GetCCallable("dparser","add_declaration");
-  return fun(g, start, end, kind, line);
+  fun(g, start, end, kind, line);
 }
 
 void add_pass(Grammar *g, char *start, char *end, uint kind, uint line){
   static void (*fun)(Grammar*, char*, char*, uint, uint)=NULL;
   if (fun == NULL) fun = (void (*)(Grammar*, char*, char*, uint, uint)) R_GetCCallable("dparser","add_pass");
-  return fun(g, start, end, kind, line);
+  fun(g, start, end, kind, line);
 }
 
 void add_pass_code(Grammar *g, Rule *r, char *pass_start, char *pass_end, char *code_start, char *code_end, uint line, uint pass_line){
   static void (*fun)(Grammar*, Rule*, char*, char*, char*, char*, uint, uint)=NULL;
   if (fun == NULL) fun = (void (*)(Grammar*, Rule*, char*, char*, char*, char*, uint, uint)) R_GetCCallable("dparser","add_pass_code");
-  return fun(g, r, pass_start, pass_end, code_start, code_end, line, pass_line);
+  fun(g, r, pass_start, pass_end, code_start, code_end, line, pass_line);
 }
 
 D_Pass *find_pass(Grammar *g, char *start, char *end){
@@ -361,31 +361,31 @@ D_Pass *find_pass(Grammar *g, char *start, char *end){
 void   conditional_EBNF (Grammar *g ){
   static void   (*fun)(Grammar* )=NULL;
   if (fun == NULL) fun = (void   (*)(Grammar* )) R_GetCCallable("dparser","conditional_EBNF ");
-  return fun(g );
+  fun(g );
 }
 
 void   star_EBNF (Grammar *g ){
   static void   (*fun)(Grammar* )=NULL;
   if (fun == NULL) fun = (void   (*)(Grammar* )) R_GetCCallable("dparser","star_EBNF ");
-  return fun(g );
+  fun(g );
 }
 
 void   plus_EBNF (Grammar *g ){
   static void   (*fun)(Grammar* )=NULL;
   if (fun == NULL) fun = (void   (*)(Grammar* )) R_GetCCallable("dparser","plus_EBNF ");
-  return fun(g );
+  fun(g );
 }
 
 void rep_EBNF(Grammar *g, int minimum, int maximum){
   static void (*fun)(Grammar*, int, int)=NULL;
   if (fun == NULL) fun = (void (*)(Grammar*, int, int)) R_GetCCallable("dparser","rep_EBNF");
-  return fun(g, minimum, maximum);
+  fun(g, minimum, maximum);
 }
 
 void initialize_productions(Grammar *g){
   static void (*fun)(Grammar*)=NULL;
   if (fun == NULL) fun = (void (*)(Grammar*)) R_GetCCallable("dparser","initialize_productions");
-  return fun(g);
+  fun(g);
 }
 
 int state_for_declaration(Grammar *g, int iproduction){
@@ -397,19 +397,19 @@ int state_for_declaration(Grammar *g, int iproduction){
 void build_scanners(struct Grammar *g){
   static void (*fun)(struct Grammar*)=NULL;
   if (fun == NULL) fun = (void (*)(struct Grammar*)) R_GetCCallable("dparser","build_scanners");
-  return fun(g);
+  fun(g);
 }
 
 void build_LR_tables(Grammar *g){
   static void (*fun)(Grammar*)=NULL;
   if (fun == NULL) fun = (void (*)(Grammar*)) R_GetCCallable("dparser","build_LR_tables");
-  return fun(g);
+  fun(g);
 }
 
 void sort_VecAction(VecAction *v){
   static void (*fun)(VecAction*)=NULL;
   if (fun == NULL) fun = (void (*)(VecAction*)) R_GetCCallable("dparser","sort_VecAction");
-  return fun(v);
+  fun(v);
 }
 
 uint elem_symbol(Grammar *g, Elem *e){
@@ -427,19 +427,19 @@ State *goto_State(State *s, Elem *e){
 void free_Action(Action *a){
   static void (*fun)(Action*)=NULL;
   if (fun == NULL) fun = (void (*)(Action*)) R_GetCCallable("dparser","free_Action");
-  return fun(a);
+  fun(a);
 }
 
 void mkdparse(struct Grammar *g, char *grammar_pathname){
   static void (*fun)(struct Grammar*, char*)=NULL;
   if (fun == NULL) fun = (void (*)(struct Grammar*, char*)) R_GetCCallable("dparser","mkdparse");
-  return fun(g, grammar_pathname);
+  fun(g, grammar_pathname);
 }
 
 void mkdparse_from_string(struct Grammar *g, char *str){
   static void (*fun)(struct Grammar*, char*)=NULL;
   if (fun == NULL) fun = (void (*)(struct Grammar*, char*)) R_GetCCallable("dparser","mkdparse_from_string");
-  return fun(g, str);
+  fun(g, str);
 }
 
 D_ParseNode *ambiguity_count_fn(D_Parser *pp, int n, D_ParseNode **v){
@@ -469,7 +469,7 @@ BinaryTables *read_binary_tables_from_string(unsigned char *buf, D_ReductionCode
 void free_BinaryTables(BinaryTables * binary_tables){
   static void (*fun)(BinaryTables*)=NULL;
   if (fun == NULL) fun = (void (*)(BinaryTables*)) R_GetCCallable("dparser","free_BinaryTables");
-  return fun(binary_tables);
+  fun(binary_tables);
 }
 
 int scan_buffer(d_loc_t *loc, D_State *st, ShiftResult *result){
@@ -481,7 +481,7 @@ int scan_buffer(d_loc_t *loc, D_State *st, ShiftResult *result){
 void vec_add_internal(void *v,  void *elem){
   static void (*fun)(void*, void*)=NULL;
   if (fun == NULL) fun = (void (*)(void*, void*)) R_GetCCallable("dparser","vec_add_internal");
-  return fun(v, elem);
+  fun(v, elem);
 }
 
 int vec_eq(void *v, void *vv){
@@ -511,19 +511,19 @@ int set_union(void *v, void *vv){
 void *set_add_fn(void *v, void *t, hash_fns_t *fns){
   static void *(*fun)(void*, void*, hash_fns_t*)=NULL;
   if (fun == NULL) fun = (void* (*)(void*, void*, hash_fns_t*)) R_GetCCallable("dparser","set_add_fn");
-  return fun(v, t, fns);
+  fun(v, t, fns);
 }
 
 void set_union_fn(void *v, void *vv, hash_fns_t *fns){
   static void (*fun)(void*, void*, hash_fns_t*)=NULL;
   if (fun == NULL) fun = (void (*)(void*, void*, hash_fns_t*)) R_GetCCallable("dparser","set_union_fn");
-  return fun(v, vv, fns);
+  fun(v, vv, fns);
 }
 
 void set_to_vec(void *av){
   static void (*fun)(void*)=NULL;
   if (fun == NULL) fun = (void (*)(void*)) R_GetCCallable("dparser","set_to_vec");
-  return fun(av);
+  fun(av);
 }
 
 int buf_read(const char *pathname, char **buf, int *len){
@@ -553,19 +553,19 @@ uint strhashl(const char *s, int len){
 void d_free(void *x){
   static void (*fun)(void*)=NULL;
   if (fun == NULL) fun = (void (*)(void*)) R_GetCCallable("dparser","d_free");
-  return fun(x);
+  fun(x);
 }
 
 void int_list_diff(int *a, int *b, int *c){
   static void (*fun)(int*, int*, int*)=NULL;
   if (fun == NULL) fun = (void (*)(int*, int*, int*)) R_GetCCallable("dparser","int_list_diff");
-  return fun(a, b, c);
+  fun(a, b, c);
 }
 
 void int_list_intersect(int *a, int *b, int *c){
   static void (*fun)(int*, int*, int*)=NULL;
   if (fun == NULL) fun = (void (*)(int*, int*, int*)) R_GetCCallable("dparser","int_list_intersect");
-  return fun(a, b, c);
+  fun(a, b, c);
 }
 
 int *int_list_dup(int *aa){
@@ -607,31 +607,31 @@ int write_binary_tables_to_file(Grammar *g, FILE *fp){
 void set_d_use_r_headers(int x){
   static void (*fun)(int)=NULL;
   if (fun == NULL) fun = (void (*)(int)) R_GetCCallable("dparser","set_d_use_r_headers");
-  return fun(x);
+  fun(x);
 }
 
 void set_d_rdebug_grammar_level(int x){
   static void (*fun)(int)=NULL;
   if (fun == NULL) fun = (void (*)(int)) R_GetCCallable("dparser","set_d_rdebug_grammar_level");
-  return fun(x);
+  fun(x);
 }
 
 void set_d_use_file_name(int x){
   static void (*fun)(int)=NULL;
   if (fun == NULL) fun = (void (*)(int)) R_GetCCallable("dparser","set_d_use_file_name");
-  return fun(x);
+  fun(x);
 }
 
 void set_d_verbose_level(int x){
   static void (*fun)(int)=NULL;
   if (fun == NULL) fun = (void (*)(int)) R_GetCCallable("dparser","set_d_verbose_level");
-  return fun(x);
+  fun(x);
 }
 
 void set_d_debug_level(int x){
   static void (*fun)(int)=NULL;
   if (fun == NULL) fun = (void (*)(int)) R_GetCCallable("dparser","set_d_debug_level");
-  return fun(x);
+  fun(x);
 }
 
 int get_d_use_r_headers(){
@@ -667,7 +667,7 @@ int get_d_debug_level(){
 void set_d_file_name(char *x){
   static void (*fun)(char*)=NULL;
   if (fun == NULL) fun = (void (*)(char*)) R_GetCCallable("dparser","set_d_file_name");
-  return fun(x);
+  fun(x);
 }
 
 SEXP
