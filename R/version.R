@@ -4,4 +4,4 @@
 ##' @author Matthew L. Fidler
 ##' @keywords internal
 ##' @export
-dpVersion <- function(){return(c(version="0.1.3",build="524864373207e13ffc36b90c83c0995b74fcddbe",repo="https://github.com/nlmixrdevelopment/dparser-R"))}
+dpVersion <- function(){return(c(version="0.1.5",build="524864373207e13ffc36b90c83c0995b74fcddbe",repo="https://github.com/nlmixrdevelopment/dparser-R"))}

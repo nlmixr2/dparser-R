@@ -175,7 +175,8 @@ dparser <- "SEXP dparse_sexp(SEXP sexp_fileName, SEXP sexp_start_state, SEXP sex
                               fnType, stars, paste(args, collapse=", "),
                               fnType, stars, paste(args, collapse=", "),
                               fnName,
-                              ifelse(regexpr("void", fnType) != -1, "", "return "),
+                              ifelse(regexpr("void", fnType) != -1,
+                              ifelse(nchar(stars) > 0, "return ", ""), "return "),
                               paste(arge, collapse=", "));
                 fns <- c(fns, fn);
                 call <- sprintf("  R_RegisterCCallable(\"dparser\",\"%s\",(DL_FUNC) %s);\n", fnName, fnName);
