@@ -508,12 +508,6 @@ int set_union(void *v, void *vv){
   return fun(v, vv);
 }
 
-void *set_add_fn(void *v, void *t, hash_fns_t *fns){
-  static void *(*fun)(void*, void*, hash_fns_t*)=NULL;
-  if (fun == NULL) fun = (void* (*)(void*, void*, hash_fns_t*)) R_GetCCallable("dparser","set_add_fn");
-  return fun(v, t, fns);
-}
-
 void set_union_fn(void *v, void *vv, hash_fns_t *fns){
   static void (*fun)(void*, void*, hash_fns_t*)=NULL;
   if (fun == NULL) fun = (void (*)(void*, void*, hash_fns_t*)) R_GetCCallable("dparser","set_union_fn");

@@ -7,7 +7,9 @@ if (!file.exists(devtools::package_file("src/dparser"))){
 missingFns <- c("finalize_productions", # acutally missing
                 "d_warn",
                 "d_fail",
-                "stack_push_internal");
+                "stack_push_internal",
+                "set_add_fn" ## Remove this because of void* problems with CRAN warnings
+                );
 globalIntVars <- c("d_use_r_headers",
                    "d_rdebug_grammar_level",
                    "d_use_file_name",

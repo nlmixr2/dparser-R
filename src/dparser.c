@@ -139,7 +139,6 @@ int vec_eq(void *v, void *vv);
 int set_find(void *v, void *t);
 int set_add(void *v, void *t);
 int set_union(void *v, void *vv);
-void *set_add_fn(void *v, void *t, hash_fns_t *fns);
 void set_union_fn(void *v, void *vv, hash_fns_t *fns);
 void set_to_vec(void *av);
 int buf_read(const char *pathname, char **buf, int *len);
@@ -192,7 +191,6 @@ void R_init_dparser(DllInfo *info){
   R_RegisterCCallable("dparser","buf_read",(DL_FUNC) buf_read);
   R_RegisterCCallable("dparser","set_to_vec",(DL_FUNC) set_to_vec);
   R_RegisterCCallable("dparser","set_union_fn",(DL_FUNC) set_union_fn);
-  R_RegisterCCallable("dparser","set_add_fn",(DL_FUNC) set_add_fn);
   R_RegisterCCallable("dparser","set_union",(DL_FUNC) set_union);
   R_RegisterCCallable("dparser","set_add",(DL_FUNC) set_add);
   R_RegisterCCallable("dparser","set_find",(DL_FUNC) set_find);
