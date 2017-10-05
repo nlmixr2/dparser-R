@@ -25,7 +25,7 @@ D_Parser *new_D_Parser(struct D_ParserTables *t, int sizeof_ParseNode_User){
 void   free_D_Parser (D_Parser *p ){
   static void   (*fun)(D_Parser* )=NULL;
   if (fun == NULL) fun = (void   (*)(D_Parser* )) R_GetCCallable("dparser","free_D_Parser ");
-  return fun(p );
+  fun(p );
 }
 
 D_ParseNode *dparse(D_Parser *p, char *buf, int buf_len){
@@ -361,19 +361,19 @@ D_Pass *find_pass(Grammar *g, char *start, char *end){
 void   conditional_EBNF (Grammar *g ){
   static void   (*fun)(Grammar* )=NULL;
   if (fun == NULL) fun = (void   (*)(Grammar* )) R_GetCCallable("dparser","conditional_EBNF ");
-  return fun(g );
+  fun(g );
 }
 
 void   star_EBNF (Grammar *g ){
   static void   (*fun)(Grammar* )=NULL;
   if (fun == NULL) fun = (void   (*)(Grammar* )) R_GetCCallable("dparser","star_EBNF ");
-  return fun(g );
+  fun(g );
 }
 
 void   plus_EBNF (Grammar *g ){
   static void   (*fun)(Grammar* )=NULL;
   if (fun == NULL) fun = (void   (*)(Grammar* )) R_GetCCallable("dparser","plus_EBNF ");
-  return fun(g );
+  fun(g );
 }
 
 void rep_EBNF(Grammar *g, int minimum, int maximum){

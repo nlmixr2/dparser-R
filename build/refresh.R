@@ -40,7 +40,7 @@ if (file.exists(devtools::package_file("src/dparser"))){
                     d <- d[-(w + 1)];
                 }
             }
-            if (f == "d.h"){
+        if (f == "d.h"){
                 w <- which(regexpr('#define (REALLOC|MALLOC|FREE|CALLOC)', d) != -1);
                 d <- d[-w];
                 w <- which(regexpr('#include "arg.h"', d) != -1);
@@ -87,6 +87,10 @@ if (file.exists(devtools::package_file("src/dparser"))){
 \t}',fp, fp, fp, fp);
                     d <- d[-(i - 1)];
                 }
+                w <- which(regexpr("^get_offset[(]", d) != -1) + 1;
+                print(d[w]);
+                d[w] <- paste0(d[w], "\n  (void)n; // Suppress warning...");
+                print(d[w]);
             }
             if (f == "util.c"){
                 w <- which(regexpr("^ *d_warn *[(]", d) != -1);
@@ -177,8 +181,7 @@ dparser <- "SEXP dparse_sexp(SEXP sexp_fileName, SEXP sexp_start_state, SEXP sex
                               fnType, stars, paste(args, collapse=", "),
                               fnType, stars, paste(args, collapse=", "),
                               fnName,
-                              ifelse(regexpr("void", fnType) != -1,
-                              ifelse(nchar(stars) > 0, "return ", ""), "return "),
+                              ifelse(regexpr("void", fnType) != -1,"", "return "),
                               paste(arge, collapse=", "));
                 fns <- c(fns, fn);
                 call <- sprintf("  R_RegisterCCallable(\"dparser\",\"%s\",(DL_FUNC) %s);\n", fnName, fnName);
