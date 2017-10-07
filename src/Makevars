@@ -1,6 +1,3 @@
 PKG_LIBS = $(BLAS_LIBS) $(FLIBS)
-PKG_FFLAGS=$(FPICFLAGS) 
-PKG_FCFLAGS=$(FPICFLAGS)
-
 SOURCES_C = parse.c scan.c symtab.c util.c mkdparse.c write_tables.c grammar.g.c gram.c lex.c lr.c version.c read_binary.c dparser.c mkdparser.c rdparse.c
 OBJECTS = $(SOURCES_C:.c=.o)
