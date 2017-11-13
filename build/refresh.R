@@ -29,6 +29,11 @@ if (file.exists(devtools::package_file("src/dparser"))){
         cat(sprintf("\tf: %s\n", f));
         unlink(devtools::package_file("src/", f));
         d <- readLines(devtools::package_file("src/dparser/", f));
+        reg.assert <- rex::rex("assert(",capture(anything), ")")
+        w <- which(regexpr(reg.assert, d) != -1);
+        if (length(w) > 0){
+            d[w] <- gsub(reg.assert, "if (!(\\1)){error(\"Error parsing: assert(\\1).\");}", d[w]);
+        }
         if (any(f == c("gram.h", "lex.h", "lr.h", "parse.h", "read_binary.h", "scan.h", "util.h", "write_tables.h"))){
             ## Fix headers to work with C++
             d[1] <- sprintf('#if defined(__cplusplus)\nextern "C" {\n#endif\n%s', d[1]);

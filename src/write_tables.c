@@ -204,7 +204,7 @@ search_for_offset(File *fp, char *name) {
          i = ((i + 1) % n), j++)
     {
       if (!v->v[i]) {
-        assert(0);
+        if (!(0)){error("Error parsing: assert(0).");};
         return 0;
       } else {
         if (!strcmp(v->v[i]->name, name))
@@ -212,7 +212,7 @@ search_for_offset(File *fp, char *name) {
       }
     }
   }
-  assert(0);
+  if (!(0)){error("Error parsing: assert(0).");};
   return 0;
 }
 
@@ -225,7 +225,7 @@ get_offset(File *fp, char* name, ...) {
   va_start(ap, name);
   n = vsnprintf(buf, sizeof(buf), name, ap);
   va_end(ap);
-  assert(n < 256 && n >= 0);
+  if (!(n < 256 && n >= 0)){error("Error parsing: assert(n < 256 && n >= 0).");};
   return search_for_offset(fp, buf);
 }
 
@@ -237,7 +237,7 @@ make_name(char* fmt, ...) {
   va_start(ap, fmt);
   n = vsnprintf(buf, sizeof(buf), fmt, ap);
   va_end(ap);
-  assert(n < 256 && n >= 0);
+  if (!(n < 256 && n >= 0)){error("Error parsing: assert(n < 256 && n >= 0).");};
   h_buf = R_chk_calloc(1,n+1);
   strcpy(h_buf, buf);
   return h_buf;
@@ -630,7 +630,7 @@ write_scanner_data(File *fp, Grammar *g, char *tag) {
     int action_index = -1;
     t = g->terminals.v[i];
     if (t->regex_production && t->regex_production->rules.v[0]->speculative_code.code) {
-      assert(!fp->binary);
+      if (!(!fp->binary)){error("Error parsing: assert(!fp->binary).");};
       sprintf(speculative_code, "d_speculative_reduction_code_%d_%d_%s",
               t->regex_production->index, t->regex_production->rules.v[0]->index, tag);
     } else {
@@ -735,7 +735,7 @@ write_scanner_data(File *fp, Grammar *g, char *tag) {
               (void*)&ss->v[j]->transition[k * g->scanner_block_size];
           xv = &vsblock[ivsblock];
           ivsblock++;
-          assert(ivsblock <= nvsblocks);
+          if (!(ivsblock <= nvsblocks)){error("Error parsing: assert(ivsblock <= nvsblocks).");};
           /* output state scanner blocks */
           yv = set_add_fn(pscanner_block_hash, xv, &scanner_block_fns);
           if (xv == yv) {
@@ -810,7 +810,7 @@ write_scanner_data(File *fp, Grammar *g, char *tag) {
     if (ss->n && !s->same_shifts) {
       /* output scanner state transition tables */
       /* assume SB_uint8, 16, and 32 have same member offsets */
-      assert(sizeof(SB_uint8) == sizeof(SB_uint16) && sizeof(SB_uint16) == sizeof(SB_uint32));
+      if (!(sizeof(SB_uint8) == sizeof(SB_uint16) && sizeof(SB_uint16) == sizeof(SB_uint32))){error("Error parsing: assert(sizeof(SB_uint8) == sizeof(SB_uint16) && sizeof(SB_uint16) == sizeof(SB_uint32)).");};
       start_array_fn(fp, sizeof(SB_uint8), "SB_", scanner_u_type(s), make_name("d_scanner_%d_%s", i, tag),
                      "", ss->n, "\n");
       g->write_line += 1;
@@ -838,7 +838,7 @@ write_scanner_data(File *fp, Grammar *g, char *tag) {
               (void*)&ss->v[j]->transition[k * g->scanner_block_size];
           xv = &vs;
           yv = set_add_fn(pscanner_block_hash, xv, &scanner_block_fns);
-          assert(yv != xv);
+          if (!(yv != xv)){error("Error parsing: assert(yv != xv).");};
           add_struct_ptr_member(fp, SB_uint8, "", get_offset(fp, "d_scanner_%d_%d_%d_%s", yv->state_index, yv->scanner_index, yv->block_index, tag), scanner_block[k]);
           if (k != g->scanner_blocks-1) {
             if ((k % 2) == 1) { print(fp, "\n "); g->write_line += 1; }
@@ -871,7 +871,7 @@ write_scanner_data(File *fp, Grammar *g, char *tag) {
             xv = &vs;
             yv = set_add_fn(ptrans_scanner_block_hash, xv,
                             &trans_scanner_block_fns);
-            assert(yv != xv);
+            if (!(yv != xv)){error("Error parsing: assert(yv != xv).");};
             add_struct_ptr_member(fp, SB_trans_uint8, "",
                                   get_offset(fp, "d_accepts_diff_%d_%d_%d_%s",
                                              yv->state_index, yv->scanner_index,
@@ -1575,7 +1575,7 @@ write_state_data(File *fp, Grammar *g, VecState *er_hash, char *tag) {
         add_struct_member(fp, D_State, %d, 0, shifts);
       if (g->scanner.code) {
         if (s->goto_on_token) {
-          assert(!fp->binary);
+          if (!(!fp->binary)){error("Error parsing: assert(!fp->binary).");};
           fprintf(fp->fp, ", %s", g->scanner.code);
         } else {
           add_struct_ptr_member(fp, D_State, "", &null_entry, scanner_code);
@@ -1788,7 +1788,7 @@ write_parser_tables(Grammar *g, char *tag, File *file) {
   add_struct_member(file, D_ParserTables, %d, g->productions.n + g->terminals.n, nsymbols);
   add_struct_ptr_member(file, D_ParserTables, "", get_offset(file, "d_symbols_%s", tag), symbols);
   if (g->default_white_space) {
-    assert(!file->binary);
+    if (!(!file->binary)){error("Error parsing: assert(!file->binary).");};
     fprintf(file->fp, ", %s", g->default_white_space);
   } else
     add_struct_ptr_member(file, D_ParserTables, "", &null_entry, default_white_space);

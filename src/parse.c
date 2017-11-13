@@ -173,7 +173,7 @@ insert_SNode_internal(Parser *p, SNode *sn) {
     Free(v);
   }
   sn->bucket_next = ph->v[h % ph->m];
-  assert(sn->bucket_next != sn);
+  if (!(sn->bucket_next != sn)){error("Error parsing: assert(sn->bucket_next != sn).");};
   ph->v[h % ph->m] = sn;
   ph->n++;
 }

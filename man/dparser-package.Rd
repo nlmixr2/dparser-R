@@ -671,7 +671,7 @@ rees.  This may be of some assistence in disambiguating a grammar.
 
 Authors:
 \itemize{
-  \item John Plevyak \email{jplevyak@gmail.com}
+  \item John Plevyak \email{jplevyak@gmail.com} [copyright holder]
 }
 
 }
