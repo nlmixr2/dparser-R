@@ -8,10 +8,10 @@ mkdparse(file, outputFile, set_op_priority_from_rule = FALSE,
   right_recursive_BNF = FALSE, states_for_whitespace = TRUE,
   states_for_all_nterms = FALSE, tokenizer = FALSE,
   token_type = c("#define", "enum"), longest_match = FALSE,
-  grammar_ident = "gram", ident_from_filename = FALSE, scanner_blocks = 4,
-  write_line_directives = TRUE, write_header = c("IfEmpty", TRUE, FALSE),
-  rdebug = FALSE, verbose = FALSE, write_extension = "c",
-  use_r_header = TRUE)
+  grammar_ident = "gram", ident_from_filename = FALSE,
+  scanner_blocks = 4, write_line_directives = TRUE,
+  write_header = c("IfEmpty", TRUE, FALSE), rdebug = FALSE,
+  verbose = FALSE, write_extension = "c", use_r_header = TRUE)
 }
 \arguments{
 \item{file}{File name of grammer to parse.}

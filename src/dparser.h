@@ -22,10 +22,10 @@ D_Parser *new_D_Parser(struct D_ParserTables *t, int sizeof_ParseNode_User){
   return fun(t, sizeof_ParseNode_User);
 }
 
-void   free_D_Parser (D_Parser *p ){
-  static void   (*fun)(D_Parser* )=NULL;
-  if (fun == NULL) fun = (void   (*)(D_Parser* )) R_GetCCallable("dparser","free_D_Parser ");
-  fun(p );
+void free_D_Parser(D_Parser *p){
+  static void (*fun)(D_Parser*)=NULL;
+  if (fun == NULL) fun = (void (*)(D_Parser*)) R_GetCCallable("dparser","free_D_Parser");
+  fun(p);
 }
 
 D_ParseNode *dparse(D_Parser *p, char *buf, int buf_len){
@@ -70,10 +70,10 @@ char  * d_ws_before (D_Parser *p, D_ParseNode *pn ){
   return fun(p, pn );
 }
 
-char  * d_ws_after (D_Parser *p, D_ParseNode *pn ){
-  static char  * (*fun)(D_Parser*, D_ParseNode* )=NULL;
-  if (fun == NULL) fun = (char *  (*)(D_Parser*, D_ParseNode* )) R_GetCCallable("dparser","d_ws_after ");
-  return fun(p, pn );
+char   *  d_ws_after  (D_Parser *p, D_ParseNode *pn  ){
+  static char   *  (*fun)(D_Parser*, D_ParseNode*  )=NULL;
+  if (fun == NULL) fun = (char  *   (*)(D_Parser*, D_ParseNode*  )) R_GetCCallable("dparser","d_ws_after  ");
+  return fun(p, pn  );
 }
 
 void d_pass(D_Parser *p, D_ParseNode *pn, int pass_number){
@@ -256,9 +256,9 @@ void print_term(Term *t){
   fun(t);
 }
 
-Production *lookup_production(Grammar *g, char *name, int len){
-  static Production *(*fun)(Grammar*, char*, int)=NULL;
-  if (fun == NULL) fun = (Production* (*)(Grammar*, char*, int)) R_GetCCallable("dparser","lookup_production");
+Production *lookup_production(Grammar *g, char *name, uint len){
+  static Production *(*fun)(Grammar*, char*, uint)=NULL;
+  if (fun == NULL) fun = (Production* (*)(Grammar*, char*, uint)) R_GetCCallable("dparser","lookup_production");
   return fun(g, name, len);
 }
 
@@ -364,16 +364,16 @@ void   conditional_EBNF (Grammar *g ){
   fun(g );
 }
 
-void   star_EBNF (Grammar *g ){
-  static void   (*fun)(Grammar* )=NULL;
-  if (fun == NULL) fun = (void   (*)(Grammar* )) R_GetCCallable("dparser","star_EBNF ");
-  fun(g );
+void                 star_EBNF        (Grammar *g        ){
+  static void                 (*fun)(Grammar*        )=NULL;
+  if (fun == NULL) fun = (void                 (*)(Grammar*        )) R_GetCCallable("dparser","star_EBNF        ");
+  fun(g        );
 }
 
-void   plus_EBNF (Grammar *g ){
-  static void   (*fun)(Grammar* )=NULL;
-  if (fun == NULL) fun = (void   (*)(Grammar* )) R_GetCCallable("dparser","plus_EBNF ");
-  fun(g );
+void                 plus_EBNF        (Grammar *g        ){
+  static void                 (*fun)(Grammar*        )=NULL;
+  if (fun == NULL) fun = (void                 (*)(Grammar*        )) R_GetCCallable("dparser","plus_EBNF        ");
+  fun(g        );
 }
 
 void rep_EBNF(Grammar *g, int minimum, int maximum){
@@ -388,9 +388,9 @@ void initialize_productions(Grammar *g){
   fun(g);
 }
 
-int state_for_declaration(Grammar *g, int iproduction){
-  static int (*fun)(Grammar*, int)=NULL;
-  if (fun == NULL) fun = (int (*)(Grammar*, int)) R_GetCCallable("dparser","state_for_declaration");
+uint state_for_declaration(Grammar *g, uint iproduction){
+  static uint (*fun)(Grammar*, uint)=NULL;
+  if (fun == NULL) fun = (uint (*)(Grammar*, uint)) R_GetCCallable("dparser","state_for_declaration");
   return fun(g, iproduction);
 }
 
@@ -466,7 +466,7 @@ BinaryTables *read_binary_tables_from_string(unsigned char *buf, D_ReductionCode
   return fun(buf, spec_code, final_code);
 }
 
-void free_BinaryTables(BinaryTables * binary_tables){
+void free_BinaryTables(BinaryTables *binary_tables){
   static void (*fun)(BinaryTables*)=NULL;
   if (fun == NULL) fun = (void (*)(BinaryTables*)) R_GetCCallable("dparser","free_BinaryTables");
   fun(binary_tables);
@@ -478,7 +478,7 @@ int scan_buffer(d_loc_t *loc, D_State *st, ShiftResult *result){
   return fun(loc, st, result);
 }
 
-void vec_add_internal(void *v,  void *elem){
+void vec_add_internal(void *v, void *elem){
   static void (*fun)(void*, void*)=NULL;
   if (fun == NULL) fun = (void (*)(void*, void*)) R_GetCCallable("dparser","vec_add_internal");
   fun(v, elem);
@@ -596,6 +596,12 @@ int write_binary_tables_to_file(Grammar *g, FILE *fp){
   static int (*fun)(Grammar*, FILE*)=NULL;
   if (fun == NULL) fun = (int (*)(Grammar*, FILE*)) R_GetCCallable("dparser","write_binary_tables_to_file");
   return fun(g, fp);
+}
+
+int write_binary_tables_to_string(Grammar *g, unsigned char **str, unsigned int *str_len){
+  static int (*fun)(Grammar*, unsigned char**, unsigned int*)=NULL;
+  if (fun == NULL) fun = (int (*)(Grammar*, unsigned char**, unsigned int*)) R_GetCCallable("dparser","write_binary_tables_to_string");
+  return fun(g, str, str_len);
 }
 
 void set_d_use_r_headers(int x){

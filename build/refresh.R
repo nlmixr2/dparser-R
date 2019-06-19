@@ -47,7 +47,7 @@ if (file.exists(devtools::package_file("src/dparser"))){
             }
         if (f == "d.h"){
                 w <- which(regexpr('#define (REALLOC|MALLOC|FREE|CALLOC)', d) != -1);
-                d <- d[-w];
+                ## d <- d[-w];
                 w <- which(regexpr('#include "arg.h"', d) != -1);
                 d <- d[-w];
                 w <- which(regexpr('#include <string.h>', d) != -1)
@@ -60,15 +60,15 @@ if (file.exists(devtools::package_file("src/dparser"))){
                        sprintf('#define D_BUILD_VERSION "R-%s"', build),
                        d[seq(1 + w, length(d))]);
             }
-            d <- gsub("REALLOC", "R_chk_realloc", d);
-            d <- gsub("MALLOC[(]", "R_chk_calloc(1,", d);
-            d <- gsub("CALLOC[(]", "R_chk_calloc(1,", d);
-            d <- gsub("FREE", "Free", d);
+            ## d <- gsub("REALLOC", "R_chk_realloc", d);
+            ## d <- gsub("MALLOC[(]", "R_chk_calloc(1,", d);
+            ## d <- gsub("CALLOC[(]", "R_chk_calloc(1,", d);
+            ## d <- gsub("FREE", "Free", d);
             d <- gsub("([ \t])printf[(]", "\\1Rprintf(", d);
             if (f == "parse.c"){
-                w <- which(regexpr("^ *syntax_error_report_fn", d) != -1);
-                if (regexpr("^[ \t]*$", d[w - 2]) != -1){
-                    d[w - 2] <- "\nchar * d_file_name;\n int  d_use_file_name = 0;\n"
+                w <- which(regexpr("^static void *syntax_error_report_fn", d) != -1);
+                if (regexpr("^[ \t]*$", d[w - 1]) != -1){
+                    d[w - 1] <- "\nchar * d_file_name;\n int  d_use_file_name = 0;\n"
                     while(regexpr("^[ \t]*ZNode [*]z", d[w]) == -1){
                         w <- w + 1;
                     }
@@ -98,13 +98,13 @@ if (file.exists(devtools::package_file("src/dparser"))){
                 print(d[w]);
             }
             if (f == "util.c"){
-                w <- which(regexpr("^ *d_warn *[(]", d) != -1);
+                w <- which(regexpr("^void *d_warn *[(]", d) != -1);
                 w2 <- w + 1;
                 while (regexpr("}", d[w2]) == -1){
                     w2 <- w2 + 1;
                 }
                 d  <- c(d[seq(1, w - 1)],
-                        'd_warn(const char *str, ...) {
+                        'void d_warn(const char *str, ...) {
   char nstr[256];
   char outstr[256*2];
   va_list ap;
@@ -115,13 +115,13 @@ if (file.exists(devtools::package_file("src/dparser"))){
   warning(outstr);
 }',
 d[seq(w2 + 1, length(d))]);
-                w <- which(regexpr("^ *d_fail *[(] *const +char", d) != -1);
+                w <- which(regexpr("^void *d_fail *[(] *const +char", d) != -1);
                 w2 <- w + 1;
                 while (regexpr("}", d[w2]) == -1){
                     w2 <- w2 + 1;
                 }
                 d  <- c(d[seq(1, w - 1)],
-                        'd_fail(const char *str, ...) {
+                        'void d_fail(const char *str, ...) {
   char nstr[256];
   char outstr[256*2];
   va_list ap;
@@ -320,7 +320,7 @@ dpRparse <- function(){return(\"")
     owd <- getwd();
     on.exit({setwd(owd)});
     setwd(devtools::package_file());
-    knitr::knit(devtools::package_file("README.Rmd"))
-    devtools::document();
+    ## knitr::knit(devtools::package_file("README.Rmd"))
     devtools::load_all();
+    devtools::document();
 

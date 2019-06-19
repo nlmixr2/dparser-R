@@ -110,6 +110,17 @@ if (sysname != "sunos"){
                         cat("Out:\n");
                         cat(paste(test, collapse="\n"));
                         cat("\n################################################################################\n");
+                        if (Sys.which("diff") != ""){
+                            sink("ref")
+                            cat(paste(ref, collapse="\n"));
+                            sink()
+                            sink("test")
+                            cat(paste(test, collapse="\n"));
+                            sink()
+                            system("diff ref test")
+                            unlink("ref")
+                            unlink("test")
+                        }
                     }
                 }
 
