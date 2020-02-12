@@ -4,14 +4,27 @@
 \alias{dparse}
 \title{Create R-based Dparser tree walking function based on grammar}
 \usage{
-dparse(grammar, start_state = 0, save_parse_tree = TRUE,
-  partial_parses = FALSE, compare_stacks = TRUE,
-  commit_actions_interval = 100, fixup = TRUE, fixup_ebnf = FALSE,
-  nogreedy = FALSE, noheight = FALSE, use_file_name = TRUE,
-  parse_size = 1024, verbose_level = 0, children_first = TRUE, ...)
+dparse(
+  grammar,
+  start_state = 0,
+  save_parse_tree = TRUE,
+  partial_parses = FALSE,
+  compare_stacks = TRUE,
+  commit_actions_interval = 100,
+  fixup = TRUE,
+  fixup_ebnf = FALSE,
+  nogreedy = FALSE,
+  noheight = FALSE,
+  use_file_name = TRUE,
+  parse_size = 1024,
+  verbose_level = 0,
+  children_first = TRUE,
+  ...
+)
 }
 \arguments{
-\item{grammar}{Dparser grammar}
+\item{grammar}{Dparser grammar filename (must be a file with a ".g"
+extension)}
 
 \item{start_state}{Start State (default 0)}
 
@@ -96,7 +109,7 @@ if (t < 0.02 | t > 99.98){
 ", function(name, value, pos, depth){
     ## This prints the name, value, position and depth passed to the
     ##parsing function.
-    cat(sprintf("name:\%s;value:\%s;pos:\%s;depth:\%s\\n", name, value, pos,
+    cat(sprintf("name:\%s;value:\%s;pos:\%s;depth:\%s\n", name, value, pos,
                  depth));
 })
 

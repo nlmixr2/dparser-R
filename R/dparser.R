@@ -389,7 +389,8 @@ gc.dparser <- function(env){
 ##' Mac, or Linux. Linking to arbitrary c grammars works on any
 ##' platform.
 ##'
-##' @param grammar Dparser grammar
+##' @param grammar Dparser grammar filename (must be a file with a ".g"
+##'   extension)
 ##' @param start_state Start State (default 0)
 ##' @param save_parse_tree Save Parse Tree (default TRUE)
 ##' @param partial_parses Partial Parses (default FALSE)
