@@ -462,9 +462,9 @@ dparse <- function(grammar,
                    verbose_level=0,
                    children_first=TRUE,
                    ...){
-    if (file.exists(dpGetFile(substitute(grammar), ".g", envir=parent.frame(1)))){
+    if (file.exists(dpGetFile(substitute(grammar), ".g", envir=parent.frame(1))$file)){
         lst <- dpGetFile(substitute(grammar), ".g", envir=parent.frame(1));
-    } else if (dpGetFile(substitute(grammar), envir=parent.frame(1))) {
+    } else if (dpGetFile(substitute(grammar), envir=parent.frame(1))$file) {
         lst <- dpGetFile(substitute(grammar), envir=parent.frame(1));
     }
     grammar <- lst$file;

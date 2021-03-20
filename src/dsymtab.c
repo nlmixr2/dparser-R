@@ -1,15 +1,10 @@
 /*
   Copyright 2002-2004 John Plevyak, All Rights Reserved
 */
+
 #include "d.h"
 
 #define INITIAL_SYMHASH_SIZE 3137
-
-typedef struct D_SymHash {
-  int index;
-  int grow;
-  Vec(D_Sym *) syms;
-} D_SymHash;
 
 /*
   How this works.  In a normal symbol table there is simply
@@ -38,6 +33,14 @@ typedef struct D_SymHash {
   'down' and 'down_next' are used to hold enclosing scopes, or in the
   case of the top level, sibling scopes (created by commmit).
 */
+
+typedef struct D_SymHash {
+  int index;
+  int grow;
+  Vec(D_Sym *) syms;
+} D_SymHash;
+
+static void free_D_Sym(D_Sym *s) { FREE(s); }
 
 static void symhash_add(D_SymHash *sh, D_Sym *s) {
   uint i, h = s->hash % sh->syms.n, n;
@@ -147,7 +150,7 @@ equiv_D_Scope(D_Scope *current) {
       break;
     if (s->dynamic) /* conservative */
       break;
-    if (s->updates) 
+    if (s->updates)
       break;
     if (!s->search)
       break;
@@ -282,8 +285,6 @@ D_Sym *new_D_Sym(D_Scope *st, char *name, char *end, int sizeof_D_Sym) {
   }
   return s;
 }
-
-void free_D_Sym(D_Sym *s) { FREE(s); }
 
 D_Sym *current_D_Sym(D_Scope *st, D_Sym *sym) {
   D_Scope *sc;

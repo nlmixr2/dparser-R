@@ -1,3 +1,7 @@
+/*
+  Copyright 2002-2008 John Plevyak, All Rights Reserved
+*/
+
 #include "d.h"
 
 static void read_chk(void *ptr, size_t size, size_t nmemb, FILE *fp, unsigned char **str) {

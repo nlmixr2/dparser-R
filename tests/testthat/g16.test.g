@@ -1,4 +1,4 @@
 {
 #include <stdio.h>
 }
-S : 'a' ('b' { printf("(b)\n"); })* 'c';
+S : 'a' ('b' { Rprintf("(b)\n"); })* 'c';

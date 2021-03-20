@@ -190,6 +190,7 @@ static SNode *new_SNode(Parser *p, D_State *state, d_loc_t *loc, D_Scope *sc, vo
   else
     p->free_snodes = sn->all_next;
   sn->depth = 0;
+  sn->in_error_recovery_queue = 0;
   vec_clear(&sn->zns);
 #ifndef USE_GC
   sn->refcount = 0;
@@ -926,7 +927,8 @@ static int cmp_pnodes(Parser *p, PNode *x, PNode *y) {
 static PNode *make_PNode(Parser *p, uint hash, int symbol, d_loc_t *start_loc, char *e, PNode *pn, D_Reduction *r,
                          VecZNode *path, D_Shift *sh, D_Scope *scope) {
   int i;
-  uint l = sizeof(PNode) - sizeof(d_voidp) + p->user.sizeof_user_parse_node;
+  uint l = sizeof(PNode) - sizeof(d_voidp)  // -sizeof default D_ParseNode_User (voidp).
+           + p->user.sizeof_user_parse_node;
   PNode *new_pn = p->free_pnodes;
   if (!new_pn)
     new_pn = MALLOC(l);
@@ -1152,8 +1154,8 @@ static SNode *goto_PNode(Parser *p, d_loc_t *loc, PNode *pn, SNode *ps) {
   ref_pn(pn);
   new_ps->last_pn = pn;
 
-  DBG(printf("goto %d (%s) -> %d %p\n", (int)(ps->state - p->t->state), p->t->symbols[pn->parse_node.symbol].name,
-             state_index, new_ps));
+  DBG(Rprintf("goto %d (%s) -> %d %p\n", (int)(ps->state - p->t->state), p->t->symbols[pn->parse_node.symbol].name,
+             state_index, (void *)new_ps));
   if (ps != new_ps && new_ps->depth < ps->depth + 1) new_ps->depth = ps->depth + 1;
   /* find/create ZNode */
   z = set_find_znode(&new_ps->zns, pn);
@@ -1279,7 +1281,7 @@ static void shift_all(Parser *p, char *pos) {
     r = &p->shift_results[i];
     if (!r->shift) continue;
     p->shifts++;
-    DBG(printf("shift %d %p %d (%s)\n", (int)(r->snode->state - p->t->state), r->snode, r->shift->symbol,
+    DBG(Rprintf("shift %d %p %d (%s)\n", (int)(r->snode->state - p->t->state), (void *)r->snode, r->shift->symbol,
                p->t->symbols[r->shift->symbol].name));
     new_pn = add_PNode(p, r->shift->symbol, &r->snode->loc, r->loc.s, r->snode->last_pn, NULL, NULL, r->shift);
     if (new_pn) {
@@ -1364,7 +1366,7 @@ static void reduce_one(Parser *p, Reduction *r) {
     if ((pn = add_PNode(p, r->reduction->symbol, &sn->loc, sn->loc.s, sn->last_pn, r->reduction, 0, 0)))
       goto_PNode(p, &sn->loc, pn, sn);
   } else {
-    DBG(printf("reduce %d %p %d\n", (int)(r->snode->state - p->t->state), sn, n));
+    DBG(Rprintf("reduce %d %p %d\n", (int)(r->snode->state - p->t->state), (void *)sn, n));
     vec_clear(&paths);
     build_paths(r->znode, &paths, n);
     for (i = 0; i < paths.n; i++) {
@@ -1469,7 +1471,7 @@ static void cmp_stacks(Parser *p) {
           (b->snode->state->reduces_to != a->snode->state - p->t->state))
         continue;
       if (az->pn->op_priority > bz->pn->op_priority) {
-        DBG(printf("DELETE "); print_stack(p, b->snode, 0); Rprintf("\n"));
+        DBG(Rprintf("DELETE "); print_stack(p, b->snode, 0); Rprintf("\n"));
         *bl = b->next;
         unref_sn(p, b->snode);
         FREE(b);
@@ -1477,7 +1479,7 @@ static void cmp_stacks(Parser *p) {
         break;
       }
       if (az->pn->op_priority < bz->pn->op_priority) {
-        DBG(printf("DELETE "); print_stack(p, a->snode, 0); Rprintf("\n"));
+        DBG(Rprintf("DELETE "); print_stack(p, a->snode, 0); Rprintf("\n"));
         *al = a->next;
         unref_sn(p, a->snode);
         FREE(a);
@@ -1610,7 +1612,7 @@ static PNode *commit_tree(Parser *p, PNode *pn) {
       continue;
     }
   }
-  if (pn->reduction) DBG(printf("commit %p (%s)\n", pn, p->t->symbols[pn->parse_node.symbol].name));
+  if (pn->reduction) DBG(Rprintf("commit %p (%s)\n", (void *)pn, p->t->symbols[pn->parse_node.symbol].name));
   if (pn->reduction && pn->reduction->final_code)
     pn->reduction->final_code(pn, (void **)&pn->children.v[0], pn->children.n,
                               (intptr_t) & ((PNode *)(NULL))->parse_node, (D_Parser *)p);
@@ -1652,6 +1654,8 @@ static const char *find_substr(const char *str, const char *s) {
   return NULL;
 }
 
+static int is_z_pn_empty(ZNode *z) { return z->pn->parse_node.start_loc.s == z->pn->parse_node.end; }
+
 char * d_file_name;
  int  d_use_file_name = 0;
 
@@ -1659,13 +1663,25 @@ static void syntax_error_report_fn(struct D_Parser *ap) {
   Parser *p = (Parser *)ap;
   char *fn = d_dup_pathname_str(p->user.loc.pathname);
   char *after = 0;
-  ZNode *z = p->snode_hash.last_all ? p->snode_hash.last_all->zns.v[0] : 0;
+  SNode *sn = p->snode_hash.last_all;
+  ZNode *z = 0;
   if (d_use_file_name){
     fn = d_dup_pathname_str(d_file_name);
  }
 
-  while (z && z->pn->parse_node.start_loc.s == z->pn->parse_node.end)
-    z = (z->sns.v && z->sns.v[0]->zns.v) ? z->sns.v[0]->zns.v[0] : 0;
+  // Find the farthest non-empty error location.
+  while (sn) {
+    for (int i = 0; i < sn->zns.n; i++) {
+      ZNode *zz = sn->zns.v[i];
+      if (!zz) continue;
+      if (!z || (is_z_pn_empty(z) && !is_z_pn_empty(zz))) {
+        z = zz;
+        continue;
+      }
+      if (z->pn->parse_node.start_loc.s < zz->pn->parse_node.start_loc.s) z = zz;
+    }
+    sn = sn->all_next;
+  }
   if (z && z->pn->parse_node.start_loc.s != z->pn->parse_node.end)
     after = dup_str(z->pn->parse_node.start_loc.s, z->pn->parse_node.end);
   if (after)
@@ -1699,7 +1715,12 @@ static int error_recovery(Parser *p) {
     p->user.syntax_error_fn((D_Parser *)p);
   }
   for (sn = p->snode_hash.last_all; sn; sn = sn->all_next) {
-    if (tail < ERROR_RECOVERY_QUEUE_SIZE - 1) q[tail++] = sn;
+    if (sn->in_error_recovery_queue) continue;
+    sn->in_error_recovery_queue = 1;
+    if (tail < ERROR_RECOVERY_QUEUE_SIZE - 1)
+      q[tail++] = sn;
+    else
+      Rprintf( "exceeded error recovery queue size\n");
   }
   s = p->snode_hash.last_all->loc.s;
   while (tail > head) {
@@ -1721,9 +1742,16 @@ static int error_recovery(Parser *p) {
     for (i = 0; i < sn->zns.n; i++)
       if (sn->zns.v[i])
         for (j = 0; j < sn->zns.v[i]->sns.n; j++) {
-          if (tail < ERROR_RECOVERY_QUEUE_SIZE - 1) q[tail++] = sn->zns.v[i]->sns.v[j];
+          SNode *x = sn->zns.v[i]->sns.v[j];
+          if (x->in_error_recovery_queue) continue;
+          x->in_error_recovery_queue = 1;
+          if (tail < ERROR_RECOVERY_QUEUE_SIZE - 1)
+            q[tail++] = x;
+          else
+            Rprintf( "exceeded error recovery queue size\n");
         }
   }
+  for (int i = 0; i < tail; i++) q[i]->in_error_recovery_queue = 0;
   if (best_sn) {
     D_Reduction *rr = MALLOC(sizeof(*rr));
     Reduction *r = MALLOC(sizeof(*r));
@@ -1738,11 +1766,10 @@ static int error_recovery(Parser *p) {
     rr->symbol = best_er->symbol;
     update_line(best_loc.s, best_s, &best_loc.line);
     best_loc.s = (char *)best_s;
-    for (i = 0; i < best_sn->zns.n; i++)
-      if (best_sn->zns.v[i]) {
-        best_pn = best_sn->zns.v[i]->pn;
-        break;
-      }
+    for (i = 0; i < best_sn->zns.n; i++) {
+      ZNode *zn = best_sn->zns.v[i];
+      if (zn && (!best_pn || best_pn->parse_node.start_loc.s < zn->pn->parse_node.start_loc.s)) best_pn = zn->pn;
+    }
     best_pn->parse_node.white_space((D_Parser *)p, &best_loc, (void **)&best_pn->parse_node.globals);
     new_pn = add_PNode(p, 0, &p->user.loc, best_loc.s, best_pn, 0, 0, 0);
     new_sn = new_SNode(p, best_sn->state, &best_loc, new_pn->initial_scope, new_pn->initial_globals);
@@ -2119,8 +2146,12 @@ D_ParseNode *dparse(D_Parser *ap, char *buf, int buf_len) {
       res = NO_DPN;
     unref_sn(p, p->accept);
     p->accept = NULL;
-  } else
-    p->accept = NULL;
+  } else {
+    if (p->accept) {
+      unref_sn(p, p->accept);
+      p->accept = NULL;
+    }
+  }
   free_parser_working_data(p);
   free_whitespace_parser(p);
   return res;

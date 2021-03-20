@@ -2,5 +2,5 @@
 #include <stdio.h>
 }
 A: ID moreIDs* ';' ;
-moreIDs: ',' ID { printf( "moreIDs\n" ); } ;
-ID: "[a-z]+" { printf( "ID\n" ); } ;
+moreIDs: ',' ID { Rprintf( "moreIDs\n" ); } ;
+ID: "[a-z]+" { Rprintf( "ID\n" ); } ;

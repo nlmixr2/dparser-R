@@ -8,11 +8,11 @@ ${declare longest_match do}
 P: S*;
 
 S: do identifier
-  { printf("do identifier\n"); }
+  { Rprintf("do identifier\n"); }
  | identifier
-  { printf("identifier\n"); }
+  { Rprintf("identifier\n"); }
  | identifierX
-  { printf("identifierX\n"); }
+  { Rprintf("identifierX\n"); }
  ;
 
 do ::= 'do';

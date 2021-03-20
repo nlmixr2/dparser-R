@@ -18,7 +18,7 @@ definition : identifier ':' expression ';'
   char *ts = dup_str($n0.start_loc.s, $n0.end);
   ${scope} = new_D_Scope(${scope});
   s = NEW_D_SYM(${scope}, $n0.start_loc.s, $n0.end); 
-  printf("def Sym '%s' line %d: %X\n", ts,  $n0.start_loc.line, (int)(uintptr_t)s);
+  Rprintf("def Sym '%s' line %d: %X\n", ts,  $n0.start_loc.line, (int)(uintptr_t)s);
   d_free(ts);
   $$ = s;
 };
@@ -37,11 +37,11 @@ expression
 	  D_Sym *s = find_D_Sym(${scope}, $n0.start_loc.s, $n0.end);
           char *ts = dup_str($n0.start_loc.s, $n0.end);
 	  if (s)
-  	    printf("ref Sym '%s' line %d val %d: %X of %X\n",
+  	    Rprintf("ref Sym '%s' line %d val %d: %X of %X\n",
 	           ts, $n0.start_loc.line,
 		   s->user, (int)(uintptr_t)s, (int)(uintptr_t)s->update_of);
 	  else
- 	    printf("ref Sym '%s' line %d: not found\n",
+ 	    Rprintf("ref Sym '%s' line %d: not found\n",
                    ts, $n0.start_loc.line);
           d_free(ts);
 	}	

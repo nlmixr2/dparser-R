@@ -2,7 +2,7 @@
   Copyright 2002-2004 John Plevyak, All Rights Reserved
 */
 
-#include "gramgram.h"
+#include "gramgram.h"  // must appear before dparser.h
 #include "d.h"
 
 extern D_ParserTables parser_tables_dparser_gram;
@@ -91,6 +91,7 @@ char *escape_string_for_regex(const char *s) {
       case '*':
       case '?':
       case '+':
+      case '\\':
         *ss++ = '\\';
         /* fall through */
       default:

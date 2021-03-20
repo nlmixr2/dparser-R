@@ -11,7 +11,7 @@ extern "C" {
 #define DPN_TO_PN(_dpn) ((PNode *)(((char *)dpn) - (intptr_t)(&((PNode *)0)->parse_node)))
 #define is_epsilon_PNode(_pn) ((_pn)->parse_node.start_loc.s == (_pn)->parse_node.end)
 
-/* #define TRACK_PNODES	1 */
+/* #define TRACK_PNODES 1 */
 
 struct PNode;
 struct SNode;
@@ -99,15 +99,15 @@ typedef struct PNode {
   int priority;
   AssocKind op_assoc;
   int op_priority;
-  D_Reduction *reduction;
-  D_Shift *shift;
 #ifndef USE_GC
   uint32 refcount;
 #endif
-  VecPNode children;
   uint height; /* max tree height */
   uint8 evaluated;
   uint8 error_recovery;
+  D_Reduction *reduction;
+  D_Shift *shift;
+  VecPNode children;
   struct PNode *all_next;
   struct PNode *bucket_next;
   struct PNode *ambiguities;
@@ -116,27 +116,28 @@ typedef struct PNode {
   char *ws_after;
   D_Scope *initial_scope;
   void *initial_globals;
-  D_ParseNode parse_node; /* public fields */
 #ifdef TRACK_PNODES
   struct PNode *xnext;
   struct PNode *xprev;
 #endif
+  D_ParseNode parse_node; /* public fields */
 } PNode;
 
 /*
   State Node - the 'state'.
 */
 typedef struct SNode {
-  D_State *state;
-  D_Scope *initial_scope;
-  void *initial_globals;
   d_loc_t loc;
-  uint depth; /* max stack depth (less loops) */
-  PNode *last_pn;
-  VecZNode zns;
 #ifndef USE_GC
   uint32 refcount;
 #endif
+  uint32 depth : 31; /* max stack depth (less loops) */
+  uint32 in_error_recovery_queue : 1;
+  D_State *state;
+  D_Scope *initial_scope;
+  void *initial_globals;
+  PNode *last_pn;
+  VecZNode zns;
   struct SNode *bucket_next;
   struct SNode *all_next;
 } SNode;

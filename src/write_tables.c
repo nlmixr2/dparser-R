@@ -194,6 +194,7 @@ static OffsetEntry *get_offset(File *fp, char *name, ...) {
   va_list ap;
   va_start(ap, name);
   n = vsnprintf(buf, sizeof(buf), name, ap);
+  (void)n;
   va_end(ap);
   if (!(n < 256 && n >= 0)){error("Error parsing: assert(n < 256 && n >= 0).");};
   return search_for_offset(fp, buf);
@@ -254,7 +255,7 @@ array of structs:
       ((struct_type *)((file)->tables.cur))->member_name = data;        \
     } else {                                                            \
       handle_comma(file);                                               \
-      fprintf((file)->fp, #format, data);                               \
+      fprintf((file)->fp, format, data);                                \
     }                                                                   \
   } while (0)
 #define add_struct_const_member(file, struct_type, string, value, member_name) \
@@ -270,15 +271,15 @@ array of structs:
   add_struct_str_member_fn(file, (char **)&((struct_type *)(file)->tables.cur)->member_name, string)
 #define add_struct_ptr_member(file, struct_type, ampersand, entry, member_name) \
   add_struct_ptr_member_fn(file, (void **)&((struct_type *)(file)->tables.cur)->member_name, entry, ampersand "%s")
-#define add_array_member(file, type, format, data, last)        \
-  do {                                                          \
-    if ((file)->binary) {                                       \
-      add_array_member_internal(file);                          \
-      *((type *)((file)->tables.cur)) = data;                   \
-      (file)->tables.cur += (file)->elem_size;                  \
-    } else {                                                    \
-      fprintf((file)->fp, #format "%s", data, last ? "" : ","); \
-    }                                                           \
+#define add_array_member(file, type, format, data, last)       \
+  do {                                                         \
+    if ((file)->binary) {                                      \
+      add_array_member_internal(file);                         \
+      *((type *)((file)->tables.cur)) = data;                  \
+      (file)->tables.cur += (file)->elem_size;                 \
+    } else {                                                   \
+      fprintf((file)->fp, format "%s", data, last ? "" : ","); \
+    }                                                          \
   } while (0)
 #define add_array_ptr_member(file, type, ampersand, entry, last) \
   add_array_ptr_member_fn(file, entry, ampersand "%s%s", last)
@@ -571,32 +572,32 @@ static void write_scanner_data(File *fp, Grammar *g, char *tag) {
       action_index = t->regex_production->rules.v[0]->action_index;
     }
     start_struct(fp, D_Shift, make_name("d_shift_%d_%s", i, tag), "");
-    add_struct_member(fp, D_Shift, %d, g->terminals.v[i]->index + g->productions.n, symbol);
-    add_struct_member(fp, D_Shift, %d, g->terminals.v[i]->scan_kind, shift_kind);
-    add_struct_member(fp, D_Shift, %d, g->terminals.v[i]->op_assoc, op_assoc);
-    add_struct_member(fp, D_Shift, %d, g->terminals.v[i]->op_priority, op_priority);
-    add_struct_member(fp, D_Shift, %d, g->terminals.v[i]->term_priority, term_priority);
+    add_struct_member(fp, D_Shift, "%d", g->terminals.v[i]->index + g->productions.n, symbol);
+    add_struct_member(fp, D_Shift, "%d", g->terminals.v[i]->scan_kind, shift_kind);
+    add_struct_member(fp, D_Shift, "%d", g->terminals.v[i]->op_assoc, op_assoc);
+    add_struct_member(fp, D_Shift, "%d", g->terminals.v[i]->op_priority, op_priority);
+    add_struct_member(fp, D_Shift, "%d", g->terminals.v[i]->term_priority, term_priority);
     if (fp->binary) {
-      add_struct_member(fp, D_Shift, %d, action_index, action_index);
+      add_struct_member(fp, D_Shift, "%d", action_index, action_index);
       add_struct_ptr_member(fp, D_Shift, "", &spec_code_entry, speculative_code);
     } else {
-      add_struct_member(fp, D_Shift, %d, 0, action_index);
+      add_struct_member(fp, D_Shift, "%d", 0, action_index);
       fprintf(fp->fp, ", %s", speculative_code);
     }
     end_struct(fp, D_Shift, "\n");
     g->write_line++;
     if (g->terminals.v[i]->trailing_context) {
       start_struct(fp, D_Shift, make_name("d_tshift_%d_%s", i, tag), "");
-      add_struct_member(fp, D_Shift, %d, g->terminals.v[i]->index + g->productions.n, symbol);
-      add_struct_member(fp, D_Shift, %d, D_SCAN_TRAILING, shift_kind);
-      add_struct_member(fp, D_Shift, %d, g->terminals.v[i]->op_assoc, op_assoc);
-      add_struct_member(fp, D_Shift, %d, g->terminals.v[i]->op_priority, op_priority);
-      add_struct_member(fp, D_Shift, %d, g->terminals.v[i]->term_priority, term_priority);
+      add_struct_member(fp, D_Shift, "%d", g->terminals.v[i]->index + g->productions.n, symbol);
+      add_struct_member(fp, D_Shift, "%d", D_SCAN_TRAILING, shift_kind);
+      add_struct_member(fp, D_Shift, "%d", g->terminals.v[i]->op_assoc, op_assoc);
+      add_struct_member(fp, D_Shift, "%d", g->terminals.v[i]->op_priority, op_priority);
+      add_struct_member(fp, D_Shift, "%d", g->terminals.v[i]->term_priority, term_priority);
       if (fp->binary) {
-        add_struct_member(fp, D_Shift, %d, action_index, action_index);
+        add_struct_member(fp, D_Shift, "%d", action_index, action_index);
         add_struct_ptr_member(fp, D_Shift, "", &spec_code_entry, speculative_code);
       } else {
-        add_struct_member(fp, D_Shift, %d, 0, action_index);
+        add_struct_member(fp, D_Shift, "%d", 0, action_index);
         fprintf(fp->fp, ", %s", speculative_code);
       }
       end_struct(fp, D_Shift, "\n");
@@ -635,7 +636,7 @@ static void write_scanner_data(File *fp, Grammar *g, char *tag) {
         else
           add_array_ptr_member(fp, D_Shift *, "&", get_offset(fp, "d_tshift_%d_%s", va->v[k]->term->index, tag), 0);
       }
-      add_array_member(fp, D_Shift *, %d, 0, 1);
+      add_array_member(fp, D_Shift *, "%d", 0, 1);
       end_array(fp, "\n");
       g->write_line += 2;
     }
@@ -896,7 +897,7 @@ static void write_goto_data(File *fp, Grammar *g, char *tag) {
       print(fp, "\n");
       g->write_line += 1;
       for (j = 0; j < nvalid_bytes; j++)
-        add_array_member(fp, unsigned char, 0x%x, goto_valid[j], j == nvalid_bytes - 1);
+        add_array_member(fp, unsigned char, "0x%x", goto_valid[j], j == nvalid_bytes - 1);
       end_array(fp, "\n");
       g->write_line += 1;
     } else
@@ -916,8 +917,8 @@ static void write_goto_data(File *fp, Grammar *g, char *tag) {
       start_array(fp, D_RightEpsilonHint, make_name("d_right_epsilon_hints_%d_%s", i, tag), "", 0, "");
       for (j = 0; j < s->right_epsilon_hints.n; j++) {
         start_struct_in_array(fp);
-        add_struct_member(fp, D_RightEpsilonHint, %d, s->right_epsilon_hints.v[j]->depth, depth);
-        add_struct_member(fp, D_RightEpsilonHint, %d, s->right_epsilon_hints.v[j]->state->index, preceeding_state);
+        add_struct_member(fp, D_RightEpsilonHint, "%d", s->right_epsilon_hints.v[j]->depth, depth);
+        add_struct_member(fp, D_RightEpsilonHint, "%d", s->right_epsilon_hints.v[j]->state->index, preceeding_state);
         add_struct_ptr_member(
             fp, D_RightEpsilonHint, "&",
             get_offset(fp, "d_reduction_%d_%s", reduction_index(s->right_epsilon_hints.v[j]->rule), tag), reduction);
@@ -933,7 +934,7 @@ static void write_goto_data(File *fp, Grammar *g, char *tag) {
     g->write_line += 1;
     for (j = 0; j < vgoto.n; j++) {
       if (vgoto.v[j] < 0 || vgoto.v[j] > 65535) d_fail("goto table overflow");
-      add_array_member(fp, unsigned short, %d, vgoto.v[j], j == vgoto.n - 1);
+      add_array_member(fp, unsigned short, "%d", vgoto.v[j], j == vgoto.n - 1);
       if (j % 16 == 15) {
         print(fp, "\n");
         g->write_line += 1;
@@ -943,7 +944,7 @@ static void write_goto_data(File *fp, Grammar *g, char *tag) {
     g->write_line += 2;
   } else {
     start_array(fp, unsigned short, make_name("d_gotos_%s", tag), "", 1, "");
-    add_array_member(fp, unsigned short, %d, 0, 1);
+    add_array_member(fp, unsigned short, "%d", 0, 1);
     end_array(fp, "\n");
     g->write_line += 1;
   }
@@ -1309,8 +1310,8 @@ static void write_reductions(File *file, Grammar *g, char *tag) {
       } else
         strcpy(pass_code, "NULL");
       start_struct(file, D_Reduction, make_name("d_reduction_%d_%s", r->index, tag), "");
-      add_struct_member(file, D_Reduction, %d, r->elems.n, nelements);
-      add_struct_member(file, D_Reduction, %d, r->prod->index, symbol);
+      add_struct_member(file, D_Reduction, "%d", r->elems.n, nelements);
+      add_struct_member(file, D_Reduction, "%d", r->prod->index, symbol);
       if (file->binary) {
         if (!r->prod->internal && r->action_index >= 0) {
           add_struct_ptr_member(file, D_Reduction, "", &spec_code_entry, speculative_code);
@@ -1323,12 +1324,12 @@ static void write_reductions(File *file, Grammar *g, char *tag) {
         fprintf(fp, ", %s", speculative_code);
         fprintf(fp, ", %s", final_code);
       }
-      add_struct_member(file, D_Reduction, %d, r->op_assoc, op_assoc);
-      add_struct_member(file, D_Reduction, %d, r->rule_assoc, rule_assoc);
-      add_struct_member(file, D_Reduction, %d, r->op_priority, op_priority);
-      add_struct_member(file, D_Reduction, %d, r->rule_priority, rule_priority);
-      add_struct_member(file, D_Reduction, %d, r->prod->internal ? -1 : r->action_index, action_index);
-      add_struct_member(file, D_Reduction, %d, pmax, npass_code);
+      add_struct_member(file, D_Reduction, "%d", r->op_assoc, op_assoc);
+      add_struct_member(file, D_Reduction, "%d", r->rule_assoc, rule_assoc);
+      add_struct_member(file, D_Reduction, "%d", r->op_priority, op_priority);
+      add_struct_member(file, D_Reduction, "%d", r->rule_priority, rule_priority);
+      add_struct_member(file, D_Reduction, "%d", r->prod->internal ? -1 : r->action_index, action_index);
+      add_struct_member(file, D_Reduction, "%d", pmax, npass_code);
       if (file->binary) {
         add_struct_ptr_member(file, D_Reduction, "", &null_entry, pass_code);
       } else {
@@ -1392,8 +1393,8 @@ static void write_error_data(File *fp, Grammar *g, VecState *er_hash, char *tag)
             t = s->error_recovery_hints.v[j]->rule->elems.v[s->error_recovery_hints.v[j]->rule->elems.n - 1]->e.term;
             ss = escape_string(t->string);
             start_struct_in_array(fp);
-            add_struct_member(fp, D_ErrorRecoveryHint, %d, s->error_recovery_hints.v[j]->depth, depth);
-            add_struct_member(fp, D_ErrorRecoveryHint, %d, s->error_recovery_hints.v[j]->rule->prod->index, symbol);
+            add_struct_member(fp, D_ErrorRecoveryHint, "%d", s->error_recovery_hints.v[j]->depth, depth);
+            add_struct_member(fp, D_ErrorRecoveryHint, "%d", s->error_recovery_hints.v[j]->rule->prod->index, symbol);
             add_struct_str_member(fp, D_ErrorRecoveryHint, ss, string);
             end_struct_in_array(fp, j == s->error_recovery_hints.n - 1 ? "" : ",\n");
             if (j != s->error_recovery_hints.n - 1) g->write_line += 1;
@@ -1424,41 +1425,41 @@ static void write_state_data(File *fp, Grammar *g, VecState *er_hash, char *tag)
         add_struct_ptr_member(fp, D_State, "", get_offset(fp, "d_goto_valid_%d_%s", i, tag), goto_valid);
       else
         add_struct_ptr_member(fp, D_State, "", &null_entry, goto_valid);
-      add_struct_member(fp, D_State, %d, s->goto_table_offset, goto_table_offset);
+      add_struct_member(fp, D_State, "%d", s->goto_table_offset, goto_table_offset);
       print_no_comma(fp, ", {");
       if (s->reduce_actions.n) {
-        add_struct_member(fp, D_State, %d, s->reduce_actions.n, reductions.n);
+        add_struct_member(fp, D_State, "%d", s->reduce_actions.n, reductions.n);
         add_struct_ptr_member(fp, D_State, "", get_offset(fp, "d_reductions_%d_%s", i, tag), reductions.v);
       } else {
-        add_struct_member(fp, D_State, %d, 0, reductions.n);
+        add_struct_member(fp, D_State, "%d", 0, reductions.n);
         add_struct_ptr_member(fp, D_State, "", &null_entry, reductions.v);
       }
       print(fp, "}, ");
       print_no_comma(fp, "{");
       if (s->right_epsilon_hints.n) {
-        add_struct_member(fp, D_State, %d, s->right_epsilon_hints.n, right_epsilon_hints.n);
+        add_struct_member(fp, D_State, "%d", s->right_epsilon_hints.n, right_epsilon_hints.n);
         add_struct_ptr_member(fp, D_State, "", get_offset(fp, "d_right_epsilon_hints_%d_%s", i, tag),
                               right_epsilon_hints.v);
       } else {
-        add_struct_member(fp, D_State, %d, 0, right_epsilon_hints.n);
+        add_struct_member(fp, D_State, "%d", 0, right_epsilon_hints.n);
         add_struct_ptr_member(fp, D_State, "", &null_entry, right_epsilon_hints.v);
       }
       print(fp, "}, ");
       print_no_comma(fp, "{");
       if (s->error_recovery_hints.n) {
         h = set_add_fn(er_hash, s, &er_hint_hash_fns);
-        add_struct_member(fp, D_State, %d, s->error_recovery_hints.n, error_recovery_hints.n);
+        add_struct_member(fp, D_State, "%d", s->error_recovery_hints.n, error_recovery_hints.n);
         add_struct_ptr_member(fp, D_State, "", get_offset(fp, "d_error_recovery_hints_%d_%s", h->index, tag),
                               error_recovery_hints.v);
       } else {
-        add_struct_member(fp, D_State, %d, 0, error_recovery_hints.n);
+        add_struct_member(fp, D_State, "%d", 0, error_recovery_hints.n);
         add_struct_ptr_member(fp, D_State, "", &null_entry, error_recovery_hints.v);
       }
       print(fp, "}");
       if (s->shift_actions.n || s->scanner_code || (g->scanner.code && s->goto_on_token))
-        add_struct_member(fp, D_State, %d, 1, shifts);
+        add_struct_member(fp, D_State, "%d", 1, shifts);
       else
-        add_struct_member(fp, D_State, %d, 0, shifts);
+        add_struct_member(fp, D_State, "%d", 0, shifts);
       if (g->scanner.code) {
         if (s->goto_on_token) {
           if (!(!fp->binary)){error("Error parsing: assert(!fp->binary).");};
@@ -1479,8 +1480,8 @@ static void write_state_data(File *fp, Grammar *g, VecState *er_hash, char *tag)
       if (!fp->binary)
         fprintf(fp->fp, ", sizeof(%s) ", scanner_type(s));
       else
-        add_struct_member(fp, D_State, %d, scanner_size(s), scanner_size);
-      add_struct_member(fp, D_State, %d, s->accept ? 1 : 0, accept);
+        add_struct_member(fp, D_State, "%d", scanner_size(s), scanner_size);
+      add_struct_member(fp, D_State, "%d", s->accept ? 1 : 0, accept);
       add_struct_const_member(fp, D_State, scan_kind_strings[s->scan_kind], s->scan_kind, scan_kind);
       if ((shifts->scan_kind != D_SCAN_LONGEST || shifts->trailing_context) && shifts->scanner.states.n) {
         print_no_comma(fp, ", (void*)");
@@ -1495,9 +1496,9 @@ static void write_state_data(File *fp, Grammar *g, VecState *er_hash, char *tag)
       else
         add_struct_ptr_member(fp, D_State, "", &null_entry, accepts_diff);
       if (s->reduces_to)
-        add_struct_member(fp, D_State, %d, s->reduces_to->index, reduces_to);
+        add_struct_member(fp, D_State, "%d", s->reduces_to->index, reduces_to);
       else
-        add_struct_member(fp, D_State, %d, -1, reduces_to);
+        add_struct_member(fp, D_State, "%d", -1, reduces_to);
       end_struct_in_array(fp, (i == g->states.n - 1 ? "\n" : ",\n"));
     }
     end_array(fp, "\n\n");
@@ -1528,12 +1529,8 @@ static int write_header(Grammar *g, char *base_pathname, char *tag) {
     hfp = fopen(pathname, "w");
     if (!hfp) d_fail("unable to open `%s` for write\n", pathname);
     d_version(ver);
-fprintf(hfp, "/*\n  Generated by R\'s mkdparse a port of Make DParser Version %s\n", ver);
-	fprintf(hfp,"  R available at https://github.com/nlmixrdevelopment/dparser-R\n");
-	fprintf(hfp,"  Original dparser Available at http://dparser.sf.net\n*/\n\n\n");
-	if (d_use_r_headers){
-		fprintf(hfp,"\n\n#include <R.h>\n#include <Rinternals.h>\n#define printf Rprintf\n\n");
-	}
+    fprintf(hfp, "/*\n  Generated by Make DParser Version %s\n", ver);
+    fprintf(hfp, "  Available at https://github.com/jplevyak/dparser\n*/\n\n");
     fprintf(hfp, "#ifndef _%s_h\n", tag);
     fprintf(hfp, "#define _%s_h\n", tag);
     if (tokens) {
@@ -1586,8 +1583,8 @@ static void write_symbol_data(File *fp, Grammar *g, char *tag) {
     internal_index = g->productions.v[i]->internal ? (is_EBNF(g->productions.v[i]->internal) ? 2 : 1) : 0;
     add_struct_const_member(fp, D_Symbol, d_internal[internal_index], d_internal_values[internal_index], kind);
     add_struct_str_member(fp, D_Symbol, g->productions.v[i]->name, name);
-    add_struct_member(fp, D_Symbol, %d, g->productions.v[i]->name_len, name_len);
-    add_struct_member(fp, D_Symbol, %d, state, start_symbol);
+    add_struct_member(fp, D_Symbol, "%d", g->productions.v[i]->name_len, name_len);
+    add_struct_member(fp, D_Symbol, "%d", state, start_symbol);
     end_struct_in_array(fp, ",\n");
     g->write_line += 1;
   }
@@ -1600,9 +1597,9 @@ static void write_symbol_data(File *fp, Grammar *g, char *tag) {
     add_struct_const_member(fp, D_Symbol, d_symbol[symbol_index], d_symbol_values[symbol_index], kind);
     add_struct_str_member(fp, D_Symbol, name, name);
     add_struct_member(
-        fp, D_Symbol, %d, (int)strlen(name),
+        fp, D_Symbol, "%d", (int)strlen(name),
         name_len); /*BS strlen doesn't always works here, length can change when quoted string is compiled*/
-    add_struct_member(fp, D_Symbol, %d, -1, start_symbol);
+    add_struct_member(fp, D_Symbol, "%d", -1, start_symbol);
     end_struct_in_array(fp, ",\n");
     g->write_line += 1;
     FREE(s);
@@ -1621,9 +1618,9 @@ static void write_passes(File *fp, Grammar *g, char *tag) {
       D_Pass *p = g->passes.v[i];
       start_struct_in_array(fp);
       add_struct_str_member(fp, D_Pass, p->name, name);
-      add_struct_member(fp, D_Pass, %d, p->name_len, name_len);
-      add_struct_member(fp, D_Pass, 0x%x, p->kind, kind);
-      add_struct_member(fp, D_Pass, %d, p->index, index);
+      add_struct_member(fp, D_Pass, "%d", p->name_len, name_len);
+      add_struct_member(fp, D_Pass, "0x%x", p->kind, kind);
+      add_struct_member(fp, D_Pass, "%d", p->index, index);
       end_struct_in_array(fp, i < g->passes.n - 1 ? ", " : "");
     }
     end_array(fp, "\n\n");
@@ -1656,26 +1653,26 @@ void write_parser_tables(Grammar *g, char *tag, File *file) {
   }
 
   start_struct(file, D_ParserTables, make_name("parser_tables_%s", tag), "\n");
-  add_struct_member(file, D_ParserTables, %d, g->states.n, nstates);
+  add_struct_member(file, D_ParserTables, "%d", g->states.n, nstates);
   add_struct_ptr_member(file, D_ParserTables, "", get_offset(file, "d_states_%s", tag), state);
   add_struct_ptr_member(file, D_ParserTables, "", get_offset(file, "d_gotos_%s", tag), goto_table);
-  add_struct_member(file, D_ParserTables, %d, whitespace_production, whitespace_state);
-  add_struct_member(file, D_ParserTables, %d, g->productions.n + g->terminals.n, nsymbols);
+  add_struct_member(file, D_ParserTables, "%d", whitespace_production, whitespace_state);
+  add_struct_member(file, D_ParserTables, "%d", g->productions.n + g->terminals.n, nsymbols);
   add_struct_ptr_member(file, D_ParserTables, "", get_offset(file, "d_symbols_%s", tag), symbols);
   if (g->default_white_space) {
     if (!(!file->binary)){error("Error parsing: assert(!file->binary).");};
     fprintf(file->fp, ", %s", g->default_white_space);
   } else
     add_struct_ptr_member(file, D_ParserTables, "", &null_entry, default_white_space);
-  add_struct_member(file, D_ParserTables, %d, g->passes.n, npasses);
+  add_struct_member(file, D_ParserTables, "%d", g->passes.n, npasses);
   if (g->passes.n)
     add_struct_ptr_member(file, D_ParserTables, "", get_offset(file, "d_passes_%s", tag), passes);
   else
     add_struct_ptr_member(file, D_ParserTables, "", &null_entry, passes);
   if (g->save_parse_tree)
-    add_struct_member(file, D_ParserTables, %d, 1, save_parse_tree);
+    add_struct_member(file, D_ParserTables, "%d", 1, save_parse_tree);
   else
-    add_struct_member(file, D_ParserTables, %d, 0, save_parse_tree);
+    add_struct_member(file, D_ParserTables, "%d", 0, save_parse_tree);
   end_struct(file, D_ParserTables, "\n");
 
   if (file->binary) {
@@ -1701,12 +1698,8 @@ void write_parser_tables_internal(Grammar *g, char *base_pathname, char *tag, in
     char ver[128];
     int header = write_header(g, base_pathname, tag);
     d_version(ver);
-fprintf(fp, "/*\n  Generated by R\'s mkdparse a port of Make DParser Version %s\n", ver);
-	fprintf(fp,"  R available at https://github.com/nlmixrdevelopment/dparser-R\n");
-	fprintf(fp,"  Original dparser Available at http://dparser.sf.net\n*/\n\n\n");
-	if (d_use_r_headers){
-		fprintf(fp,"\n\n#include <R.h>\n#include <Rinternals.h>\n#define printf Rprintf\n\n");
-	}
+    fprintf(fp, "/*\n  Generated by Make DParser Version %s\n", ver);
+    fprintf(fp, "  Available at https://github.com/jplevyak/dparser\n*/\n\n");
     g->write_line = 7;
     write_global_code(fp, g, tag);
     fprintf(fp, "#include \"dparse.h\"\n");

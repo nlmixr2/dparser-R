@@ -9,7 +9,7 @@ char *xdup(char *s, char *e) {
   return ss;
 }
 }
-top: A ( B C { printf("%s\n", xdup($n.start_loc.s, $n.end)); } ) D;
+top: A ( B C { Rprintf("%s\n", xdup($n.start_loc.s, $n.end)); } ) D;
 A: 'A';
 B: 'B';
 C: 'C';

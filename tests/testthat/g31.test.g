@@ -10,7 +10,7 @@ translation_unit: statement*;
 statement 
   : expression ';' 
   { 
-    printf("final expression\n"); 
+    Rprintf("final expression\n"); 
     d_pass(${parser}, &$n, ${pass sym}); 
     d_pass(${parser}, &$n, ${pass gen}); 
   }
@@ -18,13 +18,13 @@ statement
 
 expression 
   : identifier '=' expression $right 1
-  sym: { printf("sym =\n"); }
-  gen: { printf("gen =\n"); }
+  sym: { Rprintf("sym =\n"); }
+  gen: { Rprintf("gen =\n"); }
   | integer 
-  gen: { printf("gen integer\n"); }
-  sym: { printf("sym integer\n"); }
+  gen: { Rprintf("gen integer\n"); }
+  sym: { Rprintf("sym integer\n"); }
   | expression '+' expression $right 2
-  sym: { printf("sym +\n"); }
+  sym: { Rprintf("sym +\n"); }
   ;
 
 integer: "-?([0-9]|0(x|X))[0-9]*(u|U|b|B|w|W|L|l)*" $term -1;

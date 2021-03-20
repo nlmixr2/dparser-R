@@ -10,13 +10,15 @@ typedef struct My_ParseNode {
   struct D_Scope *scope;
 } My_ParseNode;
 #define D_ParseNode_User My_ParseNode
+
+#include "dsymtab.h"
 }
 
 translation_unit: statement*;
  
 statement 
   : expression ';' 
-  { printf("%d\n", $0.value); }
+  { Rprintf("%d\n", $0.value); }
   | '{' statement* '}'
   [ ${scope} = enter_D_Scope(${scope}, $n0.scope); ]
   { ${scope} = commit_D_Scope(${scope}); }

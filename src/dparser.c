@@ -79,7 +79,6 @@ D_Scope *global_D_Scope(D_Scope *scope);
 D_Scope *scope_D_Scope(D_Scope *current, D_Scope *scope);
 void free_D_Scope(D_Scope *st, int force);
 D_Sym *new_D_Sym(D_Scope *st, char *name, char *end, int sizeof_D_Sym);
-void free_D_Sym(D_Sym *sym);
 D_Sym *find_D_Sym(D_Scope *st, char *name, char *end);
 D_Sym *find_global_D_Sym(D_Scope *st, char *name, char *end);
 D_Sym *update_D_Sym(D_Sym *sym, D_Scope **st, int sizeof_D_Sym);
@@ -252,7 +251,6 @@ void R_init_dparser(DllInfo *info){
   R_RegisterCCallable("dparser","update_D_Sym",(DL_FUNC) update_D_Sym);
   R_RegisterCCallable("dparser","find_global_D_Sym",(DL_FUNC) find_global_D_Sym);
   R_RegisterCCallable("dparser","find_D_Sym",(DL_FUNC) find_D_Sym);
-  R_RegisterCCallable("dparser","free_D_Sym",(DL_FUNC) free_D_Sym);
   R_RegisterCCallable("dparser","new_D_Sym",(DL_FUNC) new_D_Sym);
   R_RegisterCCallable("dparser","free_D_Scope",(DL_FUNC) free_D_Scope);
   R_RegisterCCallable("dparser","scope_D_Scope",(DL_FUNC) scope_D_Scope);

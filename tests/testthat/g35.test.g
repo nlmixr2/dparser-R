@@ -3,7 +3,7 @@
 }
 
 S: identifier*
-  { printf("identifier\n"); }
+  { Rprintf("identifier\n"); }
  ;
 
 identifier: "[a-z<>=+]+";

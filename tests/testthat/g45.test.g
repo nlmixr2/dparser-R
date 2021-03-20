@@ -1,6 +1,7 @@
 {
 #include "stdio.h"
 #include "dparse.h"
+#include "dsymtab.h"
 D_Scope *saved = 0;
 }
 
@@ -16,12 +17,12 @@ def: 'a' {
 
 use: 'b' {
   if (find_D_Sym(${scope}, "a", 0))
-    printf("failed1\n");
+    Rprintf("failed1\n");
   else
-    printf("succeed1\n");
+    Rprintf("succeed1\n");
   ${scope} = scope_D_Scope(${scope}, saved);
   if (find_D_Sym(${scope}, "a", 0))
-    printf("succeed2\n");
+    Rprintf("succeed2\n");
   else
-    printf("failed2\n");
+    Rprintf("failed2\n");
 };

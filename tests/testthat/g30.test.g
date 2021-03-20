@@ -2,6 +2,6 @@
 #include "stdio.h"
 }
 
-S: A { printf("."); } B;
-A: 'a' { printf("a"); };
-B: 'b' { printf("b"); };
+S: A { Rprintf("."); } B;
+A: 'a' { Rprintf("a"); };
+B: 'b' { Rprintf("b"); };

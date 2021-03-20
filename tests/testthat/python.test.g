@@ -152,8 +152,8 @@ void print_pg(PythonGlobals *pg, char *s) {
   int i, n;
   n = pg->current_indent - pg->indent_stack;
   for (i = 0; i < n; i++)
-    printf("%d ", pg->indent_stack[i]);
-  printf("%s\n", s);
+    Rprintf("%d ", pg->indent_stack[i]);
+  Rprintf("%s\n", s);
 }
 
 void python_whitespace(struct D_Parser *parser, d_loc_t *loc, void **p_globals) {

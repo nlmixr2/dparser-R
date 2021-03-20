@@ -1,5 +1,5 @@
 {
 #include <stdio.h>
 }
-A: ID ( ',' ID { printf( "moreIDs\n" ); } )* ';' ;
-ID: "[a-z]+" { printf( "ID\n" ); } ;
+A: ID ( ',' ID { Rprintf( "moreIDs\n" ); } )* ';' ;
+ID: "[a-z]+" { Rprintf( "ID\n" ); } ;

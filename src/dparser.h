@@ -148,12 +148,6 @@ D_Sym *new_D_Sym(D_Scope *st, char *name, char *end, int sizeof_D_Sym){
   return fun(st, name, end, sizeof_D_Sym);
 }
 
-void free_D_Sym(D_Sym *sym){
-  static void (*fun)(D_Sym*)=NULL;
-  if (fun == NULL) fun = (void (*)(D_Sym*)) R_GetCCallable("dparser","free_D_Sym");
-  fun(sym);
-}
-
 D_Sym *find_D_Sym(D_Scope *st, char *name, char *end){
   static D_Sym *(*fun)(D_Scope*, char*, char*)=NULL;
   if (fun == NULL) fun = (D_Sym* (*)(D_Scope*, char*, char*)) R_GetCCallable("dparser","find_D_Sym");

@@ -5,6 +5,9 @@ extern "C" {
   Copyright 2002-2006 John Plevyak, All Rights Reserved
 */
 
+#ifndef _util_H_
+#define _util_H_
+
 #define INITIAL_SET_SIZE_INDEX 2
 
 #define INITIAL_VEC_SHIFT 3
@@ -123,13 +126,18 @@ void set_to_vec(void *av);
       stack_push_internal((AbstractStack *)((_s)), (void *)(uintptr_t)(_x)); \
     else                                                                     \
       (*((_s)->cur)++ = (_x));                                               \
+                                                                             \
   } while (0)
 void *stack_push_internal(AbstractStack *, void *);
 
 int buf_read(const char *pathname, char **buf, int *len);
 char *sbuf_read(const char *pathname);
 
+#if defined(WIN32)
+#define STREQ(_x, _n, _s) ((_n == sizeof(_s) - 1) && !strnicmp(_x, _s, sizeof(_s) - 1))
+#else
 #define STREQ(_x, _n, _s) ((_n == sizeof(_s) - 1) && !strncasecmp(_x, _s, sizeof(_s) - 1))
+#endif
 
 void d_fail(const char *str, ...);
 void d_warn(const char *str, ...);
@@ -149,6 +157,8 @@ extern int d_verbose_level;
 extern int d_debug_level;
 extern int test_level;
 extern int d_rdebug_grammar_level;
+
+#endif
 #if defined(__cplusplus)
 }
 #endif

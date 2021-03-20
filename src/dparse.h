@@ -8,6 +8,7 @@
 #if defined(__cplusplus)
 extern "C" {
 #endif
+
 #include "dparse_tables.h"
 #include "dsymtab.h"
 

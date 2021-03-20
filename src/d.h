@@ -19,23 +19,25 @@
 #endif
 #include <limits.h>
 #include <sys/types.h>
-#ifndef __MINGW32__
+#if !defined(__MINGW32__) && !defined(WIN32)
 #include <sys/mman.h>
 #include <sys/uio.h>
 #endif
+#if !defined(WIN32)
 #include <unistd.h>
+#include <sys/time.h>
+#include <dirent.h>
+#endif
+#include <sys/stat.h>
 #include <fcntl.h>
 #include <time.h>
-#include <sys/time.h>
-#include <sys/stat.h>
-#include <dirent.h>
 #include <ctype.h>
 #include <string.h>
 #include <R.h>
 #include <Rinternals.h>
 #define D_MAJOR_VERSION 1
 #define D_MINOR_VERSION 31
-#define D_BUILD_VERSION "R-98ae9ccd251c36c61a5ff2651e5c7ee1d0057ed3"
+#define D_BUILD_VERSION "R-a810bbcd0aab0825b447883bfc8294a2c94c3df6"
 #include <strings.h>
 
 #ifdef LEAK_DETECT
@@ -69,8 +71,6 @@
 #define isxdigit_(_c) isxdigit((unsigned char)(_c))
 #define isprint_(_c) isprint((unsigned char)(_c))
 
-#define D_VERSION ((D_MAJOR_VERSION << 24) + (D_MINOR_VERSION << 16) + D_BUILD_VERSION)
-
 /* Compilation Options
  */
 
@@ -89,6 +89,15 @@ typedef int16_t int16;
 typedef uint16_t uint16;
 typedef unsigned int uint;
 
+#ifdef D_DEBUG
+#define DBG(_x)            \
+  if (d_debug_level > 1) { \
+    _x;                    \
+  }
+#else
+#define DBG(_x)
+#endif
+
 #include "dparse.h"
 #include "util.h"
 #include "gram.h"
@@ -99,17 +108,6 @@ typedef unsigned int uint;
 #include "write_tables.h"
 #include "read_binary.h"
 
-#ifdef D_DEBUG
-#define DBG(_x)            \
-  if (d_debug_level > 1) { \
-    _x;                    \
-  }
-#else
-#define DBG(_x)
-#endif
-
 void d_version(char *);
-
-#define USE_SCANNER 1
 
 #endif
