@@ -1,6 +1,6 @@
 sysname <- tolower(Sys.info()[["sysname"]])
-if (sysname != "sunos"){
-    library(digest);
+if (!any(sysname == c("sunos", "Darwin"))) {
+    library(digest)
     files <- list.files(pattern=".*\\.test\\.g$")
     if (!identical(Sys.getenv("NOT_CRAN"), "true")){
         files <- files[1:3]; ## Only do 3 tests on CRAN.

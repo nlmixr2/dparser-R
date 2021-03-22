@@ -1,5 +1,5 @@
 [![R-CMD-check](https://github.com/nlmixrdevelopment/dparser-R/workflows/R-CMD-check/badge.svg)](https://github.com/nlmixrdevelopment/dparser-R/actions)
-[![codecov.io](https://codecov.io/github/nlmixrdevelopment/dparser-R/coverage.svg?branch=master)](https://codecov.io/github/nlmixrdevelopment/dparser-R?branch=master)
+[![Codecov test coverage](https://codecov.io/gh/nlmixrdevelopment/dparser-R/branch/master/graph/badge.svg)](https://codecov.io/gh/nlmixrdevelopment/dparser-R?branch=master)
 [![CRAN version](http://www.r-pkg.org/badges/version/dparser)](https://cran.r-project.org/package=dparser)
 
 ## Installing dparser R package (Adapted from Rik Schoemaker's instructions for nlmixr)
