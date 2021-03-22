@@ -37,7 +37,7 @@
 #include <Rinternals.h>
 #define D_MAJOR_VERSION 1
 #define D_MINOR_VERSION 31
-#define D_BUILD_VERSION "R-a810bbcd0aab0825b447883bfc8294a2c94c3df6"
+#define D_BUILD_VERSION "R-67d59ca1060e6a5aad449b627d6c07c4775f734b"
 #include <strings.h>
 
 #ifdef LEAK_DETECT

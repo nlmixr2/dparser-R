@@ -22,3 +22,4 @@ int scan_buffer(d_loc_t *loc, D_State *st, ShiftResult *result);
 #if defined(__cplusplus)
 }
 #endif
+

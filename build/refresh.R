@@ -16,97 +16,97 @@ globalIntVars <- c("d_use_r_headers",
                    "d_verbose_level",
                    "d_debug_level");
 globalCharVars <- c("d_file_name");
-if (file.exists(devtools::package_file("src/dparser"))){
-    owd <- getwd();
-    setwd(devtools::package_file("src/dparser"));
-    build <- gsub("([^ ]*) .*","\\1",system("git show-ref heads/master",intern=TRUE));
-    setwd(owd);
-    cat(sprintf("dparser build %s\n", build));
-    for (f in c("dparse.h", "dparse_tables.h", "dsymtab.h", "gram.h", "gramgram.h", "lex.h",
-                "lr.h", "mkdparse.h", "parse.h", "read_binary.h", "scan.h", "util.h", "write_tables.h",
-                "gram.c", "grammar.g.c", "lex.c", "lex.h", "lr.c", "mkdparse.c", "scan.c", "dsymtab.c",
-                "util.c", "write_tables.c", "d.h", "read_binary.c", "parse.c", "version.c")){
-        cat(sprintf("\tf: %s\n", f));
-        unlink(devtools::package_file("src/", f));
-        d <- readLines(devtools::package_file("src/dparser/", f));
-        reg.assert <- rex::rex("assert(",capture(anything), ")")
-        w <- which(regexpr(reg.assert, d) != -1);
-        if (length(w) > 0){
-          d[w] <- gsub(reg.assert, "if (!(\\1)){error(\"Error parsing: assert(\\1).\");}", d[w]);
+if (file.exists(devtools::package_file("src/dparser"))) {
+  owd <- getwd();
+  setwd(devtools::package_file("src/dparser"));
+  build <- gsub("([^ ]*) .*","\\1",system("git show-ref heads/master",intern=TRUE));
+  setwd(owd);
+  cat(sprintf("dparser build %s\n", build));
+  for (f in c("dparse.h", "dparse_tables.h", "dsymtab.h", "gram.h", "gramgram.h", "lex.h",
+              "lr.h", "mkdparse.h", "parse.h", "read_binary.h", "scan.h", "util.h", "write_tables.h",
+              "gram.c", "grammar.g.c", "lex.c", "lex.h", "lr.c", "mkdparse.c", "scan.c", "dsymtab.c",
+              "util.c", "write_tables.c", "d.h", "read_binary.c", "parse.c", "version.c")){
+    cat(sprintf("\tf: %s\n", f));
+    unlink(devtools::package_file("src/", f));
+    d <- readLines(devtools::package_file("src/dparser/", f));
+    reg.assert <- rex::rex("assert(",capture(anything), ")")
+    w <- which(regexpr(reg.assert, d) != -1);
+    if (length(w) > 0){
+      d[w] <- gsub(reg.assert, "if (!(\\1)){error(\"Error parsing: assert(\\1).\");}", d[w]);
+    }
+    if (any(f == c("gram.h", "lex.h", "lr.h", "parse.h", "read_binary.h", "scan.h", "util.h", "write_tables.h"))){
+      ## Fix headers to work with C++
+      d[1] <- sprintf('#if defined(__cplusplus)\nextern "C" {\n#endif\n%s', d[1]);
+      d[length(d)] <- sprintf('%s\n#if defined(__cplusplus)\n}\n#endif\n', d[length(d)]);
+      if (f == "gram.h"){
+        ## Fix add_pass_code to be on one line.
+        w <- which(regexpr("void add_pass_code", d) != -1);
+        d[w] <- sprintf("%s %s", d[w], gsub("^[ \t]*", "", d[w + 1]));
+        d <- d[-(w + 1)];
+      }
+    }
+    if (f == "d.h"){
+      ## w <- which(regexpr('#define (REALLOC|MALLOC|FREE|CALLOC)', d) != -1);
+      ## d <- d[-w];
+      w <- which(regexpr('#include "arg.h"', d) != -1);
+      d <- d[-w];
+      w <- which(regexpr('#include <string.h>', d) != -1)
+      ver  <- readLines(devtools::package_file("src/dparser/Makefile"));
+      major <- gsub("^ *MAJOR *= *", "", ver[which(regexpr("^ *MAJOR *=", ver) != -1)]);
+      minor <- gsub("^ *MINOR *= *", "", ver[which(regexpr("^ *MINOR *=", ver) != -1)]);
+      d <- c(d[1:w], "#include <R.h>", "#include <Rinternals.h>",
+             sprintf("#define D_MAJOR_VERSION %s", major),
+             sprintf("#define D_MINOR_VERSION %s", minor),
+             sprintf('#define D_BUILD_VERSION "R-%s"', build),
+             d[seq(1 + w, length(d))]);
+    }
+    ## d <- gsub("REALLOC", "R_chk_realloc", d);
+    ## d <- gsub("MALLOC[(]", "R_chk_calloc(1,", d);
+    ## d <- gsub("CALLOC[(]", "R_chk_calloc(1,", d);
+    ## d <- gsub("FREE", "Free", d);
+    d <- gsub("([ \t])printf[(]", "\\1Rprintf(", d);
+    if (f == "parse.c") {
+      w <- which(regexpr("^static void *syntax_error_report_fn", d) != -1);
+      if (regexpr("^[ \t]*$", d[w - 1]) != -1){
+        d[w - 1] <- "\nchar * d_file_name;\n int  d_use_file_name = 0;\n"
+        while(regexpr("^[ \t]*ZNode [*]z", d[w]) == -1){
+          w <- w + 1;
         }
-        if (any(f == c("gram.h", "lex.h", "lr.h", "parse.h", "read_binary.h", "scan.h", "util.h", "write_tables.h"))){
-          ## Fix headers to work with C++
-          d[1] <- sprintf('#if defined(__cplusplus)\nextern "C" {\n#endif\n%s', d[1]);
-          d[length(d)] <- sprintf('%s\n#if defined(__cplusplus)\n}\n#endif\n', d[length(d)]);
-          if (f == "gram.h"){
-              ## Fix add_pass_code to be on one line.
-              w <- which(regexpr("void add_pass_code", d) != -1);
-              d[w] <- sprintf("%s %s", d[w], gsub("^[ \t]*", "", d[w + 1]));
-              d <- d[-(w + 1)];
-          }
-        }
-        if (f == "d.h"){
-          ## w <- which(regexpr('#define (REALLOC|MALLOC|FREE|CALLOC)', d) != -1);
-          ## d <- d[-w];
-          w <- which(regexpr('#include "arg.h"', d) != -1);
-          d <- d[-w];
-          w <- which(regexpr('#include <string.h>', d) != -1)
-          ver  <- readLines(devtools::package_file("src/dparser/Makefile"));
-          major <- gsub("^ *MAJOR *= *", "", ver[which(regexpr("^ *MAJOR *=", ver) != -1)]);
-          minor <- gsub("^ *MINOR *= *", "", ver[which(regexpr("^ *MINOR *=", ver) != -1)]);
-          d <- c(d[1:w], "#include <R.h>", "#include <Rinternals.h>",
-                 sprintf("#define D_MAJOR_VERSION %s", major),
-                 sprintf("#define D_MINOR_VERSION %s", minor),
-                 sprintf('#define D_BUILD_VERSION "R-%s"', build),
-                 d[seq(1 + w, length(d))]);
-        }
-        ## d <- gsub("REALLOC", "R_chk_realloc", d);
-        ## d <- gsub("MALLOC[(]", "R_chk_calloc(1,", d);
-        ## d <- gsub("CALLOC[(]", "R_chk_calloc(1,", d);
-        ## d <- gsub("FREE", "Free", d);
-        d <- gsub("([ \t])printf[(]", "\\1Rprintf(", d);
-        if (f == "parse.c") {
-          w <- which(regexpr("^static void *syntax_error_report_fn", d) != -1);
-          if (regexpr("^[ \t]*$", d[w - 1]) != -1){
-            d[w - 1] <- "\nchar * d_file_name;\n int  d_use_file_name = 0;\n"
-            while(regexpr("^[ \t]*ZNode [*]z", d[w]) == -1){
-              w <- w + 1;
-            }
-            d[w] <- sprintf("%s\n  if (d_use_file_name){\n    fn = d_dup_pathname_str(d_file_name);\n }\n", d[w]);
-          } else {
-            stop("something is wrong.")
-          }
-          d <- gsub("fprintf[(]stderr[ \t]*,", "Rprintf(", d);
+        d[w] <- sprintf("%s\n  if (d_use_file_name){\n    fn = d_dup_pathname_str(d_file_name);\n }\n", d[w]);
+      } else {
+        stop("something is wrong.")
+      }
+      d <- gsub("fprintf[(]stderr[ \t]*,", "Rprintf(", d);
 
-        }
-        d <- gsub("DBG[(]printf[(]", "DBG(Rprintf(", d)
-        if (f == "write_tables.c"){
-          w  <- which(regexpr('#include "dparse_tables.h"', d, fixed=TRUE) != -1);
-          d <- c(d[1:w], "int d_use_r_headers = 0;", d[seq(w + 1, length(d))]);
-          w <- which(regexpr("Available at http://dparser.sf.net", d, fixed=TRUE) != -1);
-          for (i in rev(w)){
-            fp <- gsub(" *fprintf[(] *([^ ]*) *,.*", "\\1", d[i]);
-            d[i] = sprintf('fprintf(%s, "/*\\n  Generated by R\\\'s mkdparse a port of Make DParser Version %%s\\n", ver);
+    }
+    d <- gsub("DBG[(]printf[(]", "DBG(Rprintf(", d)
+    if (f == "write_tables.c"){
+      w  <- which(regexpr('#include "dparse_tables.h"', d, fixed=TRUE) != -1);
+      d <- c(d[1:w], "int d_use_r_headers = 0;", d[seq(w + 1, length(d))]);
+      w <- which(regexpr("Available at http://dparser.sf.net", d, fixed=TRUE) != -1);
+      for (i in rev(w)){
+        fp <- gsub(" *fprintf[(] *([^ ]*) *,.*", "\\1", d[i]);
+        d[i] = sprintf('fprintf(%s, "/*\\n  Generated by R\\\'s mkdparse a port of Make DParser Version %%s\\n", ver);
 \tfprintf(%s,"  R available at https://github.com/nlmixrdevelopment/dparser-R\\n");
 \tfprintf(%s,"  Original dparser Available at http://dparser.sf.net\\n*/\\n\\n\\n");
 \tif (d_use_r_headers){
 \t\tfprintf(%s,"\\n\\n#include <R.h>\\n#include <Rinternals.h>\\n#define printf Rprintf\\n\\n");
 \t}',fp, fp, fp, fp);
-            d <- d[-(i - 1)];
-          }
-          w <- which(regexpr("^get_offset[(]", d) != -1) + 1;
-          print(d[w]);
-          d[w] <- paste0(d[w], "\n  (void)n; // Suppress warning...");
-          print(d[w]);
-        }
-        if (f == "util.c"){
-          w <- which(regexpr("^void *d_warn *[(]", d) != -1);
-          w2 <- w + 1;
-          while (regexpr("}", d[w2]) == -1){
-            w2 <- w2 + 1;
-          }
-          d  <- c(d[seq(1, w - 1)],
-                  'void d_warn(const char *str, ...) {
+        d <- d[-(i - 1)];
+      }
+      w <- which(regexpr("^get_offset[(]", d) != -1) + 1;
+      print(d[w]);
+      d[w] <- paste0(d[w], "\n  (void)n; // Suppress warning...");
+      print(d[w]);
+    }
+    if (f == "util.c"){
+      w <- which(regexpr("^void *d_warn *[(]", d) != -1);
+      w2 <- w + 1;
+      while (regexpr("}", d[w2]) == -1){
+        w2 <- w2 + 1;
+      }
+      d  <- c(d[seq(1, w - 1)],
+              'void d_warn(const char *str, ...) {
   char nstr[256];
   char outstr[256*2];
   va_list ap;
@@ -117,13 +117,13 @@ if (file.exists(devtools::package_file("src/dparser"))){
   warning(outstr);
 }',
 d[seq(w2 + 1, length(d))]);
-          w <- which(regexpr("^void *d_fail *[(] *const +char", d) != -1);
-          w2 <- w + 1;
-          while (regexpr("}", d[w2]) == -1){
-            w2 <- w2 + 1;
-          }
-          d  <- c(d[seq(1, w - 1)],
-                  'void d_fail(const char *str, ...) {
+      w <- which(regexpr("^void *d_fail *[(] *const +char", d) != -1);
+      w2 <- w + 1;
+      while (regexpr("}", d[w2]) == -1){
+        w2 <- w2 + 1;
+      }
+      d  <- c(d[seq(1, w - 1)],
+              'void d_fail(const char *str, ...) {
   char nstr[256];
   char outstr[256*2];
   va_list ap;
@@ -134,13 +134,10 @@ d[seq(w2 + 1, length(d))]);
   error(outstr);
 }',
 d[seq(w2 + 1, length(d))]);
-        }
-
-            sink(devtools::package_file("src/", f));
-            cat(paste(d, collapse="\n"));
-            sink()
-        }
     }
+    writeLines(d, devtools::package_file("src/", f))
+  }
+}
     id <- rex::rex(one_of("_", "a":"z", "A":"Z"), any_of("_", "a":"z", "A":"Z", "0":"9"));
     fnRex <- rex::rex(start, any_spaces, capture(id), spaces,
                       capture(any_of("*")), any_spaces, capture(id), any_spaces,

@@ -285,3 +285,4 @@ uint state_for_declaration(Grammar *g, uint iproduction);
 #if defined(__cplusplus)
 }
 #endif
+

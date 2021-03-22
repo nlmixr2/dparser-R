@@ -32,3 +32,4 @@ void build_scanners(struct Grammar *g);
 #if defined(__cplusplus)
 }
 #endif
+

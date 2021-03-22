@@ -17,3 +17,4 @@ int write_binary_tables_to_string(Grammar *g, unsigned char **str, unsigned int 
 #if defined(__cplusplus)
 }
 #endif
+
