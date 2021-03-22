@@ -94,7 +94,7 @@ removes parsers created from grammar files.}
 ## This creates the R based parsing function.  It requires
 ## compilation and runs on most OSes, with the exception of solaris.
 ## Windows requires Rtools to be installed.
-f <- dparse(system.file("tran.g", package = "dparser"),children_first=FALSE);
+f <- dparse(system.file("tran.g", package = "dparser"),children_first=FALSE)
 
 ## Once created, you may then use this function to parse an
 ## arbitrary syntax file.  For example:

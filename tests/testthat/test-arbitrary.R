@@ -1,8 +1,9 @@
 context("Test grammar parsing on the fly");
 
 test_that("expression specification works", {
-    skip_on_os("solaris");
-    f <- dparse("tran.g", children_first=FALSE);
+  skip_on_os("solaris")
+
+    f <- dparse("tran.g", children_first=FALSE)
 
     sink("tran.g-1");
     f("
@@ -14,9 +15,9 @@ test_that("expression specification works", {
         print
     }
 ", function(name, value, pos, depth){
-    cat(sprintf("name:%s;value:%s;pos:%s;depth:%s\n", name, value, pos, depth));
+    cat(sprintf("name:%s;value:%s;pos:%s;depth:%s\n", name, value, pos, depth))
 })
-    sink();
+    sink()
     t1 <- readLines("tran.g-1");
     t1c <- readLines("tran.g-1.check");
     test_that("character specification works", {
@@ -50,7 +51,7 @@ test_that("function specification works", {
     ##unlink("tran.g-2.check");file.copy("tran.g-2", "tran.g-2.check");
     f <- dparse("tran.g", children_first=FALSE);
     sink("tran.g-3");
-    f(function(){
+    suppressWarnings(f(function(){
         b       = -1
         d/dt(X) = a*X + Y*Z;
         d/dt(Y) = b*(Y - Z);
@@ -60,7 +61,7 @@ test_that("function specification works", {
         }
     }, function(name, value, pos, depth){
         cat(sprintf("name:%s;value:%s;pos:%s;depth:%s\n", name, value, pos, depth));
-    })
+    }))
     sink();
     t3 <- readLines("tran.g-3");
     t3c <- readLines("tran.g-3.check");
