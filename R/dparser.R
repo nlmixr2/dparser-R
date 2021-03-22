@@ -159,7 +159,9 @@ refresh <- function(){ # nocov start
 ##' @examples
 ##'
 ##' ## This makes the ANSI c grammar file to parse C code:
-##' mkdparse(system.file("ansic.test.g", package = "dparser"),"ansic_gram.c", grammar_ident="ascii_C");
+##' mkdparse(system.file("ansic.test.g", package = "dparser"),
+##'         file.path(tempdir(), "ansic_gram.c"),
+##'          grammar_ident="ascii_C")
 ##' @export
 mkdparse <- function(file,outputFile,
                      set_op_priority_from_rule = FALSE,

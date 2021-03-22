@@ -1,8 +1,8 @@
 if (!file.exists(devtools::package_file("src/dparser"))){
-    owd <- getwd();
-    setwd(devtools::package_file("src"));
-    system("git clone https://github.com/mattfidler/dparser")
-    setwd(owd);
+  owd <- getwd();
+  setwd(devtools::package_file("src"));
+  system("git clone https://github.com/mattfidler/dparser")
+  setwd(owd);
 }
 missingFns <- c("finalize_productions", # acutally missing
                 "d_warn",
@@ -138,62 +138,62 @@ d[seq(w2 + 1, length(d))]);
     writeLines(d, devtools::package_file("src/", f))
   }
 }
-    id <- rex::rex(one_of("_", "a":"z", "A":"Z"), any_of("_", "a":"z", "A":"Z", "0":"9"));
-    fnRex <- rex::rex(start, any_spaces, capture(id), spaces,
-                      capture(any_of("*")), any_spaces, capture(id), any_spaces,
-                      one_of("("), capture(except_any_of(")")), one_of(")"), any_spaces, one_of(";"));
-    commentRex <- rex::rex(or(group("/*", anything, "*/"), group("//", anything, end)));
-    comSep <- rex::rex(any_spaces, ",", any_spaces);
-    argRex <- rex::rex(start, any_spaces, capture(except_some_of("*")), spaces, capture(any_of("*")),
-                       any_spaces, capture(id));
-    fns <- c();
-    calls <- c();
+id <- rex::rex(one_of("_", "a":"z", "A":"Z"), any_of("_", "a":"z", "A":"Z", "0":"9"));
+fnRex <- rex::rex(start, any_spaces, capture(id), spaces,
+                  capture(any_of("*")), any_spaces, capture(id), any_spaces,
+                  one_of("("), capture(except_any_of(")")), one_of(")"), any_spaces, one_of(";"));
+commentRex <- rex::rex(or(group("/*", anything, "*/"), group("//", anything, end)));
+comSep <- rex::rex(any_spaces, ",", any_spaces);
+argRex <- rex::rex(start, any_spaces, capture(except_some_of("*")), spaces, capture(any_of("*")),
+                   any_spaces, capture(id));
+fns <- c();
+calls <- c();
 dparser <- "SEXP dparse_sexp(SEXP sexp_fileName, SEXP sexp_start_state, SEXP sexp_save_parse_tree, SEXP sexp_partial_parses, SEXP sexp_compare_stacks, SEXP sexp_commit_actions_interval, SEXP sexp_fixup, SEXP sexp_fixup_ebnf, SEXP sexp_nogreedy, SEXP sexp_noheight, SEXP sexp_use_filename, SEXP sexp_sizeof_parse_node, SEXP sexp_verbose, SEXP sexp_children_first, SEXP fn, SEXP skip_fn, SEXP env, D_ParserTables pt);\n"
-    headers <- c("dparse.h", "dparse_tables.h", "dsymtab.h", "gram.h", "gramgram.h", "lex.h",
-                 "lr.h", "mkdparse.h", "parse.h", "read_binary.h", "scan.h", "util.h", "write_tables.h");
-    defs <- c();
-    for (f in c("dparse.h", "dparse_tables.h", "dsymtab.h", "gram.h", "gramgram.h", "lex.h",
-                "lr.h", "mkdparse.h", "parse.h", "read_binary.h", "scan.h", "util.h", "write_tables.h", "")){
-        if (f == ""){
-            txt <- c(sprintf("void set_%s(int x);", globalIntVars),
-                     sprintf("int get_%s();", globalIntVars),
-                     sprintf("void set_%s(char *x);", globalCharVars),
-                     dparser);
-        } else {
-            txt <- suppressWarnings({readLines(devtools::package_file(sprintf("src/%s", f)))});
-        }
-        ## print(txt);
-        txt <- gsub(commentRex, "", txt[regexpr(fnRex, txt, perl=TRUE) != -1]);
-        for (txti in txt){
-            fnType <- gsub(fnRex, "\\1", txti, perl=TRUE);
-            stars <- gsub(fnRex, "\\2", txti, perl=TRUE);
-            fnName <- gsub("\n", "", gsub(fnRex, "\\3", txti, perl=TRUE));
-            if (fnName == "d_free"){
-                fnArg <- "void *x";
-            } else {
-                fnArg <- gsub(fnRex, "\\4", txti, perl=TRUE);
-            }
-            if (!any(fnName == missingFns)){
-                if (f != ""){
-                    defs <- c(defs, txti);
-                }
-                argsTot <- strsplit(fnArg, comSep)[[1]];
-                args <- gsub(argRex, "\\1\\2", argsTot, perl=TRUE);
-                arge <- gsub(argRex, "\\3", argsTot, perl=TRUE);
-                fn <- sprintf("%s %s%s(%s){\n  static %s %s(*fun)(%s)=NULL;\n  if (fun == NULL) fun = (%s%s (*)(%s)) R_GetCCallable(\"dparser\",\"%s\");\n  %sfun(%s);\n}\n",
-                              fnType, stars, fnName, fnArg,
-                              fnType, stars, paste(args, collapse=", "),
-                              fnType, stars, paste(args, collapse=", "),
-                              fnName,
-                              ifelse(regexpr("void", fnType) != -1,"", "return "),
-                              paste(arge, collapse=", "));
-                fns <- c(fns, fn);
-                call <- sprintf("  R_RegisterCCallable(\"dparser\",\"%s\",(DL_FUNC) %s);\n", fnName, fnName);
-                calls <- c(call, calls);
-            }
-        }
+headers <- c("dparse.h", "dparse_tables.h", "dsymtab.h", "gram.h", "gramgram.h", "lex.h",
+             "lr.h", "mkdparse.h", "parse.h", "read_binary.h", "scan.h", "util.h", "write_tables.h");
+defs <- c();
+for (f in c("dparse.h", "dparse_tables.h", "dsymtab.h", "gram.h", "gramgram.h", "lex.h",
+            "lr.h", "mkdparse.h", "parse.h", "read_binary.h", "scan.h", "util.h", "write_tables.h", "")){
+  if (f == ""){
+    txt <- c(sprintf("void set_%s(int x);", globalIntVars),
+             sprintf("int get_%s();", globalIntVars),
+             sprintf("void set_%s(char *x);", globalCharVars),
+             dparser);
+  } else {
+    txt <- suppressWarnings({readLines(devtools::package_file(sprintf("src/%s", f)))});
+  }
+  ## print(txt);
+  txt <- gsub(commentRex, "", txt[regexpr(fnRex, txt, perl=TRUE) != -1]);
+  for (txti in txt){
+    fnType <- gsub(fnRex, "\\1", txti, perl=TRUE);
+    stars <- gsub(fnRex, "\\2", txti, perl=TRUE);
+    fnName <- gsub("\n", "", gsub(fnRex, "\\3", txti, perl=TRUE));
+    if (fnName == "d_free"){
+      fnArg <- "void *x";
+    } else {
+      fnArg <- gsub(fnRex, "\\4", txti, perl=TRUE);
     }
-    fns <- sprintf("/*
+    if (!any(fnName == missingFns)){
+      if (f != ""){
+        defs <- c(defs, txti);
+      }
+      argsTot <- strsplit(fnArg, comSep)[[1]];
+      args <- gsub(argRex, "\\1\\2", argsTot, perl=TRUE);
+      arge <- gsub(argRex, "\\3", argsTot, perl=TRUE);
+      fn <- sprintf("%s %s%s(%s){\n  static %s %s(*fun)(%s)=NULL;\n  if (fun == NULL) fun = (%s%s (*)(%s)) R_GetCCallable(\"dparser\",\"%s\");\n  %sfun(%s);\n}\n",
+                    fnType, stars, fnName, fnArg,
+                    fnType, stars, paste(args, collapse=", "),
+                    fnType, stars, paste(args, collapse=", "),
+                    fnName,
+                    ifelse(regexpr("void", fnType) != -1,"", "return "),
+                    paste(arge, collapse=", "));
+      fns <- c(fns, fn);
+      call <- sprintf("  R_RegisterCCallable(\"dparser\",\"%s\",(DL_FUNC) %s);\n", fnName, fnName);
+      calls <- c(call, calls);
+    }
+  }
+}
+fns <- sprintf("/*
 Header file for using internal C-level dparser functions in dparser-R (generated).
 */
 #ifndef __dparser_H__
@@ -240,12 +240,12 @@ d_warn(const char *str, ...) {
 }
 #endif
 #endif\n", paste(fns, collapse="\n"));
-    sink(devtools::package_file("src/dparser.h"));
-    cat(fns);
-    sink();
-    cat(sprintf("\tf: dparser.h\n"));
-    sink(devtools::package_file("src/dparser.c"));
-    cat(sprintf("/*
+sink(devtools::package_file("src/dparser.h"));
+cat(fns);
+sink();
+cat(sprintf("\tf: dparser.h\n"));
+sink(devtools::package_file("src/dparser.c"));
+cat(sprintf("/*
 Register C callables to R.
 */
 #include <R.h>
@@ -275,16 +275,18 @@ void R_init_dparser(DllInfo *info){
 ",dparser, paste(sprintf("extern int %s;\nvoid set_%s(int x){\n  %s = x;\n}\nint get_%s(){\n return %s;\n}\n", globalIntVars, globalIntVars, globalIntVars, globalIntVars, globalIntVars), collapse="\n"),
 paste(sprintf("extern char * %s;\nvoid set_%s(char *x){\n  %s=x;\n}\n", globalCharVars, globalCharVars, globalCharVars), collapse="\n"),
 paste(defs, collapse="\n"),paste(calls, collapse="")));
-    sink();
-    cat(sprintf("\tf: dparser.c\n"))
-    dtest <- devtools::package_file("src/dparser/tests");
-    ttest <- devtools::package_file("tests/testthat");
-    for (f in list.files(dtest,"[.]g", full.names=TRUE)){
-      cat(sprintf("\tf: %s\n", f));
-      writeLines(gsub("printf[(]", "Rprintf(", readLines(f)), file.path(ttest, gsub(".*src/dparser/tests", "", f)))
-    }
-    sink(devtools::package_file("R/version.R"))
-    cat("##\' Version and repository for this dparser package.
+sink();
+cat(sprintf("\tf: dparser.c\n"))
+dtest <- devtools::package_file("src/dparser/tests");
+ttest <- devtools::package_file("tests/testthat");
+for (f in list.files(dtest,"[.]g", full.names=TRUE)){
+  if (!grepl("g50", f)) {
+    cat(sprintf("\tf: %s\n", f));
+    writeLines(gsub("printf[(]", "Rprintf(", readLines(f)), file.path(ttest, gsub(".*src/dparser/tests", "", f)))
+  }
+}
+sink(devtools::package_file("R/version.R"))
+cat("##\' Version and repository for this dparser package.
 ##\'
 ##\' @return A character vector with the version and repository.
 ##\' @author Matthew L. Fidler
@@ -297,29 +299,29 @@ ver <- ver[1];
 cat(gsub("Version: +", "", ver))
 cat("\",build=\"");
 cat(build);
-    cat("\",repo=\"");
-    cat("https://github.com/")
-    tmp <- readLines(devtools::package_file(".git/config"))
-    cat(gsub("\\.git$", "", gsub(".*git@github.com:", "", tmp[which(tmp == '[remote "origin"]')[1]+1])))
-    cat("\"))}\n");
-    sink();
-    sink(devtools::package_file("R/Rparse.R"))
-    tmp <- gsub("\"", "\\\\\"", readLines(devtools::package_file("build/Rparse.c")));
-    cat("##\' C code for R parser
+cat("\",repo=\"");
+cat("https://github.com/")
+tmp <- readLines(devtools::package_file(".git/config"))
+cat(gsub("\\.git$", "", gsub(".*git@github.com:", "", tmp[which(tmp == '[remote "origin"]')[1]+1])))
+cat("\"))}\n");
+sink();
+sink(devtools::package_file("R/Rparse.R"))
+tmp <- gsub("\"", "\\\\\"", readLines(devtools::package_file("build/Rparse.c")));
+cat("##\' C code for R parser
 ##\'
 ##\' @return A string for generating C tree walker
 ##\' @author Matthew L. Fidler
 ##\' @keywords internal
 ##\' @export
 dpRparse <- function(){return(\"")
-    cat(paste(tmp, collapse="\\n"));
-    cat("\\n\");}\n");
-    sink();
-    cat("Update README\n");
-    owd <- getwd();
-    on.exit({setwd(owd)});
-    setwd(devtools::package_file());
-    ## knitr::knit(devtools::package_file("README.Rmd"))
-    devtools::load_all();
-    devtools::document();
+cat(paste(tmp, collapse="\\n"));
+cat("\\n\");}\n");
+sink();
+cat("Update README\n");
+owd <- getwd();
+on.exit({setwd(owd)});
+setwd(devtools::package_file());
+## knitr::knit(devtools::package_file("README.Rmd"))
+devtools::load_all();
+devtools::document();
 
