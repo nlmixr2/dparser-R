@@ -22,7 +22,7 @@ Description: A Scannerless GLR parser/parser generator.  Note that GLR standing 
    mkdparser().  Additionally you can parse an arbitrary grammar within R using the dparse() function, which works on most OSes and is mainly for grammar
    testing.  The fastest parsing, of course, occurs at the C level, and is suggested.
 Depends:
-    R (>= 3.2.3)
+    R (>= 3.3)
 License: BSD_3_clause + file LICENSE
 Encoding: UTF-8
 LazyData: true
