@@ -317,6 +317,74 @@ gc.dparser <- function(env){
 
 }
 
+##' Get file for dparser arguments
+##'
+##' @param file - File to handle.  This file can be:
+##' \itemize{
+##'
+##' \item an actual file.
+##'
+##' \item a character string.  In this case, a temporary file is
+##' created with the character string.
+##'
+##' \item A bracket \code{\{\}} enclosed R expression.  In this case
+##' the contents of the expressions is put into a temporary file.
+##'
+##' \item A function.  In this case the contents of the function body are put into the temporary file.
+##'
+##' }
+##'
+##' @param fileext file extension of temporary file to create
+##'
+##' @param envir Environment to deparse variables
+##'
+##' @return a list of three elements:
+##' \describe{
+##'
+##' \item{\code{file}}{The file name of either the temporary file or the real file}
+##'
+##' \item{\code{use_file_name}}{If the file name was used (\code{TRUE}), or a temporary file was created(\code{FALSE})}
+##'
+##' \item{\code{md5}}{md5 of the model}
+##'
+##' }
+##' @author Matthew L. Fidler
+##' @keywords internal
+##' @export
+dpGetFile <- function(file, fileext="", envir=parent.frame(1)){
+    ret <- list(use_file_name=FALSE);
+    if (class(substitute(file)) == "call"){
+        file <- file;
+    }
+    if (class(substitute(file)) == "{"){
+        file <- deparse(substitute(file))[-1];
+        file <- paste(file[-length(file)], collapse="\n");
+    } else if (class(file) == "function" || class(file) == "call"){
+        file <- body(file);
+    } else if (class(file) == "character"){
+        if (file.exists(file)){
+            ret$use_file_name <- TRUE;
+        }
+    } else if (class(file) == "name"){
+        file <- eval(file, envir=envir);
+    } else {
+        stop(sprintf("Cant figure out how to handle the file argument (%s).", class(file)));
+    }
+    if (!ret$use_file_name){
+        ret$md5 <- digest::digest(file);
+        tmpf <- tempfile(fileext=fileext);
+        sink(tmpf);
+        cat(file);
+        sink();
+        ret$file <- tmpf;
+    } else {
+        ret$md5 <- digest::digest(file, file=TRUE);
+        ret$file <- file;
+    }
+    return(ret);
+}
+
+
 ##' Create R-based Dparser tree walking function based on grammar
 ##'
 ##' Note R-based dparser tree walking works on Windows (with R tools)

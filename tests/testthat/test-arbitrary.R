@@ -3,7 +3,7 @@ context("Test grammar parsing on the fly");
 test_that("expression specification works", {
   skip_on_os("solaris")
 
-    f <- dparse("tran.g", children_first=FALSE)
+    f <- dparse(system.file("tran.g", package = "dparser"), children_first=FALSE)
 
     sink("tran.g-1");
     f("
@@ -49,7 +49,7 @@ test_that("expression specification works", {
 test_that("function specification works", {
     skip_on_os("solaris");
     ##unlink("tran.g-2.check");file.copy("tran.g-2", "tran.g-2.check");
-    f <- dparse("tran.g", children_first=FALSE);
+    f <- dparse(system.file("tran.g", package = "dparser"), children_first=FALSE);
     sink("tran.g-3");
     suppressWarnings(f(function(){
         b       = -1

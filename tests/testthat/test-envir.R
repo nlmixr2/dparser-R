@@ -2,7 +2,7 @@ context("Test that the environment works")
 
 test_that("parent environment is correct",{
     skip_on_os("solaris")
-    f <- dparse("tran.g");
+    f <- dparse(system.file("tran.g", package="dparser"))
 
     env <- new.env();
     env$test <- "found";
