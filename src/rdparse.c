@@ -6,7 +6,6 @@
 #include <Rinternals.h>
 #include <R_ext/Rdynload.h>
 #include <Rmath.h>
-
 extern int d_use_file_name;
 extern char *d_file_name;
 extern int d_use_r_headers;
@@ -103,6 +102,22 @@ void parsetree(D_ParserTables pt, D_ParseNode *pn, int depth, SEXP fn, SEXP skip
   Free(value);
 }
 
+D_Parser *__curP=NULL;
+D_ParseNode *__pn = 0;
+
+void __freeP() {
+  if (__pn){
+    free_D_ParseTreeBelow(__curP,__pn);
+    free_D_ParseNode(__curP,__pn);
+  }
+  __pn=0;
+  if (__curP != NULL){
+    free_D_Parser(__curP);
+  }
+  __curP = NULL;
+}
+
+
 SEXP dparse_sexp(SEXP sexp_fileName,
 		 SEXP sexp_start_state,
 		 SEXP sexp_save_parse_tree,
@@ -121,38 +136,37 @@ SEXP dparse_sexp(SEXP sexp_fileName,
 		 SEXP skip_fn,
 		 SEXP env,
 		 D_ParserTables pt){
+  __freeP();
   char *buf = NULL;
-  D_Parser *p;
-  D_ParseNode *pn = NULL;
   int children_first;
-  p = new_D_Parser(&pt, INTEGER(sexp_sizeof_parse_node)[0]);
-  p->save_parse_tree = INTEGER(sexp_save_parse_tree)[0];
-  p->ambiguity_fn = ambiguity_count_fn;
-  p->partial_parses = INTEGER(sexp_partial_parses)[0];
-  p->dont_fixup_internal_productions = !(INTEGER(sexp_fixup)[0]);
-  p->fixup_EBNF_productions = INTEGER(sexp_fixup_ebnf)[0];
-  p->dont_compare_stacks = !(INTEGER(sexp_compare_stacks)[0]);
-  p->commit_actions_interval = INTEGER(sexp_commit_actions_interval)[0];
-  p->start_state = INTEGER(sexp_start_state)[0];
-  p->dont_use_greediness_for_disambiguation = INTEGER(sexp_nogreedy)[0];
-  p->dont_use_height_for_disambiguation = INTEGER(sexp_noheight)[0];
+  __curP = new_D_Parser(&pt, INTEGER(sexp_sizeof_parse_node)[0]);
+  __curP->save_parse_tree = INTEGER(sexp_save_parse_tree)[0];
+  __curP->ambiguity_fn = ambiguity_count_fn;
+  __curP->partial_parses = INTEGER(sexp_partial_parses)[0];
+  __curP->dont_fixup_internal_productions = !(INTEGER(sexp_fixup)[0]);
+  __curP->fixup_EBNF_productions = INTEGER(sexp_fixup_ebnf)[0];
+  __curP->dont_compare_stacks = !(INTEGER(sexp_compare_stacks)[0]);
+  __curP->commit_actions_interval = INTEGER(sexp_commit_actions_interval)[0];
+  __curP->start_state = INTEGER(sexp_start_state)[0];
+  __curP->dont_use_greediness_for_disambiguation = INTEGER(sexp_nogreedy)[0];
+  __curP->dont_use_height_for_disambiguation = INTEGER(sexp_noheight)[0];
   d_file_name = (char*)CHAR(STRING_ELT(sexp_fileName,0));
   buf = sbuf_read(d_file_name);
   d_verbose_level = INTEGER(sexp_verbose)[0];
   d_use_file_name = INTEGER(sexp_use_filename)[0];
   children_first = INTEGER(sexp_children_first)[0];
-  pn = dparse(p, buf, strlen(buf));
+  __pn = dparse(__curP, buf, strlen(buf));
   d_verbose_level = 0;
-  if (pn && !p->syntax_errors) {
-    parsetree(pt, pn, 0, fn, skip_fn, env, children_first);
+  if (__pn && !__curP->syntax_errors) {
+    parsetree(pt, __pn, 0, fn, skip_fn, env, children_first);
   } else {
-    if (!p->syntax_errors){
+    if (!__curP->syntax_errors){
       if (d_use_file_name){
         d_use_file_name = 0;    
-        error("fatal error, '%s' line %d", CHAR(STRING_ELT(sexp_fileName,0)), p->loc.line);
+        error("fatal error, '%s' line %d", CHAR(STRING_ELT(sexp_fileName,0)), __curP->loc.line);
       }
       else{
-	error("fatal error, '' line %d", p->loc.line);
+	error("fatal error, '' line %d", __curP->loc.line);
       }
     } else {
       if (d_use_file_name){

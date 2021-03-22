@@ -274,3 +274,8 @@ void R_init_dparser(DllInfo *info){
   R_RegisterCCallable("dparser","free_D_Parser",(DL_FUNC) free_D_Parser);
   R_RegisterCCallable("dparser","new_D_Parser",(DL_FUNC) new_D_Parser);
 }
+extern void __freeP();
+
+void R_unload_dparser(DllInfo *info){
+  __freeP();
+}
