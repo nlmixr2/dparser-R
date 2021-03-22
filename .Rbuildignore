@@ -24,3 +24,4 @@ dparser.*\.(zip|pdf)$
 ^/?build/.*$
 ^cran-comments\.md$
 ^\.github$
+^codecov\.yml$
