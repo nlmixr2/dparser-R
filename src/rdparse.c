@@ -105,7 +105,13 @@ void parsetree(D_ParserTables pt, D_ParseNode *pn, int depth, SEXP fn, SEXP skip
 D_Parser *__curP=NULL;
 D_ParseNode *__pn = 0;
 
+char *__buf = NULL;
+
 void __freeP() {
+  if (__buf != NULL) {
+    free(__buf);
+    __buf = NULL;
+  }
   if (__pn){
     free_D_ParseTreeBelow(__curP,__pn);
     free_D_ParseNode(__curP,__pn);
@@ -137,7 +143,6 @@ SEXP dparse_sexp(SEXP sexp_fileName,
 		 SEXP env,
 		 D_ParserTables pt){
   __freeP();
-  char *buf = NULL;
   int children_first;
   __curP = new_D_Parser(&pt, INTEGER(sexp_sizeof_parse_node)[0]);
   __curP->save_parse_tree = INTEGER(sexp_save_parse_tree)[0];
@@ -151,11 +156,11 @@ SEXP dparse_sexp(SEXP sexp_fileName,
   __curP->dont_use_greediness_for_disambiguation = INTEGER(sexp_nogreedy)[0];
   __curP->dont_use_height_for_disambiguation = INTEGER(sexp_noheight)[0];
   d_file_name = (char*)CHAR(STRING_ELT(sexp_fileName,0));
-  buf = sbuf_read(d_file_name);
+  __buf = sbuf_read(d_file_name);
   d_verbose_level = INTEGER(sexp_verbose)[0];
   d_use_file_name = INTEGER(sexp_use_filename)[0];
   children_first = INTEGER(sexp_children_first)[0];
-  __pn = dparse(__curP, buf, strlen(buf));
+  __pn = dparse(__curP, __buf, strlen(__buf));
   d_verbose_level = 0;
   if (__pn && !__curP->syntax_errors) {
     parsetree(pt, __pn, 0, fn, skip_fn, env, children_first);

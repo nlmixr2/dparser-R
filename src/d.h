@@ -37,7 +37,7 @@
 #include <Rinternals.h>
 #define D_MAJOR_VERSION 1
 #define D_MINOR_VERSION 31
-#define D_BUILD_VERSION "R-67d59ca1060e6a5aad449b627d6c07c4775f734b"
+#define D_BUILD_VERSION "R-0f7337bcf82362ef30eb67d4e260f243f4217a26"
 #include <strings.h>
 
 #ifdef LEAK_DETECT
@@ -99,6 +99,7 @@ typedef unsigned int uint;
 #endif
 
 #include "dparse.h"
+
 #include "util.h"
 #include "gram.h"
 #include "lr.h"

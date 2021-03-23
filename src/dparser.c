@@ -157,6 +157,9 @@ int write_binary_tables_to_string(Grammar *g, unsigned char **str, unsigned int 
 
 SEXP cDparser(SEXP fileName, SEXP sexp_output_file, SEXP set_op_priority_from_rule , SEXP right_recursive_BNF , SEXP states_for_whitespace , SEXP states_for_all_nterms , SEXP tokenizer , SEXP longest_match , SEXP sexp_grammar_ident , SEXP scanner_blocks , SEXP write_line_directives , SEXP rdebug, SEXP verbose, SEXP sexp_write_extension, SEXP write_header, SEXP token_type, SEXP use_r_header);
 
+
+void __freeP();
+
 void R_init_dparser(DllInfo *info){
   R_CallMethodDef callMethods[]  = {
     {"cDparser", (DL_FUNC) &cDparser, 17},
@@ -164,6 +167,7 @@ void R_init_dparser(DllInfo *info){
   };
   R_registerRoutines(info, NULL, callMethods, NULL, NULL);
   R_useDynamicSymbols(info, FALSE);
+  R_RegisterCCallable("dparser","__freeP",(DL_FUNC) __freeP);
   R_RegisterCCallable("dparser","dparse_sexp",(DL_FUNC) dparse_sexp);
   R_RegisterCCallable("dparser","set_d_file_name",(DL_FUNC) set_d_file_name);
   R_RegisterCCallable("dparser","get_d_debug_level",(DL_FUNC) get_d_debug_level);
@@ -274,8 +278,8 @@ void R_init_dparser(DllInfo *info){
   R_RegisterCCallable("dparser","free_D_Parser",(DL_FUNC) free_D_Parser);
   R_RegisterCCallable("dparser","new_D_Parser",(DL_FUNC) new_D_Parser);
 }
-extern void __freeP();
 
-void R_unload_dparser(DllInfo *info){
+void R_unload_dparser() {
   __freeP();
 }
+

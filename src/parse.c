@@ -1682,7 +1682,7 @@ char * d_file_name;
 
 static void syntax_error_report_fn(struct D_Parser *ap) {
   Parser *p = (Parser *)ap;
-  char *fn = d_dup_pathname_str(p->user.loc.pathname);
+ char *fn = NULL;
   char *after = 0;
   SNode *sn = p->snode_hash.last_all;
   ZNode *z = 0;

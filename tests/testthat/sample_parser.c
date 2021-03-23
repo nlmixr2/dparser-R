@@ -52,7 +52,7 @@ SEXP sample_parser(SEXP sexp_fileName,
                    SEXP sexp_noheight,
                    SEXP sexp_use_filename){
   char *buf = NULL;
-  D_Parser *p;
+  D_Parser *p = NULL;
   D_ParseNode *pn = NULL;
   p = new_D_Parser(&parser_tables_gram, SIZEOF_MY_PARSE_NODE);
   p->save_parse_tree = INTEGER(sexp_save_parse_tree)[0];
@@ -77,7 +77,16 @@ SEXP sample_parser(SEXP sexp_fileName,
       Rprintf("fatal error, '' line %d\n", p->loc.line);
   }
   set_d_verbose_level(0);
-  set_d_use_file_name(0);  
+  set_d_use_file_name(0);
+  if (pn){
+    free_D_ParseTreeBelow(p,pn);
+    free_D_ParseNode(p,pn);
+  }
+  pn=0;
+  if (p != NULL){
+    free_D_Parser(p);
+  }
+  p = NULL;
   return R_NilValue;
   //exit(0);
 }

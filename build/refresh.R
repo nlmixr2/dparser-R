@@ -49,7 +49,8 @@ if (file.exists(devtools::package_file("src/dparser"))) {
       ## w <- which(regexpr('#define (REALLOC|MALLOC|FREE|CALLOC)', d) != -1);
       ## d <- d[-w];
       w <- which(regexpr('#include "arg.h"', d) != -1);
-      d <- d[-w];
+      d[w] <- ""
+      ## d <- d[-w];
       w <- which(regexpr('#include <string.h>', d) != -1)
       ver  <- readLines(devtools::package_file("src/dparser/Makefile"));
       major <- gsub("^ *MAJOR *= *", "", ver[which(regexpr("^ *MAJOR *=", ver) != -1)]);
@@ -73,6 +74,8 @@ if (file.exists(devtools::package_file("src/dparser"))) {
           w <- w + 1;
         }
         d[w] <- sprintf("%s\n  if (d_use_file_name){\n    fn = d_dup_pathname_str(d_file_name);\n }\n", d[w]);
+        w <- which(regexpr(" *char +[*]fn *=", d) != -1)[1]
+        d[w] <- " char *fn = NULL;"
       } else {
         stop("something is wrong.")
       }
@@ -264,6 +267,9 @@ Register C callables to R.
 
 SEXP cDparser(SEXP fileName, SEXP sexp_output_file, SEXP set_op_priority_from_rule , SEXP right_recursive_BNF , SEXP states_for_whitespace , SEXP states_for_all_nterms , SEXP tokenizer , SEXP longest_match , SEXP sexp_grammar_ident , SEXP scanner_blocks , SEXP write_line_directives , SEXP rdebug, SEXP verbose, SEXP sexp_write_extension, SEXP write_header, SEXP token_type, SEXP use_r_header);
 
+
+void __freeP();
+
 void R_init_dparser(DllInfo *info){
   R_CallMethodDef callMethods[]  = {
     {\"cDparser\", (DL_FUNC) &cDparser, 17},
@@ -271,7 +277,13 @@ void R_init_dparser(DllInfo *info){
   };
   R_registerRoutines(info, NULL, callMethods, NULL, NULL);
   R_useDynamicSymbols(info, FALSE);
+  R_RegisterCCallable(\"dparser\",\"__freeP\",(DL_FUNC) __freeP);
 %s}
+
+void R_unload_dparser() {
+  __freeP();
+}
+
 ",dparser, paste(sprintf("extern int %s;\nvoid set_%s(int x){\n  %s = x;\n}\nint get_%s(){\n return %s;\n}\n", globalIntVars, globalIntVars, globalIntVars, globalIntVars, globalIntVars), collapse="\n"),
 paste(sprintf("extern char * %s;\nvoid set_%s(char *x){\n  %s=x;\n}\n", globalCharVars, globalCharVars, globalCharVars), collapse="\n"),
 paste(defs, collapse="\n"),paste(calls, collapse="")));
