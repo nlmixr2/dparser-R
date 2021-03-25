@@ -256,10 +256,7 @@ Register C callables to R.
 #include <Rdefines.h>
 #include <Rconfig.h>
 #include <R_ext/Rdynload.h>
-#include \"gramgram.h\"
 #include \"d.h\"
-#include \"mkdparse.h\"
-#include \"dparse.h\"
 %s
 %s
 %s

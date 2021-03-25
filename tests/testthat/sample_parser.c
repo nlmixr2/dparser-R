@@ -70,6 +70,7 @@ SEXP sample_parser(SEXP sexp_fileName,
   set_d_verbose_level(1);
   set_d_use_file_name(INTEGER(sexp_use_filename)[0]);
   pn = dparse(p, buf, strlen(buf));
+  free(buf);
   if (!pn) {
     if (get_d_use_file_name())
       Rprintf("fatal error, '%s' line %d\n", CHAR(STRING_ELT(sexp_fileName,0)), p->loc.line);

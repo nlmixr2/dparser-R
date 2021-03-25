@@ -181,26 +181,26 @@ mkdparse <- function(file,outputFile,
                      write_extension="c",
                      use_r_header = TRUE
                      ){
-    file <- gsub("\\\\","/",file);
+    file <- gsub("\\\\","/",normalizePath(file))
     if (missing(write_header) || write_header == "IfEmpty"){
         write_header <- -1;
     }
     if (ident_from_filename){
         ## Put ident from the filename
-        grammar_ident = (gsub("[.][^.]$","",basename(file)));
+        grammar_ident = (gsub("[.][^.]$","",basename(file)))
     }
     if (missing(outputFile)){
-        outputFile <- file.path(dirname(file),paste0(basename(file),".d_parser.",write_extension));
+        outputFile <- file.path(dirname(file),paste0(basename(file),".d_parser.",write_extension))
     } else if (dir.exists(outputFile)){
-        outputFile <- file.path(outputFile,paste0(basename(file),".d_parser.",write_extension));
+        outputFile <- file.path(outputFile,paste0(basename(file),".d_parser.",write_extension))
     }
-    outputFile <- gsub("\\\\","/",outputFile);
+    outputFile <- gsub("\\\\","/",suppressWarnings(normalizePath(outputFile)))
     if (missing(token_type)){
-        token_type <- 0;
+        token_type <- 0
     } else if (token_type == "enum"){
-        token_type <- 1;
+        token_type <- 1
     } else {
-        token_type <- 0;
+        token_type <- 0
     }
     .Call(cDparser,
           file,
@@ -220,8 +220,8 @@ mkdparse <- function(file,outputFile,
           as.integer(write_header),
           as.integer(token_type),
           as.integer(use_r_header),
-          PACKAGE="dparser");
-    return(invisible());
+          PACKAGE="dparser")
+    return(invisible())
 }
 
 ##' Return the include directory
@@ -467,6 +467,7 @@ dparse <- function(grammar,
   if (!file.exists(grammar)) {
     stop("'grammar' file doesn't exist")
   }
+  grammar <- normalizePath(grammar)
   .oldWd <- getwd()
   setwd(tempdir())
   on.exit(setwd(.oldWd))
@@ -495,36 +496,26 @@ dparse <- function(grammar,
       unlink(dll.file);
     }
   }
-  if (!file.exists(dll.file)){
-    tmpf <- tempfile()
-    mkdparse(grammar, tmpf, grammar_ident=gram, ..., use_r_header=TRUE);
-    tmp <- readLines(tmpf);
-    unlink(tmpf);
-    ## could use brew but I prefer minimal dependencies.
-    tmp <- gsub("<%=digest%>", md5,
-                gsub("<%=pasertables%>", paste(tmp, collapse="\n"),
-                     gsub("<%=gram%>", gram, dpRparse())));
+  tmpf <- tempfile()
+  mkdparse(grammar, tmpf, grammar_ident=gram, ..., use_r_header=TRUE);
+  tmp <- readLines(tmpf)
+  unlink(tmpf)
+  ## could use brew but I prefer minimal dependencies.
+  tmp <- gsub("<%=digest%>", md5,
+              gsub("<%=pasertables%>", paste(tmp, collapse="\n"),
+                   gsub("<%=gram%>", gram, dpRparse())))
 
-    tmpd <- tempfile();
-    dir.create(tmpd);
-    owd <- getwd();
-    setwd(tmpd);
-    sink(sprintf("%s_%s.c", gram, .Platform$r_arch));
-    cat(tmp);
-    sink();
-    sink("Makevars");
-    cat(sprintf("PKG_CFLAGS=-I\"%s\"\n",dpIncludeDir()))
-    sink();
-    cmd <- sprintf("%s/bin/R CMD SHLIB %s_%s.c",
-                   Sys.getenv("R_HOME"), gram, .Platform$r_arch);
-    sh <- "system";
-    do.call(sh,list(cmd,ignore.stdout=!getOption("dparser.echo.compile", TRUE),
-                    ignore.stderr=!getOption("dparser.echo.compile", TRUE)));
-    setwd(owd);
-    file.copy(file.path(tmpd, dll.file), getwd());
-    unlink(tmpd, recursive=TRUE);
-  }
-  dyn.load(dll.file);
+  tmpd <- tempfile()
+  dir.create(tmpd)
+  owd <- getwd()
+  setwd(tmpd)
+  writeLines(tmp, sprintf("%s_%s.c", gram, .Platform$r_arch))
+  writeLines(sprintf("PKG_CFLAGS=-I\"%s\"\n",dpIncludeDir()), "Makevars")
+  cmd <- sprintf("%s/bin/R CMD SHLIB %s_%s.c",
+                 Sys.getenv("R_HOME"), gram, .Platform$r_arch)
+  do.call(system,list(cmd,ignore.stdout=!getOption("dparser.echo.compile", FALSE),
+                  ignore.stderr=!getOption("dparser.echo.compile", FALSE)))
+  dyn.load(dll.file)
   fun <- eval(bquote(function(file,
                               fn,
                               skip_fn,
@@ -546,7 +537,7 @@ dparse <- function(grammar,
                               ){
     NULL
   }))
-  sym <- getNativeSymbolInfo(sprintf('dparse_%s', gram), PACKAGE=pkg);
+  sym <- getNativeSymbolInfo(sprintf('dparse_%s', gram), PACKAGE=pkg)
   body <- bquote({
     if (missing(skip_fn)){
       skip_fn <- quote(dparser::dpDefaultSkip);
@@ -607,7 +598,7 @@ dparse <- function(grammar,
     assignInMyNamespace("gc.items", tmp);
   }
   reg.finalizer(ret@env, gc.dparser, onexit=TRUE);
-  return(ret);
+  return(ret)
 }
 
 ##' Default skip function for darsing grammar
