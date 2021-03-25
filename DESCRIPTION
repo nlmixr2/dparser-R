@@ -14,7 +14,7 @@ Suggests:
     devtools,
 Description: A Scannerless GLR parser/parser generator.  Note that GLR standing for "generalized LR", where L stands for "left-to-right" and
    R stands for "rightmost (derivation)".  For more information see <https://en.wikipedia.org/wiki/GLR_parser>. This parser is based on the Tomita
-   (1987) algorithm. (Paper can be found at <http://acl-arc.comp.nus.edu.sg/archives/acl-arc-090501d3/data/pdf/anthology-PDF/J/J87/J87-1004.pdf>).
+   (1987) algorithm. (Paper can be found at <https://www.aclweb.org/anthology/P84-1073.pdf>).
    The original 'dparser' package documentation can be found at <http://dparser.sourceforge.net/>.  This allows you to add mini-languages to R (like
    RxODE's ODE mini-language Wang, Hallow, and James 2015 <DOI:10.1002/psp4.12052>) or to parse other languages like 'NONMEM' to automatically translate
    them to R code.   To use this in your code, add a LinkingTo dparser in your DESCRIPTION file and instead of using #include <dparse.h> use
