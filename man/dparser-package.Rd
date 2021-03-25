@@ -666,6 +666,15 @@ rees.  This may be of some assistence in disambiguating a grammar.
 }
 }
 
+\seealso{
+Useful links:
+\itemize{
+  \item \url{https://nlmixrdevelopment.github.io/dparser-R/}
+  \item \url{https://github.com/nlmixrdevelopment/dparser-R/}
+  \item Report bugs at \url{https://github.com/nlmixrdevelopment/dparser-R/issues/}
+}
+
+}
 \author{
 \strong{Maintainer}: Matthew Fidler \email{matthew.fidler@gmail.com}
 
