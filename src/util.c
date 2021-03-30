@@ -66,13 +66,12 @@ int buf_read(const char *pathname, char **buf, int *len) {
 }
 
 char *sbuf_read(const char *pathname) {
-  char *buf =NULL;
+  char *buf;
   int len;
 
   if (buf_read(pathname, &buf, &len) < 0) {
-    if (buf != NULL) {
-      FREE(buf);
-    }
+    FREE(buf);
+    buf = NULL;
     return NULL;
   }
   return buf;

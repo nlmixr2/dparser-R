@@ -1,4 +1,4 @@
-# dparser 1.3.1-1
+# dparser 1.3.1-2
 
 * Updated R deparser to use the more recent version of dparser
 

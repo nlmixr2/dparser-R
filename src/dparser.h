@@ -8,7 +8,11 @@ Header file for using internal C-level dparser functions in dparser-R (generated
 #include <Rdefines.h>
 #include <Rconfig.h>
 #include <R_ext/Rdynload.h>
+#include "gramgram.h"
 #include "d.h"
+#include "mkdparse.h"
+#include "dparse.h"
+#include "read_binary.h"
 #if defined(__cplusplus)
 extern "C" {
 #endif

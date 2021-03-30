@@ -1,21 +1,25 @@
-## Test environments
+> Found the following significant warnings:
+>   write_tables.c:1136:15: warning: ‘sprintf’ argument 3 may overlap
+> destination object ‘xx’ [-Wrestrict]
+>   gram.c:409:3: warning: null destination pointer [-Wformat-overflow=]
 
-This release fixes some un-sanitized behaviors from gcc/clang and
-updates to the latest upstream dparser
+# Fixes for write_tables:
 
-* Mac-latest release
-* windows-latest release
-* windows-latest (3.6)
-* ubuntu valgrind 18.04 (devel)
-* ubuntu clang address sanitizer (devel) 
-* PopOS 20.04 lto (R devel)
-* PopOS 20.04 gcc address sanitizer (devel) 
-* Solaris 10 (release)
-* ubuntu 18.04 (devel)
-* Ubuntu 18.04 (release)
-* Ubuntu 18.04 (oldrel)
-* Ubuntu 18.04 (3.5)
-* Ubuntu 18.04 (3.4)
-* Ubuntu 18.04 (3.3)
+To ensure write_tables does not overlap use snprintf()
 
-See https://github.com/nlmixrdevelopment/dparser-R/actions/runs/687974227
+# Fixes for gram.c
+
+This occurs when printing to a recently allocated character string.  I
+added a check to make sure that the memory was allocated.  If it was
+not allocated, error out. 
+
+
+# Reproducible Environment
+
+I could not reproduce these warnings on my gcc test environment, so I
+cannot test if these were fixed.
+
+If these fixes still produce errors, please provide information on the
+gcc test environment so I can fix these issues for CRAN.
+
+

@@ -6,10 +6,7 @@ Register C callables to R.
 #include <Rdefines.h>
 #include <Rconfig.h>
 #include <R_ext/Rdynload.h>
-#include "gramgram.h"
 #include "d.h"
-#include "mkdparse.h"
-#include "dparse.h"
 SEXP dparse_sexp(SEXP sexp_fileName, SEXP sexp_start_state, SEXP sexp_save_parse_tree, SEXP sexp_partial_parses, SEXP sexp_compare_stacks, SEXP sexp_commit_actions_interval, SEXP sexp_fixup, SEXP sexp_fixup_ebnf, SEXP sexp_nogreedy, SEXP sexp_noheight, SEXP sexp_use_filename, SEXP sexp_sizeof_parse_node, SEXP sexp_verbose, SEXP sexp_children_first, SEXP fn, SEXP skip_fn, SEXP env, D_ParserTables pt);
 
 extern int d_use_r_headers;
