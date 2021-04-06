@@ -59,3 +59,8 @@ In the cran system this gives the following error:
 This means that the R headers are not explicitly included in the
 grammar.  The fix explicitly includes the grammars (checked by hand),
 so the error in Fedora will no longer occur.
+
+Also checked on rhub fedora (which didn't show the CRAN error), and it
+still check successfully:
+
+https://builder.r-hub.io/status/dparser_1.3.1-4.tar.gz-5e56bd55e8014567829a74aef47bef8e
