@@ -1,25 +1,38 @@
-> Found the following significant warnings:
->   write_tables.c:1136:15: warning: ‘sprintf’ argument 3 may overlap
-> destination object ‘xx’ [-Wrestrict]
->   gram.c:409:3: warning: null destination pointer [-Wformat-overflow=]
+# Comments
 
-# Fixes for write_tables:
+> Please see the problems shown on
+> <https://cran.r-project.org/web/checks/check_results_dparser.html>.
+> 
+> Please correct before 2021-04-20 to safely retain your package on CRAN.
+> 
+> The CRAN Team
+> 
+>
+> 
+> This seems to be from a problem with making the DSO but, bizarrely, you have
+>
+>     sh <- "system";
+>     do.call(sh,list(cmd,ignore.stdout=TRUE,ignore.stderr=TRUE));
+>
+>that is
+>
+>system(cmd, ignore.stdout=TRUE, ignore.stderr=TRUE)
+>
+>thereby suppressing all the diagnostics and not checking the status and
+>continuing if it fails.  So we will never know.
 
-To ensure write_tables does not overlap use snprintf()
 
-# Fixes for gram.c
+# Revision
 
-This occurs when printing to a recently allocated character string.  I
-added a check to make sure that the memory was allocated.  If it was
-not allocated, error out. 
+Changed to:
 
+> system(cmd, ignore.stdout=FALSE, ignore.stderr=FALSE)
 
-# Reproducible Environment
+instead of
 
-I could not reproduce these warnings on my gcc test environment, so I
-cannot test if these were fixed.
+> do.call("system" list(cmd, ignore.stdout=TRUE, ignore.stderr=TRUE))
 
-If these fixes still produce errors, please provide information on the
-gcc test environment so I can fix these issues for CRAN.
+Checked on Fedora with rhub:
 
+https://builder.r-hub.io/status/dparser_1.3.1-2.tar.gz-879de5fd2f8e422bb003fb11fde5f3e4
 
