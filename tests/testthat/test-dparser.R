@@ -2,9 +2,6 @@ sysname <- tolower(Sys.info()[["sysname"]])
 if (!any(sysname == c("sunos", "darwin"))) {
   library(digest)
   files <- list.files(pattern=".*\\.test\\.g$")
-  if (!identical(Sys.getenv("NOT_CRAN"), "true")){
-    files <- files[1:3] ## Only do 3 tests on CRAN.
-  }
   skipTests <- NULL#("g50.test.g: g50.test.g.1", "g10.test.g: g10.test.g.1");
   #files <- NULL
   for (file in files){

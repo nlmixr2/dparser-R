@@ -1,3 +1,8 @@
+# dparser 1.3.1-4
+
+* Updated dparser to explicitly include R headers in the generated
+  grammars (when requested), which should fix the fedora problem
+
 # dparser 1.3.1-3
 
 * Updated R dparser to use `system()` instead of `do.call("system",...)`
