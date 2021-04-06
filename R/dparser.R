@@ -513,8 +513,8 @@ dparse <- function(grammar,
   writeLines(sprintf("PKG_CFLAGS=-I\"%s\"\n",dpIncludeDir()), "Makevars")
   cmd <- sprintf("%s/bin/R CMD SHLIB %s_%s.c",
                  Sys.getenv("R_HOME"), gram, .Platform$r_arch)
-  do.call(system,list(cmd,ignore.stdout=!getOption("dparser.echo.compile", FALSE),
-                  ignore.stderr=!getOption("dparser.echo.compile", FALSE)))
+  system(cmd,ignore.stdout=!getOption("dparser.echo.compile", TRUE),
+         ignore.stderr=!getOption("dparser.echo.compile", TRUE))
   dyn.load(dll.file)
   fun <- eval(bquote(function(file,
                               fn,
