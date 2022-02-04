@@ -1,11 +1,11 @@
-[![R-CMD-check](https://github.com/nlmixrdevelopment/dparser-R/workflows/R-CMD-check/badge.svg)](https://github.com/nlmixrdevelopment/dparser-R/actions)
-[![Codecov test coverage](https://codecov.io/gh/nlmixrdevelopment/dparser-R/branch/master/graph/badge.svg)](https://codecov.io/gh/nlmixrdevelopment/dparser-R?branch=master)
+[![R-CMD-check](https://github.com/nlmixr2/dparser-R/workflows/R-CMD-check/badge.svg)](https://github.com/nlmixr2/dparser-R/actions)
+[![Codecov test coverage](https://codecov.io/gh/nlmixr2/dparser-R/branch/master/graph/badge.svg)](https://codecov.io/gh/nlmixr2/dparser-R?branch=master)
 [![CRAN version](http://www.r-pkg.org/badges/version/dparser)](https://cran.r-project.org/package=dparser)
 [![CRAN checks](https://cranchecks.info/badges/summary/dparser)](https://cran.r-project.org/web/checks/check_results_dparser.html)
 
 The R version of dparser is meant to be used as a package library
 where you link the C parser to an arbitrary grammer parsed in R.  This
-is what is used in `RxODE()`
+is what is used in `rxode2()`
 
 ### Differences between the R dparser port and the C-version of dparser
 
