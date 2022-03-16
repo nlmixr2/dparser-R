@@ -1138,7 +1138,6 @@ static void write_code(FILE *fp, Grammar *g, Rule *r, char *code, char *fname, i
             if (isspace_(*e)) e++;
             i = !i;
           }
-          if (!xx[!i]) d_fail("empty ${child } at line %d", line);
           fprintf(fp, "%s", xx[!i]);
         } else if (STREQ(c, e - c, "reject")) {
           fprintf(fp, " return -1 ");
