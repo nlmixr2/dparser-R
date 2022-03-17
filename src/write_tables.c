@@ -1133,7 +1133,7 @@ static void write_code(FILE *fp, Grammar *g, Rule *r, char *code, char *fname, i
             if (!*y)
               snprintf(x, 4095, "(D_PN(_children[%s], _offset))", n);
             else
-              snprintf(x, 4095, "d_get_child(%s, %s)", xx[!i], n);
+              snprintf(x, 4095, "d_get_child(%s, %s)", y, n);
             if (*e == ',') e++;
             if (isspace_(*e)) e++;
             i = !i;
