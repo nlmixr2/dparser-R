@@ -353,19 +353,19 @@ gc.dparser <- function(env){
 ##' @export
 dpGetFile <- function(file, fileext="", envir=parent.frame(1)){
     ret <- list(use_file_name=FALSE);
-    if (class(substitute(file)) == "call"){
-        file <- file;
+    if (inherits(substitute(file), "call")){
+        file <- file
     }
-    if (class(substitute(file)) == "{"){
-        file <- deparse(substitute(file))[-1];
-        file <- paste(file[-length(file)], collapse="\n");
-    } else if (class(file) == "function" || class(file) == "call"){
-        file <- body(file);
-    } else if (class(file) == "character"){
+    if (inherits(substitute(file), "{")) {
+        file <- deparse(substitute(file))[-1]
+        file <- paste(file[-length(file)], collapse="\n")
+    } else if (inherits(file, "function") || inherits(file, "call")){
+        file <- body(file)
+    } else if (inherits(file, "character")){
         if (file.exists(file)){
             ret$use_file_name <- TRUE;
         }
-    } else if (class(file) == "name"){
+    } else if (inherits(file, "name")){
         file <- eval(file, envir=envir);
     } else {
         stop(sprintf("Cant figure out how to handle the file argument (%s).", class(file)));
