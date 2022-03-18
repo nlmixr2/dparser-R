@@ -48,7 +48,7 @@
 ##'
 ##' @template grammar
 ##' @useDynLib dparser, .registration=TRUE
-##' @importFrom methods new
+##' @importFrom methods new is
 ##' @importFrom utils assignInMyNamespace
 "_PACKAGE"
 .onLoad <- function(libname, pkgname){ ## nocov start
