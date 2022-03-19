@@ -1,3 +1,4 @@
+skip_on_cran()
 sysname <- tolower(Sys.info()[["sysname"]])
 if (!any(sysname == c("sunos", "darwin"))) {
   library(digest)
