@@ -18,7 +18,7 @@ https://github.com/jplevyak/dparser"><!-- mathjax --><script src="https://cdnjs.
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">dparser</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.3.1-5</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.3.1-6</span>
       </span>
     </div>
 
@@ -354,8 +354,8 @@ op: '*' $binary_op_left 2 |
 </code></pre></div>
 
 <ul><li><p>Rule Priorities</p></li>
-</ul><p>Rule priorities specify the priority of the reduction itself and have the possible associativies:</p><div class="sourceCode"><pre><code><span class="va">rule_assoc</span><span class="op">:</span> <span class="st">'$right'</span> <span class="op">|</span> <span class="st">'$left'</span>;
-</code></pre></div>
+</ul><p>Rule priorities specify the priority of the reduction itself and have the possible associativies:</p><div class="sourceCode"><pre><code><span></span>
+<span><span class="va">rule_assoc</span><span class="op">:</span> <span class="st">'$right'</span> <span class="op">|</span> <span class="st">'$left'</span>;</span></code></pre></div>
 
 <p>Rule and operator priorities can be intermixed and are interpreted
 at run time (not when the tables are built).  This make it
@@ -394,7 +394,8 @@ hi: 'hello' [ printf("hi\n"); ];
  S: A S 'b' | 'x';
  A: [ printf("speculative e-reduce A\n"); ]
     { printf("final e-reduce A\n"); };
-</code></pre></div><p>On input:</p><div class="sourceCode"><pre><code><span class="va">xbbb</span></code></pre></div><p>Will produce:</p><div class="sourceCode"><pre><code>
+</code></pre></div><p>On input:</p><div class="sourceCode"><pre><code><span></span>
+<span> <span class="va">xbbb</span></span></code></pre></div><p>Will produce:</p><div class="sourceCode"><pre><code>
  speculative e-reduce A
  final e-reduce A
  final e-reduce A
@@ -409,9 +410,11 @@ hi: 'hello' [ printf("hi\n"); ];
  S: A { printf("X"); } B;
  A: 'a' { printf("a"); };
  B: 'b' { printf("b"); };
-</code></pre></div><p>On input:</p><div class="sourceCode"><pre><code><span class="va">ab</span></code></pre></div>
+</code></pre></div><p>On input:</p><div class="sourceCode"><pre><code><span></span>
+<span><span class="va">ab</span></span></code></pre></div>
 
-<p>Will produce:</p><div class="sourceCode"><pre><code><span class="va">aXb</span></code></pre></div><p>Note that in the above example, the print("X") is evaluated in a context null rule context while in:</p><div class="sourceCode"><pre><code>
+<p>Will produce:</p><div class="sourceCode"><pre><code><span></span>
+<span> <span class="va">aXb</span></span></code></pre></div><p>Note that in the above example, the print("X") is evaluated in a context null rule context while in:</p><div class="sourceCode"><pre><code>
  S: A (A B { printf("X"); }) B;
 </code></pre></div>
 
@@ -675,7 +678,7 @@ rees.  This may be of some assistence in disambiguating a grammar.</p></dd>
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.2.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.6.</p>
 </div>
 
       </footer></div>

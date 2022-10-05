@@ -18,7 +18,7 @@ By default, all children are parsed."><!-- mathjax --><script src="https://cdnjs
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">dparser</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.3.1-5</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.3.1-6</span>
       </span>
     </div>
 
@@ -55,26 +55,35 @@ By default, all children are parsed.</p>
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">dpDefaultSkip</span><span class="op">(</span><span class="va">name</span>, <span class="va">value</span>, <span class="va">pos</span>, <span class="va">depth</span><span class="op">)</span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">dpDefaultSkip</span><span class="op">(</span><span class="va">name</span>, <span class="va">value</span>, <span class="va">pos</span>, <span class="va">depth</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
     <h2>Arguments</h2>
     <dl><dt>name</dt>
 <dd><p>Production Name</p></dd>
+
+
 <dt>value</dt>
 <dd><p>Production Value</p></dd>
+
+
 <dt>pos</dt>
 <dd><p>terminal position.  Negative values are parsed before
 children are parsed.  A value of -1 means there are no
 children nodes.  A value of -2 means there are children nodes.
 Otherwise, the terminal position is numbered starting at 0.</p></dd>
+
+
 <dt>depth</dt>
 <dd><p>Parsing Depth</p></dd>
+
 </dl></div>
     <div id="value">
     <h2>Value</h2>
-    <p>FALSE.  If a comparable function returns TRUE, the
+    
+
+<p>FALSE.  If a comparable function returns TRUE, the
     children are not parsed.</p>
     </div>
     <div id="author">
@@ -94,7 +103,7 @@ Otherwise, the terminal position is numbered starting at 0.</p></dd>
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.2.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.6.</p>
 </div>
 
       </footer></div>

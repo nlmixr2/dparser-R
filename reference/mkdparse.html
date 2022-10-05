@@ -17,7 +17,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">dparser</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.3.1-5</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.3.1-6</span>
       </span>
     </div>
 
@@ -53,54 +53,66 @@
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">mkdparse</span><span class="op">(</span>
-  <span class="va">file</span>,
-  <span class="va">outputFile</span>,
-  set_op_priority_from_rule <span class="op">=</span> <span class="cn">FALSE</span>,
-  right_recursive_BNF <span class="op">=</span> <span class="cn">FALSE</span>,
-  states_for_whitespace <span class="op">=</span> <span class="cn">TRUE</span>,
-  states_for_all_nterms <span class="op">=</span> <span class="cn">FALSE</span>,
-  tokenizer <span class="op">=</span> <span class="cn">FALSE</span>,
-  token_type <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"#define"</span>, <span class="st">"enum"</span><span class="op">)</span>,
-  longest_match <span class="op">=</span> <span class="cn">FALSE</span>,
-  grammar_ident <span class="op">=</span> <span class="st">"gram"</span>,
-  ident_from_filename <span class="op">=</span> <span class="cn">FALSE</span>,
-  scanner_blocks <span class="op">=</span> <span class="fl">4</span>,
-  write_line_directives <span class="op">=</span> <span class="cn">TRUE</span>,
-  write_header <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"IfEmpty"</span>, <span class="cn">TRUE</span>, <span class="cn">FALSE</span><span class="op">)</span>,
-  rdebug <span class="op">=</span> <span class="cn">FALSE</span>,
-  verbose <span class="op">=</span> <span class="cn">FALSE</span>,
-  write_extension <span class="op">=</span> <span class="st">"c"</span>,
-  use_r_header <span class="op">=</span> <span class="cn">TRUE</span>
-<span class="op">)</span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">mkdparse</span><span class="op">(</span></span>
+<span>  <span class="va">file</span>,</span>
+<span>  <span class="va">outputFile</span>,</span>
+<span>  set_op_priority_from_rule <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>  right_recursive_BNF <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>  states_for_whitespace <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>  states_for_all_nterms <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>  tokenizer <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>  token_type <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"#define"</span>, <span class="st">"enum"</span><span class="op">)</span>,</span>
+<span>  longest_match <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>  grammar_ident <span class="op">=</span> <span class="st">"gram"</span>,</span>
+<span>  ident_from_filename <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>  scanner_blocks <span class="op">=</span> <span class="fl">4</span>,</span>
+<span>  write_line_directives <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>  write_header <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"IfEmpty"</span>, <span class="cn">TRUE</span>, <span class="cn">FALSE</span><span class="op">)</span>,</span>
+<span>  rdebug <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>  verbose <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>  write_extension <span class="op">=</span> <span class="st">"c"</span>,</span>
+<span>  use_r_header <span class="op">=</span> <span class="cn">TRUE</span></span>
+<span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
     <h2>Arguments</h2>
     <dl><dt>file</dt>
 <dd><p>File name of grammer to parse.</p></dd>
+
+
 <dt>outputFile</dt>
 <dd><p>Output file name.  Can be a directory.  If so,
 the file name is determined by the input file.</p></dd>
+
+
 <dt>set_op_priority_from_rule</dt>
 <dd><p>Toggle setting of operator
 priority from rules.  Setting of operator priorities on
 operator tokens can increase the size of the tables but can
 permit unnecessary parse stacks to be pruned earlier. (FALSE
 by default)</p></dd>
+
+
 <dt>right_recursive_BNF</dt>
 <dd><p>Toggle use of right recursion for EBNF
 productions.  Do not change this unless you really know what
 you are doing. (FALSE by default)</p></dd>
+
+
 <dt>states_for_whitespace</dt>
 <dd><p>Toggle computing whitespace states.
 If 'whitespace' is defined in the grammar, then use it as a
 subparser to consume whitespace. (TRUE by default)</p></dd>
+
+
 <dt>states_for_all_nterms</dt>
 <dd><p>Toggle computing states for all
 non-terminals.  Ensures that there is a unique state for each
 non-terminal so that a subparsers can be invoked for that
 non-terminal. (FALSE by default)</p></dd>
+
+
 <dt>tokenizer</dt>
 <dd><p>Toggle building of a tokenizer for START.  When
 TRUE, instead of generating a unique scanner for each state
@@ -108,8 +120,12 @@ TRUE, instead of generating a unique scanner for each state
 (tokenizer) for the entire grammar.  This provides an easy way
 to build grammars for languages which assume a tokenizer
 (e.g. ANSI C). (FALSE by default)</p></dd>
+
+
 <dt>token_type</dt>
 <dd><p>Token type "#define" or "enum"</p></dd>
+
+
 <dt>longest_match</dt>
 <dd><p>Toggle longest match lexical ambiguity
 resolution.  When TRUE the scanner only recognizing the
@@ -117,24 +133,36 @@ longest matching tokens in a given state. This provides an
 easy way to build grammars for languages which use longest
 match lexical ambiguity resolution (e.g. ANSI-C, C++). (FALSE
 by default)</p></dd>
+
+
 <dt>grammar_ident</dt>
 <dd><p>Tag for grammar data structures so that
 multiple sets of tables can be included in one
 file/application. (defaults to 'gram')</p></dd>
+
+
 <dt>ident_from_filename</dt>
 <dd><p>Build the grammer tag from the
 file-name.</p></dd>
+
+
 <dt>scanner_blocks</dt>
 <dd><p>Number of blocks to which scanner tables are
 broken up into. Larger numbers permit more sharing with more
 overhead.  4 seems to be optimal for most grammars. (defaults
 to 4) files.</p></dd>
+
+
 <dt>write_line_directives</dt>
 <dd><p>Toggle writing of line numbers.  Used
 to debug the parsing table generator itself. (TRUE by default)</p></dd>
+
+
 <dt>write_header</dt>
 <dd><p>Write header, FALSE : no, TRUE : yes,
 "IfEmpty" : only if not empty.</p></dd>
+
+
 <dt>rdebug</dt>
 <dd><p>Replace all actions in the grammar with actions
 printing productions, 1 : during the speculative parsing
@@ -142,20 +170,29 @@ process (&lt;-), 2 : when reduction is part of any legal final
 parse (&lt;=), 3 : both, 4 : remove all actions from the grammar.
 Print the changed grammar to console.  Useful for debugging or
 prototyping new, experimental grammars.</p></dd>
+
+
 <dt>verbose</dt>
 <dd><p>Increase verbosity.</p></dd>
+
+
 <dt>write_extension</dt>
 <dd><p>Set the extension of the generated code
 file.  For C++ programs (for example) the extension can be set
 to .cpp with the option <code>write_extension="cpp"</code>.
 (<code>write_extension="c"</code> by default)</p></dd>
+
+
 <dt>use_r_header</dt>
 <dd><p>when TRUE, add R headers and swap printf for
 Rprintf. By default this is TRUE.</p></dd>
+
 </dl></div>
     <div id="value">
     <h2>Value</h2>
-    <p>Nothing. Outputs files instead.</p>
+    
+
+<p>Nothing. Outputs files instead.</p>
     </div>
     <div id="details">
     <h2>Details</h2>
@@ -401,8 +438,8 @@ op: '*' $binary_op_left 2 |
 </code></pre></div>
 
 <ul><li><p>Rule Priorities</p></li>
-</ul><p>Rule priorities specify the priority of the reduction itself and have the possible associativies:</p><div class="sourceCode"><pre><code><span class="va">rule_assoc</span><span class="op">:</span> <span class="st">'$right'</span> <span class="op">|</span> <span class="st">'$left'</span>;
-</code></pre></div>
+</ul><p>Rule priorities specify the priority of the reduction itself and have the possible associativies:</p><div class="sourceCode"><pre><code><span></span>
+<span><span class="va">rule_assoc</span><span class="op">:</span> <span class="st">'$right'</span> <span class="op">|</span> <span class="st">'$left'</span>;</span></code></pre></div>
 
 <p>Rule and operator priorities can be intermixed and are interpreted
 at run time (not when the tables are built).  This make it
@@ -441,7 +478,8 @@ hi: 'hello' [ printf("hi\n"); ];
  S: A S 'b' | 'x';
  A: [ printf("speculative e-reduce A\n"); ]
     { printf("final e-reduce A\n"); };
-</code></pre></div><p>On input:</p><div class="sourceCode"><pre><code><span class="va">xbbb</span></code></pre></div><p>Will produce:</p><div class="sourceCode"><pre><code>
+</code></pre></div><p>On input:</p><div class="sourceCode"><pre><code><span></span>
+<span> <span class="va">xbbb</span></span></code></pre></div><p>Will produce:</p><div class="sourceCode"><pre><code>
  speculative e-reduce A
  final e-reduce A
  final e-reduce A
@@ -456,9 +494,11 @@ hi: 'hello' [ printf("hi\n"); ];
  S: A { printf("X"); } B;
  A: 'a' { printf("a"); };
  B: 'b' { printf("b"); };
-</code></pre></div><p>On input:</p><div class="sourceCode"><pre><code><span class="va">ab</span></code></pre></div>
+</code></pre></div><p>On input:</p><div class="sourceCode"><pre><code><span></span>
+<span><span class="va">ab</span></span></code></pre></div>
 
-<p>Will produce:</p><div class="sourceCode"><pre><code><span class="va">aXb</span></code></pre></div><p>Note that in the above example, the print("X") is evaluated in a context null rule context while in:</p><div class="sourceCode"><pre><code>
+<p>Will produce:</p><div class="sourceCode"><pre><code><span></span>
+<span> <span class="va">aXb</span></span></code></pre></div><p>Note that in the above example, the print("X") is evaluated in a context null rule context while in:</p><div class="sourceCode"><pre><code>
  S: A (A B { printf("X"); }) B;
 </code></pre></div>
 
@@ -705,11 +745,11 @@ rees.  This may be of some assistence in disambiguating a grammar.</p></dd>
 
     <div id="ref-examples">
     <h2>Examples</h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"></span>
-<span class="r-in"><span class="co">## This makes the ANSI c grammar file to parse C code:</span></span>
-<span class="r-in"><span class="fu">mkdparse</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"ansic.test.g"</span>, package <span class="op">=</span> <span class="st">"dparser"</span><span class="op">)</span>,</span>
-<span class="r-in">        <span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/tempfile.html" class="external-link">tempdir</a></span><span class="op">(</span><span class="op">)</span>, <span class="st">"ansic_gram.c"</span><span class="op">)</span>,</span>
-<span class="r-in">         grammar_ident<span class="op">=</span><span class="st">"ascii_C"</span><span class="op">)</span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co">## This makes the ANSI c grammar file to parse C code:</span></span></span>
+<span class="r-in"><span><span class="fu">mkdparse</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"ansic.test.g"</span>, package <span class="op">=</span> <span class="st">"dparser"</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>        <span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/tempfile.html" class="external-link">tempdir</a></span><span class="op">(</span><span class="op">)</span>, <span class="st">"ansic_gram.c"</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>         grammar_ident<span class="op">=</span><span class="st">"ascii_C"</span><span class="op">)</span></span></span>
 </code></pre></div>
     </div>
   </div>
@@ -724,7 +764,7 @@ rees.  This may be of some assistence in disambiguating a grammar.</p></dd>
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.2.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.6.</p>
 </div>
 
       </footer></div>
