@@ -1124,7 +1124,7 @@ static void write_code(FILE *fp, Grammar *g, Rule *r, char *code, char *fname, i
           *xx[0] = 0;
           *xx[1] = 0;
           while (*e != '}') {
-            char *ss = e, *n;
+            char *ss = e, *n, *s2;
             x = xx[i];
             y = xx[!i];
             while (*e && *e != '}' && *e != ',') e++;
@@ -1132,13 +1132,15 @@ static void write_code(FILE *fp, Grammar *g, Rule *r, char *code, char *fname, i
             n = dup_str(ss, e);
             if (!*y)
               snprintf(x, 4095, "(D_PN(_children[%s], _offset))", n);
-            else
-              snprintf(x, 4095, "d_get_child(%s, %s)", y, n);
+            else {
+              s2 = dup_str(y, 0);
+              snprintf(x, 4095, "d_get_child(%s, %s)", s2, n);
+            }
             if (*e == ',') e++;
             if (isspace_(*e)) e++;
             i = !i;
           }
-          if (!xx[!i]) d_fail("empty ${child } at line %d", line);
+          //if (!xx[!i]) d_fail("empty ${child } at line %d", line);
           fprintf(fp, "%s", xx[!i]);
         } else if (STREQ(c, e - c, "reject")) {
           fprintf(fp, " return -1 ");
