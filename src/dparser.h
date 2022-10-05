@@ -626,35 +626,35 @@ void set_d_debug_level(int x){
   static void (*fun)(int)=NULL;
   if (fun == NULL) fun = (void (*)(int)) R_GetCCallable("dparser","set_d_debug_level");
   fun(x);
-}
+} 
 
-int get_d_use_r_headers(){
+int get_d_use_r_headers(void){
   static int (*fun)(void)=NULL;
-  if (fun == NULL) fun = (int (*)()) R_GetCCallable("dparser","get_d_use_r_headers");
+  if (fun == NULL) fun = (int (*)(void)) R_GetCCallable("dparser","get_d_use_r_headers");
   return fun();
 }
 
-int get_d_rdebug_grammar_level(){
+int get_d_rdebug_grammar_level(void){
   static int (*fun)(void)=NULL;
-  if (fun == NULL) fun = (int (*)()) R_GetCCallable("dparser","get_d_rdebug_grammar_level");
+  if (fun == NULL) fun = (int (*)(void)) R_GetCCallable("dparser","get_d_rdebug_grammar_level");
   return fun();
 }
 
-int get_d_use_file_name(){
+int get_d_use_file_name(void){
   static int (*fun)(void)=NULL;
-  if (fun == NULL) fun = (int (*)()) R_GetCCallable("dparser","get_d_use_file_name");
+  if (fun == NULL) fun = (int (*)(void)) R_GetCCallable("dparser","get_d_use_file_name");
   return fun();
 }
 
-int get_d_verbose_level(){
+int get_d_verbose_level(void){
   static int (*fun)(void)=NULL;
-  if (fun == NULL) fun = (int (*)()) R_GetCCallable("dparser","get_d_verbose_level");
+  if (fun == NULL) fun = (int (*)(void)) R_GetCCallable("dparser","get_d_verbose_level");
   return fun();
 }
 
-int get_d_debug_level(){
+int get_d_debug_level(void){
   static int (*fun)(void)=NULL;
-  if (fun == NULL) fun = (int (*)()) R_GetCCallable("dparser","get_d_debug_level");
+  if (fun == NULL) fun = (int (*)(void)) R_GetCCallable("dparser","get_d_debug_level");
   return fun();
 }
 
