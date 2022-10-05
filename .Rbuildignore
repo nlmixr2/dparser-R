@@ -25,3 +25,4 @@ dparser.*\.(zip|pdf)$
 ^cran-comments\.md$
 ^\.github$
 ^codecov\.yml$
+^CRAN-SUBMISSION$
