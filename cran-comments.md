@@ -20,3 +20,4 @@ reported here these have shown up several bugs already ....
 Please correct (in the packages before the colon) before 2022-11-04.
 
 * This fix corrects this for dparser
+* Also added back restriction fix that accidentally was deleted when pulling from upstream.
