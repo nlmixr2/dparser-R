@@ -13,7 +13,7 @@ extern int d_use_r_headers;
 void set_d_use_r_headers(int x){
   d_use_r_headers = x;
 }
-int get_d_use_r_headers(){
+int get_d_use_r_headers(void){
  return d_use_r_headers;
 }
 
@@ -21,7 +21,7 @@ extern int d_rdebug_grammar_level;
 void set_d_rdebug_grammar_level(int x){
   d_rdebug_grammar_level = x;
 }
-int get_d_rdebug_grammar_level(){
+int get_d_rdebug_grammar_level(void){
  return d_rdebug_grammar_level;
 }
 
@@ -29,7 +29,7 @@ extern int d_use_file_name;
 void set_d_use_file_name(int x){
   d_use_file_name = x;
 }
-int get_d_use_file_name(){
+int get_d_use_file_name(void){
  return d_use_file_name;
 }
 
@@ -37,7 +37,7 @@ extern int d_verbose_level;
 void set_d_verbose_level(int x){
   d_verbose_level = x;
 }
-int get_d_verbose_level(){
+int get_d_verbose_level(void){
  return d_verbose_level;
 }
 
@@ -45,7 +45,7 @@ extern int d_debug_level;
 void set_d_debug_level(int x){
   d_debug_level = x;
 }
-int get_d_debug_level(){
+int get_d_debug_level(void){
  return d_debug_level;
 }
 
@@ -155,7 +155,7 @@ int write_binary_tables_to_string(Grammar *g, unsigned char **str, unsigned int 
 SEXP cDparser(SEXP fileName, SEXP sexp_output_file, SEXP set_op_priority_from_rule , SEXP right_recursive_BNF , SEXP states_for_whitespace , SEXP states_for_all_nterms , SEXP tokenizer , SEXP longest_match , SEXP sexp_grammar_ident , SEXP scanner_blocks , SEXP write_line_directives , SEXP rdebug, SEXP verbose, SEXP sexp_write_extension, SEXP write_header, SEXP token_type, SEXP use_r_header);
 
 
-void __freeP();
+void __freeP(void);
 
 void R_init_dparser(DllInfo *info){
   R_CallMethodDef callMethods[]  = {
@@ -276,7 +276,7 @@ void R_init_dparser(DllInfo *info){
   R_RegisterCCallable("dparser","new_D_Parser",(DL_FUNC) new_D_Parser);
 }
 
-void R_unload_dparser() {
+void R_unload_dparser(void) {
   __freeP();
 }
 

@@ -107,7 +107,7 @@ D_ParseNode *__pn = 0;
 
 char *__buf = NULL;
 
-void __freeP() {
+void __freeP(void) {
   if (__buf != NULL) {
     free(__buf);
     __buf = NULL;

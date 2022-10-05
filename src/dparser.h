@@ -629,31 +629,31 @@ void set_d_debug_level(int x){
 }
 
 int get_d_use_r_headers(){
-  static int (*fun)()=NULL;
+  static int (*fun)(void)=NULL;
   if (fun == NULL) fun = (int (*)()) R_GetCCallable("dparser","get_d_use_r_headers");
   return fun();
 }
 
 int get_d_rdebug_grammar_level(){
-  static int (*fun)()=NULL;
+  static int (*fun)(void)=NULL;
   if (fun == NULL) fun = (int (*)()) R_GetCCallable("dparser","get_d_rdebug_grammar_level");
   return fun();
 }
 
 int get_d_use_file_name(){
-  static int (*fun)()=NULL;
+  static int (*fun)(void)=NULL;
   if (fun == NULL) fun = (int (*)()) R_GetCCallable("dparser","get_d_use_file_name");
   return fun();
 }
 
 int get_d_verbose_level(){
-  static int (*fun)()=NULL;
+  static int (*fun)(void)=NULL;
   if (fun == NULL) fun = (int (*)()) R_GetCCallable("dparser","get_d_verbose_level");
   return fun();
 }
 
 int get_d_debug_level(){
-  static int (*fun)()=NULL;
+  static int (*fun)(void)=NULL;
   if (fun == NULL) fun = (int (*)()) R_GetCCallable("dparser","get_d_debug_level");
   return fun();
 }
