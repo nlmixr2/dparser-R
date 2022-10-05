@@ -1,3 +1,7 @@
+# dparser 1.3.1-6
+
+* Updated dparser header to have strict typing, as requested by CRAN.
+
 # dparser 1.3.1-4
 
 * Updated dparser to explicitly include R headers in the generated
