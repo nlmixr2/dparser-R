@@ -1,3 +1,7 @@
+# dparser 1.3.1-7
+
+* Fixed one remaining strict typing issue, as requested by CRAN.
+
 # dparser 1.3.1-6
 
 * Updated dparser header to have strict typing, as requested by CRAN.
