@@ -1,3 +1,10 @@
+# Note
+
+This is a binary dependency of a few packages and will break them without a rebuild of the packages.
+
+I will be submitting the packages I am responsible for, and Wenping Wang was made aware for the packages
+he is responsible for.
+
 # Comments
 
 Matthew,
