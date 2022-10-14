@@ -5,7 +5,7 @@ output: github_document
 [![Codecov test coverage](https://codecov.io/gh/nlmixr2/dparser-R/branch/master/graph/badge.svg)](https://codecov.io/gh/nlmixr2/dparser-R?branch=master)
 [![CRAN version](http://www.r-pkg.org/badges/version/dparser)](https://cran.r-project.org/package=dparser)
 [![CRAN checks](https://cranchecks.info/badges/summary/dparser)](https://cran.r-project.org/web/checks/check_results_dparser.html)
-![r-universe]
+![r-universe](https://nlmixr2.r-universe.dev/badges/dparser)
 
 The R version of dparser is meant to be used as a package library
 where you link the C parser to an arbitrary grammer parsed in R.  This
