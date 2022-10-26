@@ -687,7 +687,7 @@ d_fail(const char *str, ...) {
   va_list ap;
   va_start(ap, str);
   snprintf(nstr, 255, "Parser Fail: %s", str);
-  vsprintf(outstr, nstr, ap);
+  vsnprintf(outstr, 256*2, nstr, ap);
   va_end(ap);
   error(outstr);
 }
@@ -699,7 +699,7 @@ d_warn(const char *str, ...) {
   va_list ap;
   va_start(ap, str);
   snprintf(nstr, 255, "%s", str);
-  vsprintf(outstr, nstr, ap);
+  vsnprintf(outstr, 256*2, nstr, ap);
   va_end(ap);
   warning(outstr);
 }
