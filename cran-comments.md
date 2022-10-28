@@ -1,21 +1,26 @@
-# Note
+# sprintf
 
-This is a binary dependency of a few packages and will break them without a rebuild of the packages.
+A new significant warning appeared in `rxode2` here, saying that `sprintf` cannot be used.
 
-I will be submitting the packages I am responsible for, and Wenping Wang was made aware for the packages
-he is responsible for.
+See:
 
-# Comments
+https://www.stats.ox.ac.uk/pub/bdr/M1mac/rxode2.out
 
-Matthew,
+The fix is in `rxode2parse`, but before submitting `rxode2parse`, I
+checked this binary dependency, which also has `sprintf`.
 
-You submitted too soon, so the incoming check systems did not have
--Wstrict-prototypes turned on yet, and did not catch the remaining
 
-Found the following significant warnings:
-  lr.c:27:15: warning: function declaration isn’t a prototype [-Wstrict-prototypes]
+I decided to take all `sprintf` statements out of this package first.
+That I can reduce the number of submissions to CRAN, saving the CRAN
+maintainers overall time.
 
-Should be in place now, can you please fix the remaining warning too?
+This submission is the first, the next are:
 
-* Fixed
+- `rxode2parse` 
+- `rxode2`
+- `nlmixr2est`
 
+In this revision, I have changed `rxode2` so that it isn't a binary
+dependency of `rxode2parse` (removed `ABI`)
+
+Thank you for all you do!

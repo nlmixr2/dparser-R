@@ -1,3 +1,7 @@
+# dparser 1.3.1-8
+
+* Removed all `sprintf` as indicated by some new Mac M1 checks for `rxode2`.
+
 # dparser 1.3.1-7
 
 * Fixed one remaining strict typing issue, as requested by CRAN.
