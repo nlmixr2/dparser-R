@@ -1532,6 +1532,7 @@ static void write_state_data(File *fp, Grammar *g, VecState *er_hash, char *tag)
 static int write_header(Grammar *g, char *base_pathname, char *tag) {
   char pathname[FILENAME_MAX];
   char ver[128];
+  snprintf(ver, 128, ""); // initialize to blank string
   uint i, tokens = 0, states = 0, col;
   FILE *hfp;
 
