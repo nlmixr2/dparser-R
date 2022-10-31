@@ -1720,6 +1720,7 @@ void write_parser_tables_internal(Grammar *g, char *base_pathname, char *tag, in
   file_init(&file, binary, fp, str, str_len);
   if (!binary) {
     char ver[128];
+    snprintf(ver, 128, ""); // initialize to blank string
     int header = write_header(g, base_pathname, tag);
 if (d_use_r_headers) {
     fprintf(fp, "#include <R.h>\n#include <Rinternals.h>\n#define printf Rprintf\n\n");}
