@@ -2,6 +2,8 @@
 
 * Initialized version string to zero length string to fix valgrind issues
 
+* Change flags to suppress false positive memory leaks (might be lost errors)
+
 # dparser 1.3.1-8
 
 * Removed all `sprintf` as indicated by some new Mac M1 checks for `rxode2`.
