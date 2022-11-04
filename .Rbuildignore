@@ -26,3 +26,8 @@ dparser.*\.(zip|pdf)$
 ^\.github$
 ^codecov\.yml$
 ^CRAN-SUBMISSION$
+^tests/testthat/g32.test.g$
+^tests/testthat/g33.test.g$
+^tests/testthat/g47.test.g$
+^tests/testthat/g48.test.g$
+^tests/testthat/python.test.g$
