@@ -79,7 +79,16 @@
 <div class="section level3">
 <h3 id="differences-between-the-r-dparser-port-and-the-c-version-of-dparser">Differences between the R dparser port and the C-version of dparser<a class="anchor" aria-label="anchor" href="#differences-between-the-r-dparser-port-and-the-c-version-of-dparser"></a>
 </h3>
-<p>There are a few differences between the R dparser port and the standard dparser: - The R version uses R memory managment instead of C’s memory managment i.e. <code>malloc</code> - The R version is never called from the command line, so all command line interface is removed <code>arg.c</code> - The R version doesn’t exit from the command (killing R), but errors out in R. - All outputs are using R’s output interface instead of printing to <code>stdout</code>, or <code>stderr</code>. - Some convience functions are added to translate (and maybe parse) grammers within R. - There is currently some fixes for un-sanitized behaviors that are not in the upstream dparser - Currently there isn’t an interface to use binary grammars</p>
+<p>There are a few differences between the R dparser port and the standard dparser:</p>
+<ul>
+<li><p>The R version uses R memory managment instead of C’s memory managment i.e. <code>malloc</code></p></li>
+<li><p>The R version is never called from the command line, so all command line interface is removed <code>arg.c</code></p></li>
+<li><p>The R version doesn’t exit from the command (killing R), but errors out in R.</p></li>
+<li><p>All outputs are using R’s output interface instead of printing to <code>stdout</code>, or <code>stderr</code>.</p></li>
+<li><p>Some convience functions are added to translate (and maybe parse) grammers within R.</p></li>
+<li><p>There is currently some fixes for un-sanitized behaviors that are not in the upstream dparser</p></li>
+<li><p>Currently there isn’t an interface to use binary grammars</p></li>
+</ul>
 </div>
 
   </div>
@@ -125,7 +134,7 @@
 <li><a href="https://github.com/nlmixr2/dparser-R/actions" class="external-link"><img src="https://github.com/nlmixr2/dparser-R/workflows/R-CMD-check/badge.svg" alt="R-CMD-check"></a></li>
 <li><a href="https://codecov.io/gh/nlmixr2/dparser-R?branch=master" class="external-link"><img src="https://codecov.io/gh/nlmixr2/dparser-R/branch/master/graph/badge.svg" alt="Codecov test coverage"></a></li>
 <li><a href="https://cran.r-project.org/package=dparser" class="external-link"><img src="http://www.r-pkg.org/badges/version/dparser" alt="CRAN version"></a></li>
-<li><a href="https://cran.r-project.org/web/checks/check_results_dparser.html" class="external-link"><img src="https://cranchecks.info/badges/summary/dparser" alt="CRAN checks"></a></li>
+<li><a href="https://cran.r-project.org/web/checks/check_results_dparser.html" class="external-link"><img src="https://badges.cranchecks.info/summary/dparser.svg" alt="cran checks"></a></li>
 </ul>
 </div>
 
