@@ -4,7 +4,7 @@ output: github_document
 [![R-CMD-check](https://github.com/nlmixr2/dparser-R/workflows/R-CMD-check/badge.svg)](https://github.com/nlmixr2/dparser-R/actions)
 [![Codecov test coverage](https://codecov.io/gh/nlmixr2/dparser-R/branch/master/graph/badge.svg)](https://codecov.io/gh/nlmixr2/dparser-R?branch=master)
 [![CRAN version](http://www.r-pkg.org/badges/version/dparser)](https://cran.r-project.org/package=dparser)
-[![CRAN checks](https://cranchecks.info/badges/summary/dparser)](https://cran.r-project.org/web/checks/check_results_dparser.html)
+[![cran checks](https://badges.cranchecks.info/summary/dparser.svg)](https://cran.r-project.org/web/checks/check_results_dparser.html)
 ![r-universe](https://nlmixr2.r-universe.dev/badges/dparser)
 
 The R version of dparser is meant to be used as a package library
