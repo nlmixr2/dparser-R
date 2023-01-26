@@ -106,7 +106,7 @@ extern "C" {
   extern void int_list_intersect(int *a, int *b, int *c);
   extern int *int_list_dup(int *aa);
   extern char *escape_string(char *s);
-  extern pchar *escape_string_single_quote(char *s);
+  extern char *escape_string_single_quote(char *s);
   extern int write_c_tables(Grammar *g);
   extern int write_binary_tables(Grammar *g);
   extern int write_binary_tables_to_file(Grammar *g, FILE *fp);
