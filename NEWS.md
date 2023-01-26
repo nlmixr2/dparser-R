@@ -1,3 +1,7 @@
+# dparser 1.3.1-10
+
+- added `dparser2.h` that declares functions instead of defines them.
+
 # dparser 1.3.1-9
 
 * Initialized version string to zero length string to fix valgrind issues
