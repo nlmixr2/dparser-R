@@ -14,3 +14,4 @@ inst/doc
 /src/.Rhistory
 /src/dparser/.*
 *.so
+docs

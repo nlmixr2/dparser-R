@@ -31,3 +31,6 @@ dparser.*\.(zip|pdf)$
 ^tests/testthat/g47.test.g$
 ^tests/testthat/g48.test.g$
 ^tests/testthat/python.test.g$
+^_pkgdown\.yml$
+^docs$
+^pkgdown$
