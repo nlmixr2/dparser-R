@@ -168,7 +168,7 @@ SEXP dparse_sexp(SEXP sexp_fileName,
     if (!__curP->syntax_errors){
       if (d_use_file_name){
         d_use_file_name = 0;
-        error("fatal error, '%s' line %d", CHAR(STRING_ELT(sexp_fileName,0)), __curP->loc.line);
+        error("fatal error, '%s' line %d column %d", CHAR(STRING_ELT(sexp_fileName,0)), __curP->loc.line, __curP->loc.col);
       }
       else{
         error("fatal error, '' line %d", __curP->loc.line);
@@ -176,7 +176,7 @@ SEXP dparse_sexp(SEXP sexp_fileName,
     } else {
       if (d_use_file_name){
         d_use_file_name = 0;
-        error("syntax errors in '%s' line %d.", CHAR(STRING_ELT(sexp_fileName,0)), __curP->loc.line);
+        error("syntax errors in '%s' line %d column %d.", CHAR(STRING_ELT(sexp_fileName,0)), __curP->loc.line, __curP->loc.col);
       }
       else{
         error("syntax errors.");
