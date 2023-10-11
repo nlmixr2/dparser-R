@@ -176,7 +176,7 @@ SEXP dparse_sexp(SEXP sexp_fileName,
     } else {
       if (d_use_file_name){
         d_use_file_name = 0;
-        error("syntax errors in '%s'.",CHAR(STRING_ELT(sexp_fileName,0)));
+        error("syntax errors in '%s' line %d.", CHAR(STRING_ELT(sexp_fileName,0)), __curP->loc.line);
       }
       else{
         error("syntax errors.");
