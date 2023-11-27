@@ -268,7 +268,7 @@ setClass("dparserFunction",
          contains="function")
 
 ##' Print the s4 object
-##' @param x dparserFunction to print.
+##' @param object dparserFunction to print.
 ##' @keywords internal
 ##' @aliases show,dparserFunction-method
 setMethod("show", "dparserFunction", function(object){
