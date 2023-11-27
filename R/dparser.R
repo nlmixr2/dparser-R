@@ -51,6 +51,7 @@
 ##' @importFrom methods new is
 ##' @importFrom utils assignInMyNamespace
 "_PACKAGE"
+
 .onLoad <- function(libname, pkgname){ ## nocov start
     op.dparser <- list(dpaser.rm.named.parser.dll=FALSE,
                        dpaser.rm.unnamed.parser.dll=TRUE,

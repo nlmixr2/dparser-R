@@ -94,7 +94,7 @@
 ##' function_call: function '(' parameter ( ',' $name 'parameter_comma' parameter) ')';
 ##' }
 ##'
-##' It is now possible to use $0.symbol == ${string parameter_comma} to differentiate ParseNode ($0) between
+##' It is now possible to use $0.symbol == $\{string parameter_comma\} to differentiate ParseNode ($0) between
 ##' a parameter comma node and say an initialization comma.
 ##'
 ##' Terminals ending in '/i' are case insensitive.  For example 'hi'/i
@@ -199,9 +199,9 @@
 ##'
 ##' There are two ways to specify longest match disabiguation:
 ##' globally as an option (-l) to make_dparser or locally with with a
-##' ${declare longest_match ...}.  If global longest match
-##' disambiguation is \bold{ON}, it can be locally disabled with {$declare
-##' all_matches ...} .  As with Tokenizers above, local declarations
+##' $\{declare longest_match ...\}.  If global longest match
+##' disambiguation is \bold{ON}, it can be locally disabled with \{$declare
+##' all_matches ...\} .  As with Tokenizers above, local declarations
 ##' operate on disjoint subsets of parsing states.
 ##' }
 ##' \item{Priorities and Associativity:}{
