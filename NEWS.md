@@ -1,3 +1,9 @@
+# dparser 1.3.1-11
+
+- Changed `gram.c` to handle NULL strings without printing them (as requested by CRAN)
+
+- Changed `util.c` to avoid security warnings for error/warnings in R (as requested by CRAN)
+
 # dparser 1.3.1-10
 
 - added `dparser2.h` that declares functions instead of defines them.
