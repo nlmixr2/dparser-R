@@ -686,11 +686,25 @@ void print_term(Term *t) {
     else
       Rprintf("string(\"%s\") ", s);
   } else if (t->kind == TERM_REGEX) {
-    Rprintf("regex(\"%s\") ", s);
-  } else if (t->kind == TERM_CODE)
-    Rprintf("code(\"%s\") ", s);
-  else if (t->kind == TERM_TOKEN)
-    Rprintf("token(\"%s\") ", s);
+    if (t->string) {
+      Rprintf("regex(\"%s\") ", s);
+    } else {
+      Rprintf("regex(NULL) ", s);
+    }
+  } else if (t->kind == TERM_CODE) {
+    if (t->string) {
+      Rprintf("code(\"%s\") ", s);
+    } else {
+      Rprintf("code(NULL) ");
+    }
+  }
+  else if (t->kind == TERM_TOKEN) {
+    if (t->string) {
+      Rprintf("token(\"%s\") ", s);
+    } else {
+      Rprintf("token(NULL) ", s);
+    }
+  }
   else
     d_fail("unknown token kind");
   if (s) FREE(s);
@@ -1437,17 +1451,32 @@ static void print_term_escaped(Term *t, int double_escaped) {
     }
   } else if (t->kind == TERM_REGEX) {
     char *quote = double_escaped ? "\\\"" : "\"";
-    s = t->string ? escape_string(t->string) : NULL;
+    if (t->string) {
+      s = escape_string(t->string);
+      Rprintf("%s%s%s ", quote, double_escaped ? escape_string(s) : s, quote);
+    } else {
+      Rprintf("NULL ");
+      s = NULL;
+    }
     /* char *s = t->string; // ? escape_string(t->string) : NULL; */
-    Rprintf("%s%s%s ", quote, double_escaped ? escape_string(s) : s, quote);
     if (t->ignore_case) Rprintf("/i ");
     if (t->term_priority) Rprintf("%sterm %d ", double_escaped ? "#" : "$", t->term_priority);
   } else if (t->kind == TERM_CODE) {
-    s = t->string ? escape_string(t->string) : NULL;
-    Rprintf("code(\"%s\") ", s);
+    if (t->string) {
+      s = escape_string(t->string);
+      Rprintf("code(\"%s\") ", s);
+    } else {
+      s = NULL;
+      Rprintf("code(NULL) ");
+    }
   } else if (t->kind == TERM_TOKEN) {
-    s = t->string ? escape_string(t->string) : NULL;
-    Rprintf("%s ", s);
+    if (t->string) {
+      s = escape_string(t->string);
+      Rprintf("%s ", s);
+    } else {
+      s = NULL;
+      Rprintf("NULL ");
+    }
   } else
     d_fail("unknown token kind");
   if (s) FREE(s);
