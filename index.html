@@ -9,22 +9,22 @@
    R stands for &quot;rightmost (derivation)&quot;.  For more information see &lt;https://en.wikipedia.org/wiki/GLR_parser&gt;. This parser is based on the Tomita
    (1987) algorithm. (Paper can be found at &lt;https://aclanthology.org/P84-1073.pdf&gt;).
    The original dparser package documentation can be found at &lt;https://dparser.sourceforge.net/&gt;.  This allows you to add mini-languages to R (like
-   RxODEs ODE mini-language Wang, Hallow, and James 2015 &lt;DOI:10.1002/psp4.12052&gt;) or to parse other languages like NONMEM' to automatically translate
+   rxode2s ODE mini-language Wang, Hallow, and James 2015 &lt;DOI:10.1002/psp4.12052&gt;) or to parse other languages like NONMEM' to automatically translate
    them to R code.   To use this in your code, add a LinkingTo dparser in your DESCRIPTION file and instead of using #include &lt;dparse.h&gt; use
    #include &lt;dparser.h&gt;.  This also provides a R-based port of the make_dparser &lt;https://dparser.sourceforge.net/d/make_dparser.cat&gt; command called
    mkdparser().  Additionally you can parse an arbitrary grammar within R using the dparse() function, which works on most OSes and is mainly for grammar
    testing.  The fastest parsing, of course, occurs at the C level, and is suggested.">
 <title>Port of Dparser Package • dparser</title>
 <script src="deps/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-<link href="deps/bootstrap-5.2.2/bootstrap.min.css" rel="stylesheet">
-<script src="deps/bootstrap-5.2.2/bootstrap.bundle.min.js"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous">
+<link href="deps/bootstrap-5.3.1/bootstrap.min.css" rel="stylesheet">
+<script src="deps/bootstrap-5.3.1/bootstrap.bundle.min.js"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/v4-shims.min.css" integrity="sha256-wZjR52fzng1pJHwx4aV2AO3yyTOXrcDW7jBpJtTwVxw=" crossorigin="anonymous">
 <!-- bootstrap-toc --><script src="https://cdn.jsdelivr.net/gh/afeld/bootstrap-toc@v1.0.1/dist/bootstrap-toc.min.js" integrity="sha256-4veVQbu7//Lk5TSmc7YV48MxtMy98e26cf5MrgZYnwo=" crossorigin="anonymous"></script><!-- headroom.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script><!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><!-- search --><script src="https://cdnjs.cloudflare.com/ajax/libs/fuse.js/6.4.6/fuse.js" integrity="sha512-zv6Ywkjyktsohkbp9bb45V6tEMoWhzFzXis+LrMehmJZZSys19Yxf1dopHx7WzIKxr5tK2dVcYmaCk2uqdjF4A==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/autocomplete.js/0.38.0/autocomplete.jquery.min.js" integrity="sha512-GU9ayf+66Xx2TmpxqJpliWbT5PiGYxpaG8rfnBEk1LL8l1KGkRShhngwdXK1UgqhAzWpZHSiYPc09/NwDQIGyg==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/mark.min.js" integrity="sha512-5CYOlHXGh6QpOFA/TeTylKLWfB3ftPsde7AnmhuitiTX4K5SqCLBeKro6sPS8ilsz1Q4NRx3v8Ko2IBiszzdww==" crossorigin="anonymous"></script><!-- pkgdown --><script src="pkgdown.js"></script><meta property="og:title" content="Port of Dparser Package">
 <meta property="og:description" content="A Scannerless GLR parser/parser generator.  Note that GLR standing for &quot;generalized LR&quot;, where L stands for &quot;left-to-right&quot; and
    R stands for &quot;rightmost (derivation)&quot;.  For more information see &lt;https://en.wikipedia.org/wiki/GLR_parser&gt;. This parser is based on the Tomita
    (1987) algorithm. (Paper can be found at &lt;https://aclanthology.org/P84-1073.pdf&gt;).
    The original dparser package documentation can be found at &lt;https://dparser.sourceforge.net/&gt;.  This allows you to add mini-languages to R (like
-   RxODEs ODE mini-language Wang, Hallow, and James 2015 &lt;DOI:10.1002/psp4.12052&gt;) or to parse other languages like NONMEM' to automatically translate
+   rxode2s ODE mini-language Wang, Hallow, and James 2015 &lt;DOI:10.1002/psp4.12052&gt;) or to parse other languages like NONMEM' to automatically translate
    them to R code.   To use this in your code, add a LinkingTo dparser in your DESCRIPTION file and instead of using #include &lt;dparse.h&gt; use
    #include &lt;dparser.h&gt;.  This also provides a R-based port of the make_dparser &lt;https://dparser.sourceforge.net/d/make_dparser.cat&gt; command called
    mkdparser().  Additionally you can parse an arbitrary grammar within R using the dparse() function, which works on most OSes and is mainly for grammar
@@ -42,7 +42,7 @@
     
     <a class="navbar-brand me-2" href="index.html">dparser</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.3.1-10</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.3.1-11</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -81,7 +81,7 @@ A Scannerless GLR parser/parser generator.  Note that GLR standing for "generali
    R stands for "rightmost (derivation)".  For more information see &lt;<a href="https://en.wikipedia.org/wiki/GLR_parser" class="external-link">https://en.wikipedia.org/wiki/GLR_parser</a>&gt;. This parser is based on the Tomita
    (1987) algorithm. (Paper can be found at &lt;<a href="https://aclanthology.org/P84-1073.pdf" class="external-link">https://aclanthology.org/P84-1073.pdf</a>&gt;).
    The original 'dparser' package documentation can be found at &lt;<a href="https://dparser.sourceforge.net/" class="external-link">https://dparser.sourceforge.net/</a>&gt;.  This allows you to add mini-languages to R (like
-   RxODE's ODE mini-language Wang, Hallow, and James 2015 &lt;<a href="https://doi.org/10.1002/psp4.12052" class="external-link">doi:10.1002/psp4.12052</a>&gt;) or to parse other languages like 'NONMEM' to automatically translate
+   rxode2's ODE mini-language Wang, Hallow, and James 2015 &lt;<a href="https://doi.org/10.1002/psp4.12052" class="external-link">doi:10.1002/psp4.12052</a>&gt;) or to parse other languages like 'NONMEM' to automatically translate
    them to R code.   To use this in your code, add a LinkingTo dparser in your DESCRIPTION file and instead of using #include &lt;dparse.h&gt; use
    #include &lt;dparser.h&gt;.  This also provides a R-based port of the make_dparser &lt;<a href="https://dparser.sourceforge.net/d/make_dparser.cat" class="external-link">https://dparser.sourceforge.net/d/make_dparser.cat</a>&gt; command called
    mkdparser().  Additionally you can parse an arbitrary grammar within R using the dparse() function, which works on most OSes and is mainly for grammar
