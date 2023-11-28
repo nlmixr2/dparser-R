@@ -7,7 +7,7 @@
 \S4method{show}{dparserFunction}(object)
 }
 \arguments{
-\item{x}{dparserFunction to print.}
+\item{object}{dparserFunction to print.}
 }
 \description{
 Print the s4 object

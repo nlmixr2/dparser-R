@@ -626,7 +626,7 @@ void set_d_debug_level(int x){
   static void (*fun)(int)=NULL;
   if (fun == NULL) fun = (void (*)(int)) R_GetCCallable("dparser","set_d_debug_level");
   fun(x);
-} 
+}
 
 int get_d_use_r_headers(void){
   static int (*fun)(void)=NULL;
@@ -665,11 +665,11 @@ void set_d_file_name(char *x){
 }
 
 SEXP
- 
+
 dparse_sexp(SEXP sexp_fileName, SEXP sexp_start_state, SEXP sexp_save_parse_tree, SEXP sexp_partial_parses, SEXP sexp_compare_stacks, SEXP sexp_commit_actions_interval, SEXP sexp_fixup, SEXP sexp_fixup_ebnf, SEXP sexp_nogreedy, SEXP sexp_noheight, SEXP sexp_use_filename, SEXP sexp_sizeof_parse_node, SEXP sexp_verbose, SEXP sexp_children_first, SEXP fn, SEXP skip_fn, SEXP env, D_ParserTables pt
 ){
   static SEXP
- 
+
 (*fun)(SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, D_ParserTables
 )=NULL;
   if (fun == NULL) fun = (SEXP
@@ -689,7 +689,7 @@ d_fail(const char *str, ...) {
   snprintf(nstr, 255, "Parser Fail: %s", str);
   vsnprintf(outstr, 256*2, nstr, ap);
   va_end(ap);
-  error(outstr);
+  error("%s", outstr);
 }
 
 void
@@ -701,7 +701,7 @@ d_warn(const char *str, ...) {
   snprintf(nstr, 255, "%s", str);
   vsnprintf(outstr, 256*2, nstr, ap);
   va_end(ap);
-  warning(outstr);
+  warning("%s", outstr);
 }
 
 #if defined(__cplusplus)
