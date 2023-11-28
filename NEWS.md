@@ -1,4 +1,8 @@
-# dparser development version
+# dparser 1.3.1-11
+
+- Changed `gram.c` to handle NULL strings without printing them (as requested by CRAN)
+
+- Changed `util.c` to avoid security warnings for error/warnings in R (as requested by CRAN)
 
 - Parsing errors during `dparser()` evaluation now give the line number for the error.
 
