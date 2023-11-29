@@ -689,7 +689,7 @@ void print_term(Term *t) {
     if (t->string) {
       Rprintf("regex(\"%s\") ", s);
     } else {
-      Rprintf("regex(NULL) ", s);
+      Rprintf("regex(NULL) ");
     }
   } else if (t->kind == TERM_CODE) {
     if (t->string) {
@@ -702,7 +702,7 @@ void print_term(Term *t) {
     if (t->string) {
       Rprintf("token(\"%s\") ", s);
     } else {
-      Rprintf("token(NULL) ", s);
+      Rprintf("token(NULL) ");
     }
   }
   else
