@@ -4,9 +4,11 @@
 
 - Changed `util.c` to avoid security warnings for error/warnings in R (as requested by CRAN)
 
+- Parsing errors during `dparser()` evaluation now give the line number for the error.
+
 # dparser 1.3.1-10
 
-- added `dparser2.h` that declares functions instead of defines them.
+* added `dparser2.h` that declares functions instead of defines them.
 
 # dparser 1.3.1-9
 

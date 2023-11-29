@@ -22,21 +22,21 @@ char * rc_dup_str(const char *s, const char *e) {
 
 void callparsefn(char *name, char *value, int pos, int depth, SEXP fn, SEXP env){
   /*
-     Need to construct a call to
-     fn(name = name, value = value, pos = pos, depth = depth)
-  */
+   Need to construct a call to
+   fn(name = name, value = value, pos = pos, depth = depth)
+   */
   SEXP s, t;
   t = s = PROTECT(allocList(5));
   SET_TYPEOF(s, LANGSXP);
   SETCAR(t, fn); t = CDR(t);
   // name = name
-  SETCAR(t, mkString(name)); 
+  SETCAR(t, mkString(name));
   SET_TAG(t, install("name")); t = CDR(t);
   // value = value
   SETCAR(t, mkString(value));
   SET_TAG(t, install("value")); t = CDR(t);
   // pos = pos
-  SETCAR(t, ScalarInteger(pos));  
+  SETCAR(t, ScalarInteger(pos));
   SET_TAG(t, install("pos")); t = CDR(t);
   // depth=depth
   SETCAR(t, ScalarInteger(depth));
@@ -47,22 +47,22 @@ void callparsefn(char *name, char *value, int pos, int depth, SEXP fn, SEXP env)
 
 int callskipchildrenfn(char *name, char *value, int pos, int depth, SEXP skip_fn, SEXP env){
   /*
-    Need to construct a call to
-    skip_fn(name = name, value = value, pos = pos, depth = depth)
-  */
+   Need to construct a call to
+   skip_fn(name = name, value = value, pos = pos, depth = depth)
+   */
   SEXP s, t;
   int ret;
   t = s = PROTECT(allocList(5));
   SET_TYPEOF(s, LANGSXP);
   SETCAR(t, skip_fn); t = CDR(t);
   // name = name
-  SETCAR(t, mkString(name)); 
+  SETCAR(t, mkString(name));
   SET_TAG(t, install("name")); t = CDR(t);
   // value = value
   SETCAR(t, mkString(value));
   SET_TAG(t, install("value")); t = CDR(t);
   // pos = pos
-  SETCAR(t, ScalarInteger(pos));  
+  SETCAR(t, ScalarInteger(pos));
   SET_TAG(t, install("pos")); t = CDR(t);
   // depth=depth
   SETCAR(t, ScalarInteger(depth));
@@ -73,7 +73,7 @@ int callskipchildrenfn(char *name, char *value, int pos, int depth, SEXP skip_fn
 }
 
 void parsetree(D_ParserTables pt, D_ParseNode *pn, int depth, SEXP fn, SEXP skip_fn, SEXP env,
-	       int children_first){
+               int children_first){
   char *name = (char*)pt.symbols[pn->symbol].name;
   int nch = d_get_number_of_children(pn), i, skipchild;
   char *value = (char*)rc_dup_str(pn->start_loc.s, pn->end);
@@ -88,10 +88,10 @@ void parsetree(D_ParserTables pt, D_ParseNode *pn, int depth, SEXP fn, SEXP skip
       char *v = (char*)rc_dup_str(xpn->start_loc.s, xpn->end);
       skipchild = callskipchildrenfn(name, v, i, depth, skip_fn, env);
       if (children_first && !skipchild){
-	parsetree(pt, xpn, depth+1, fn, skip_fn, env, children_first);
+        parsetree(pt, xpn, depth+1, fn, skip_fn, env, children_first);
       }
       if (!skipchild){
-	callparsefn(name, v, i, depth, fn, env);
+        callparsefn(name, v, i, depth, fn, env);
       }
       if (!children_first && !skipchild){
         parsetree(pt, xpn, depth+1, fn, skip_fn, env, children_first);
@@ -125,23 +125,23 @@ void __freeP(void) {
 
 
 SEXP dparse_sexp(SEXP sexp_fileName,
-		 SEXP sexp_start_state,
-		 SEXP sexp_save_parse_tree,
-		 SEXP sexp_partial_parses,
-		 SEXP sexp_compare_stacks,
-		 SEXP sexp_commit_actions_interval,
-		 SEXP sexp_fixup,
-		 SEXP sexp_fixup_ebnf,
-		 SEXP sexp_nogreedy,
-		 SEXP sexp_noheight,
-		 SEXP sexp_use_filename,
-		 SEXP sexp_sizeof_parse_node,
-		 SEXP sexp_verbose,
-		 SEXP sexp_children_first,
-		 SEXP fn,
-		 SEXP skip_fn,
-		 SEXP env,
-		 D_ParserTables pt){
+                 SEXP sexp_start_state,
+                 SEXP sexp_save_parse_tree,
+                 SEXP sexp_partial_parses,
+                 SEXP sexp_compare_stacks,
+                 SEXP sexp_commit_actions_interval,
+                 SEXP sexp_fixup,
+                 SEXP sexp_fixup_ebnf,
+                 SEXP sexp_nogreedy,
+                 SEXP sexp_noheight,
+                 SEXP sexp_use_filename,
+                 SEXP sexp_sizeof_parse_node,
+                 SEXP sexp_verbose,
+                 SEXP sexp_children_first,
+                 SEXP fn,
+                 SEXP skip_fn,
+                 SEXP env,
+                 D_ParserTables pt){
   __freeP();
   int children_first;
   __curP = new_D_Parser(&pt, INTEGER(sexp_sizeof_parse_node)[0]);
@@ -167,16 +167,16 @@ SEXP dparse_sexp(SEXP sexp_fileName,
   } else {
     if (!__curP->syntax_errors){
       if (d_use_file_name){
-        d_use_file_name = 0;    
-        error("fatal error, '%s' line %d", CHAR(STRING_ELT(sexp_fileName,0)), __curP->loc.line);
+        d_use_file_name = 0;
+        error("fatal error, '%s' line %d column %d", CHAR(STRING_ELT(sexp_fileName,0)), __curP->loc.line, __curP->loc.col);
       }
       else{
-	error("fatal error, '' line %d", __curP->loc.line);
+        error("fatal error, '' line %d", __curP->loc.line);
       }
     } else {
       if (d_use_file_name){
         d_use_file_name = 0;
-        error("syntax errors in '%s'.",CHAR(STRING_ELT(sexp_fileName,0)));
+        error("syntax errors in '%s' line %d column %d.", CHAR(STRING_ELT(sexp_fileName,0)), __curP->loc.line, __curP->loc.col);
       }
       else{
         error("syntax errors.");
