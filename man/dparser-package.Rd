@@ -156,7 +156,9 @@ U+03c9 \{ printf("omega\n"); \}
 hexint: "(0x|0X)[0-9a-fA-F]+[uUlL]?";
 }
 \bold{Note:}  only the simple regular expression operators are currently supported. This include parens, square parens, ranges, and '*', '+', '?'.
-\itemize{\item  Terminal modifiers}{
+
+
+\itemize{\item Terminal modifiers}
 
 Terminals can contain embbed escape codes.  Including the standard
 C escape codes, the codes \\x and \\d permit inserting hex and
@@ -192,7 +194,6 @@ Notice how it can be mixed with regular string terminals.
 
 X: '1' ($\{scan ops_scan(ops, ops_cache)\} '2')*;
 
-}
 
 The user provides the 'ops_scan' function.  This example is from tests/g4.test.g in the source distribution.
 
