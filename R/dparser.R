@@ -639,3 +639,15 @@ dpReload <- function(){
     ret <- ret && !is.null(getLoadedDLLs()$dparser)
     return(ret)
 }
+
+#' Return the dparser function pointers
+#'
+#'
+#' @return dparser function pointers
+#' @export
+#' @author Matthew L. Fidler
+#' @examples
+#' .dparsePtr()
+.dparsePtr <- function() {
+  .Call(`_dparserPtr`, PACKAGE = "dparser")
+}
