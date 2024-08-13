@@ -26,8 +26,7 @@ void callparsefn(char *name, char *value, int pos, int depth, SEXP fn, SEXP env)
    fn(name = name, value = value, pos = pos, depth = depth)
    */
   SEXP s, t;
-  t = s = PROTECT(allocList(5));
-  SET_TYPEOF(s, LANGSXP);
+  t = s = PROTECT(LCONS(R_NilValue, allocList(4)));
   SETCAR(t, fn); t = CDR(t);
   // name = name
   SETCAR(t, mkString(name));
@@ -52,8 +51,7 @@ int callskipchildrenfn(char *name, char *value, int pos, int depth, SEXP skip_fn
    */
   SEXP s, t;
   int ret;
-  t = s = PROTECT(allocList(5));
-  SET_TYPEOF(s, LANGSXP);
+  t = s = PROTECT(LCONS(R_NilValue, allocList(4)));
   SETCAR(t, skip_fn); t = CDR(t);
   // name = name
   SETCAR(t, mkString(name));
