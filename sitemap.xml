@@ -1,60 +1,22 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-  <url>
-    <loc>https://nlmixr2.github.io/dparser-R/404.html</loc>
-  </url>
-  <url>
-    <loc>https://nlmixr2.github.io/dparser-R/LICENSE-text.html</loc>
-  </url>
-  <url>
-    <loc>https://nlmixr2.github.io/dparser-R/Readme.html</loc>
-  </url>
-  <url>
-    <loc>https://nlmixr2.github.io/dparser-R/authors.html</loc>
-  </url>
-  <url>
-    <loc>https://nlmixr2.github.io/dparser-R/index.html</loc>
-  </url>
-  <url>
-    <loc>https://nlmixr2.github.io/dparser-R/news/index.html</loc>
-  </url>
-  <url>
-    <loc>https://nlmixr2.github.io/dparser-R/reference/dpDefaultSkip.html</loc>
-  </url>
-  <url>
-    <loc>https://nlmixr2.github.io/dparser-R/reference/dpGetFile.html</loc>
-  </url>
-  <url>
-    <loc>https://nlmixr2.github.io/dparser-R/reference/dpIncludeDir.html</loc>
-  </url>
-  <url>
-    <loc>https://nlmixr2.github.io/dparser-R/reference/dpReload.html</loc>
-  </url>
-  <url>
-    <loc>https://nlmixr2.github.io/dparser-R/reference/dpRparse.html</loc>
-  </url>
-  <url>
-    <loc>https://nlmixr2.github.io/dparser-R/reference/dpVersion.html</loc>
-  </url>
-  <url>
-    <loc>https://nlmixr2.github.io/dparser-R/reference/dparse.html</loc>
-  </url>
-  <url>
-    <loc>https://nlmixr2.github.io/dparser-R/reference/dparser-package.html</loc>
-  </url>
-  <url>
-    <loc>https://nlmixr2.github.io/dparser-R/reference/dparserFunction-class.html</loc>
-  </url>
-  <url>
-    <loc>https://nlmixr2.github.io/dparser-R/reference/gc.dparser.html</loc>
-  </url>
-  <url>
-    <loc>https://nlmixr2.github.io/dparser-R/reference/index.html</loc>
-  </url>
-  <url>
-    <loc>https://nlmixr2.github.io/dparser-R/reference/mkdparse.html</loc>
-  </url>
-  <url>
-    <loc>https://nlmixr2.github.io/dparser-R/reference/show-dparserFunction-method.html</loc>
-  </url>
+<urlset xmlns = 'http://www.sitemaps.org/schemas/sitemap/0.9'>
+<url><loc>https://nlmixr2.github.io/dparser-R/404.html</loc></url>
+<url><loc>https://nlmixr2.github.io/dparser-R/LICENSE-text.html</loc></url>
+<url><loc>https://nlmixr2.github.io/dparser-R/Readme.html</loc></url>
+<url><loc>https://nlmixr2.github.io/dparser-R/authors.html</loc></url>
+<url><loc>https://nlmixr2.github.io/dparser-R/index.html</loc></url>
+<url><loc>https://nlmixr2.github.io/dparser-R/news/index.html</loc></url>
+<url><loc>https://nlmixr2.github.io/dparser-R/reference/dpDefaultSkip.html</loc></url>
+<url><loc>https://nlmixr2.github.io/dparser-R/reference/dpGetFile.html</loc></url>
+<url><loc>https://nlmixr2.github.io/dparser-R/reference/dpIncludeDir.html</loc></url>
+<url><loc>https://nlmixr2.github.io/dparser-R/reference/dpReload.html</loc></url>
+<url><loc>https://nlmixr2.github.io/dparser-R/reference/dpRparse.html</loc></url>
+<url><loc>https://nlmixr2.github.io/dparser-R/reference/dpVersion.html</loc></url>
+<url><loc>https://nlmixr2.github.io/dparser-R/reference/dparse.html</loc></url>
+<url><loc>https://nlmixr2.github.io/dparser-R/reference/dparser-package.html</loc></url>
+<url><loc>https://nlmixr2.github.io/dparser-R/reference/dparserFunction-class.html</loc></url>
+<url><loc>https://nlmixr2.github.io/dparser-R/reference/gc.dparser.html</loc></url>
+<url><loc>https://nlmixr2.github.io/dparser-R/reference/index.html</loc></url>
+<url><loc>https://nlmixr2.github.io/dparser-R/reference/mkdparse.html</loc></url>
+<url><loc>https://nlmixr2.github.io/dparser-R/reference/show-dparserFunction-method.html</loc></url>
 </urlset>
+
