@@ -1,3 +1,7 @@
+# dparser 1.3.1-12
+
+- Changed language access to not use `SET_TYPEOF` (as required by CRAN)
+
 # dparser 1.3.1-11
 
 - Changed `gram.c` to handle NULL strings without printing them (as requested by CRAN)
