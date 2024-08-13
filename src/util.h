@@ -86,6 +86,7 @@ typedef struct hash_fns_t {
     }                                              \
     vec_add_internal((_v), _i);                    \
   } while (0)
+#ifndef __dparser_ptr__
 void vec_add_internal(void *v, void *elem);
 int vec_eq(void *v, void *vv);
 int set_find(void *v, void *t);
@@ -94,6 +95,7 @@ int set_union(void *v, void *vv);
 void *set_add_fn(void *v, void *t, hash_fns_t *fns);
 void set_union_fn(void *v, void *vv, hash_fns_t *fns);
 void set_to_vec(void *av);
+#endif
 #define vec_clear(_v) \
   do {                \
     (_v)->n = 0;      \
@@ -128,10 +130,12 @@ void set_to_vec(void *av);
       (*((_s)->cur)++ = (_x));                                               \
                                                                              \
   } while (0)
+#ifndef __dparser_ptr__
 void *stack_push_internal(AbstractStack *, void *);
 
 int buf_read(const char *pathname, char **buf, int *len);
 char *sbuf_read(const char *pathname);
+#endif
 
 #if defined(WIN32)
 #define STREQ(_x, _n, _s) ((_n == sizeof(_s) - 1) && !strnicmp(_x, _s, sizeof(_s) - 1))
@@ -139,6 +143,7 @@ char *sbuf_read(const char *pathname);
 #define STREQ(_x, _n, _s) ((_n == sizeof(_s) - 1) && !strncasecmp(_x, _s, sizeof(_s) - 1))
 #endif
 
+#ifndef __dparser_ptr__
 void d_fail(const char *str, ...);
 void d_warn(const char *str, ...);
 char *dup_str(const char *str, const char *end);
@@ -159,7 +164,8 @@ extern int test_level;
 extern int d_rdebug_grammar_level;
 
 #endif
+
+#endif
 #if defined(__cplusplus)
 }
 #endif
-

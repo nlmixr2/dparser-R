@@ -162,6 +162,8 @@ typedef struct D_ParserTables {
   unsigned int save_parse_tree;
 } D_ParserTables;
 
+#ifndef __dparser_ptr__
 void parse_whitespace(struct D_Parser *p, d_loc_t *loc, void **p_globals);
+#endif
 
 #endif

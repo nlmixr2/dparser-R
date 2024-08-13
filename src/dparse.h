@@ -65,6 +65,8 @@ typedef struct D_ParseNode {
   D_ParseNode_User user;
 } D_ParseNode;
 
+#ifndef __dparser_ptr__
+
 D_Parser *new_D_Parser(struct D_ParserTables *t, int sizeof_ParseNode_User);
 void free_D_Parser(D_Parser *p);
 D_ParseNode *dparse(D_Parser *p, char *buf, int buf_len);
@@ -82,6 +84,7 @@ void d_pass(D_Parser *p, D_ParseNode *pn, int pass_number);
 int resolve_amb_greedy(D_Parser *dp, int n, D_ParseNode **v);
 
 char *d_dup_pathname_str(const char *str);
+#endif
 
 #if defined(__cplusplus)
 }

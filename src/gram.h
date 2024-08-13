@@ -243,6 +243,7 @@ typedef struct Grammar {
 
 /* automatically add %op_XXX to rightmost token of %XXX rule, default off */
 
+#ifndef __dparser_ptr__
 Grammar *new_D_Grammar(char *pathname);
 void free_D_Grammar(Grammar *g);
 int build_grammar(Grammar *g);
@@ -253,10 +254,12 @@ void print_states(Grammar *g);
 void print_rule(Rule *r);
 void print_term(Term *t);
 Production *lookup_production(Grammar *g, char *name, uint len);
+#endif
 
 /* for creating grammars */
 #define last_elem(_r) ((_r)->elems.v[(_r)->elems.n - 1])
 
+#ifndef __dparser_ptr__
 Rule *new_rule(Grammar *g, Production *p);
 Elem *new_elem_nterm(Production *p, Rule *r);
 void new_declaration(Grammar *g, Elem *e, uint kind);
@@ -280,9 +283,9 @@ void rep_EBNF(Grammar *g, int minimum, int maximum);
 void initialize_productions(Grammar *g);
 void finalize_productions(Grammar *g);
 uint state_for_declaration(Grammar *g, uint iproduction);
+#endif
 
 #endif
 #if defined(__cplusplus)
 }
 #endif
-

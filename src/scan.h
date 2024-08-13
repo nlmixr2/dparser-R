@@ -16,10 +16,11 @@ typedef struct ShiftResult {
   d_loc_t loc;
 } ShiftResult;
 
+#ifndef __dparser_ptr__
 int scan_buffer(d_loc_t *loc, D_State *st, ShiftResult *result);
+#endif
 
 #endif
 #if defined(__cplusplus)
 }
 #endif
-

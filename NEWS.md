@@ -2,6 +2,14 @@
 
 - Changed language access to not use `SET_TYPEOF` (as required by CRAN)
 
+- Changed interface so that functional changes will not cause
+  segmentation faults when other libraries are not recompiled against
+  this library (removed binary linkage).  However changes to the
+  dparser parsing C structures will likely cause a segmentation fault.
+  Since the structures have not changed very much over time, but CRAN
+  requests small changes to the functions frequently, this will
+  probably be sufficient for most cases.
+
 # dparser 1.3.1-11
 
 - Changed `gram.c` to handle NULL strings without printing them (as requested by CRAN)
