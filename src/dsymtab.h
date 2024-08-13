@@ -41,6 +41,7 @@ typedef struct D_Scope {
   struct D_Scope *down_next;  /* next enclosed scope */
 } D_Scope;
 
+#ifndef __dparser_ptr__
 D_Scope *new_D_Scope(D_Scope *parent);
 D_Scope *enter_D_Scope(D_Scope *current, D_Scope *scope);
 D_Scope *commit_D_Scope(D_Scope *scope);
@@ -62,5 +63,6 @@ D_Sym *current_D_Sym(D_Scope *st, D_Sym *sym);
 D_Sym *find_D_Sym_in_Scope(D_Scope *st, D_Scope *cur, char *name, char *end);
 D_Sym *next_D_Sym_in_Scope(D_Scope **st, D_Sym **sym);
 void print_scope(D_Scope *st);
+#endif
 
 #endif

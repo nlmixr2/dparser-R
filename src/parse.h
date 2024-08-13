@@ -151,10 +151,11 @@ typedef struct ZNode {
 } ZNode;
 #define znode_next(_z) (*(ZNode **)&((_z)->pn))
 
+#ifndef __dparser_ptr__
 D_ParseNode *ambiguity_count_fn(D_Parser *pp, int n, D_ParseNode **v);
+#endif
 
 #endif
 #if defined(__cplusplus)
 }
 #endif
-

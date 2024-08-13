@@ -1,4 +1,4 @@
-/*
+ /*
   Copyright 2002-2004 John Plevyak, All Rights Reserved
 */
 #ifndef _mkdparse_H_
@@ -11,8 +11,12 @@ extern "C" {
 
 struct Grammar;
 
+#ifndef __dparser_ptr__
+
 void mkdparse(struct Grammar *g, char *grammar_pathname);
 void mkdparse_from_string(struct Grammar *g, char *str);
+
+#endif
 
 #if defined(__cplusplus)
 }

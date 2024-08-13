@@ -26,10 +26,11 @@ typedef struct ScanState {
   ScanStateTransition *transition[256];
 } ScanState;
 
+#ifndef __dparser_ptr__
 void build_scanners(struct Grammar *g);
+#endif
 
 #endif
 #if defined(__cplusplus)
 }
 #endif
-

@@ -3,6 +3,8 @@
 */
 #ifndef __dparserPtr_H__
 #define __dparserPtr_H__
+#define __dparser_ptr__
+
 #include <R.h>
 #include <Rinternals.h>
 #include <Rdefines.h>
@@ -13,9 +15,12 @@
 #include "mkdparse.h"
 #include "dparse.h"
 #include "read_binary.h"
+
+
 #if defined(__cplusplus)
 extern "C" {
 #endif
+
   typedef  D_Parser *(*new_D_Parser_type)(struct D_ParserTables*, int);
   extern new_D_Parser_type new_D_Parser;
 
@@ -591,6 +596,7 @@ static inline void
     return R_NilValue;                                                  \
   }
 
+#undef __dparser_ptr__
 #if defined(__cplusplus)
 }
 #endif
