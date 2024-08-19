@@ -1,12 +1,13 @@
-#include <sys/stat.h> 
+#include <sys/stat.h>
 #include <fcntl.h>
 #include <stdio.h>
 #include <string.h>
-#include <stdint.h> 
+#include <stdint.h>
 #include "gramgram.h"
 #include "d.h"
 #include "mkdparse.h"
 #include "dparse.h"
+#define R_NO_REMAP
 #include <R.h>
 #include <Rinternals.h>
 #include <R_ext/Rdynload.h>

@@ -4,7 +4,7 @@
 #ifndef __dparserPtr_H__
 #define __dparserPtr_H__
 #define __dparser_ptr__
-
+#define R_NO_REMAP
 #include <R.h>
 #include <Rinternals.h>
 #include <Rdefines.h>
@@ -469,7 +469,7 @@ static inline  void
     snprintf(nstr, 255, "Parser Fail: %s", str);
     vsnprintf(outstr, 256*2, nstr, ap);
     va_end(ap);
-    error("%s", outstr);
+    Rf_error("%s", outstr);
   }
 
 static inline void
@@ -481,7 +481,7 @@ static inline void
     snprintf(nstr, 255, "%s", str);
     vsnprintf(outstr, 256*2, nstr, ap);
     va_end(ap);
-    warning("%s", outstr);
+    Rf_warning("%s", outstr);
   }
 #define dparserPtrIni set_d_file_name_type set_d_file_name;             \
   get_d_debug_level_type get_d_debug_level;                             \
