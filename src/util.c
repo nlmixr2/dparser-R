@@ -85,7 +85,7 @@ void d_fail(const char *str, ...) {
   snprintf(nstr, 255, "Parser Fail: %s", str);
   vsnprintf(outstr, 256*2, nstr, ap);
   va_end(ap);
-  error("%s", outstr);
+  Rf_error("%s", outstr);
 }
 
 void d_warn(const char *str, ...) {
@@ -96,7 +96,7 @@ void d_warn(const char *str, ...) {
   snprintf(nstr, 255, "%s", str);
   vsnprintf(outstr, 256*2, nstr, ap);
   va_end(ap);
-  warning("%s", outstr);
+  Rf_warning("%s", outstr);
 }
 
 void vec_add_internal(void *v, void *elem) {
