@@ -1,6 +1,7 @@
 #ifndef __dparser2_H__
 #define __dparser2_H__
 #define __dparser_H__
+#define R_NO_REMAP
 #include <R.h>
 #include <Rinternals.h>
 #include <Rdefines.h>

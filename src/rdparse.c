@@ -2,6 +2,7 @@
 #include "d.h"
 #include "mkdparse.h"
 #include "dparse.h"
+#define R_NO_REMAP
 #include <R.h>
 #include <Rinternals.h>
 #include <R_ext/Rdynload.h>
@@ -14,7 +15,7 @@ extern int d_verbose_level;
 
 char * rc_dup_str(const char *s, const char *e) {
   int l = e ? e-s : strlen(s);
-  char *ss = Calloc(l+1,char);
+  char *ss = R_Calloc(l+1,char);
   memcpy(ss, s, l);
   ss[l] = 0;
   return ss;
@@ -26,21 +27,21 @@ void callparsefn(char *name, char *value, int pos, int depth, SEXP fn, SEXP env)
    fn(name = name, value = value, pos = pos, depth = depth)
    */
   SEXP s, t;
-  t = s = PROTECT(LCONS(R_NilValue, allocList(4)));
+  t = s = PROTECT(LCONS(R_NilValue, Rf_allocList(4)));
   SETCAR(t, fn); t = CDR(t);
   // name = name
-  SETCAR(t, mkString(name));
-  SET_TAG(t, install("name")); t = CDR(t);
+  SETCAR(t, Rf_mkString(name));
+  SET_TAG(t, Rf_install("name")); t = CDR(t);
   // value = value
-  SETCAR(t, mkString(value));
-  SET_TAG(t, install("value")); t = CDR(t);
+  SETCAR(t, Rf_mkString(value));
+  SET_TAG(t, Rf_install("value")); t = CDR(t);
   // pos = pos
-  SETCAR(t, ScalarInteger(pos));
-  SET_TAG(t, install("pos")); t = CDR(t);
+  SETCAR(t, Rf_ScalarInteger(pos));
+  SET_TAG(t, Rf_install("pos")); t = CDR(t);
   // depth=depth
-  SETCAR(t, ScalarInteger(depth));
-  SET_TAG(t, install("depth")); t = CDR(t);
-  eval(s, env);
+  SETCAR(t, Rf_ScalarInteger(depth));
+  SET_TAG(t, Rf_install("depth")); t = CDR(t);
+  Rf_eval(s, env);
   UNPROTECT(1);
 }
 
@@ -51,21 +52,21 @@ int callskipchildrenfn(char *name, char *value, int pos, int depth, SEXP skip_fn
    */
   SEXP s, t;
   int ret;
-  t = s = PROTECT(LCONS(R_NilValue, allocList(4)));
+  t = s = PROTECT(LCONS(R_NilValue, Rf_allocList(4)));
   SETCAR(t, skip_fn); t = CDR(t);
   // name = name
-  SETCAR(t, mkString(name));
-  SET_TAG(t, install("name")); t = CDR(t);
+  SETCAR(t, Rf_mkString(name));
+  SET_TAG(t, Rf_install("name")); t = CDR(t);
   // value = value
-  SETCAR(t, mkString(value));
-  SET_TAG(t, install("value")); t = CDR(t);
+  SETCAR(t, Rf_mkString(value));
+  SET_TAG(t, Rf_install("value")); t = CDR(t);
   // pos = pos
-  SETCAR(t, ScalarInteger(pos));
-  SET_TAG(t, install("pos")); t = CDR(t);
+  SETCAR(t, Rf_ScalarInteger(pos));
+  SET_TAG(t, Rf_install("pos")); t = CDR(t);
   // depth=depth
-  SETCAR(t, ScalarInteger(depth));
-  SET_TAG(t, install("depth")); t = CDR(t);
-  ret=INTEGER(eval(s, env))[0];
+  SETCAR(t, Rf_ScalarInteger(depth));
+  SET_TAG(t, Rf_install("depth")); t = CDR(t);
+  ret=INTEGER(Rf_eval(s, env))[0];
   UNPROTECT(1);
   return ret;
 }
@@ -94,10 +95,10 @@ void parsetree(D_ParserTables pt, D_ParseNode *pn, int depth, SEXP fn, SEXP skip
       if (!children_first && !skipchild){
         parsetree(pt, xpn, depth+1, fn, skip_fn, env, children_first);
       }
-      Free(v);
+      R_Free(v);
     }
   }
-  Free(value);
+  R_Free(value);
 }
 
 D_Parser *__curP=NULL;
@@ -166,18 +167,18 @@ SEXP dparse_sexp(SEXP sexp_fileName,
     if (!__curP->syntax_errors){
       if (d_use_file_name){
         d_use_file_name = 0;
-        error("fatal error, '%s' line %d column %d", CHAR(STRING_ELT(sexp_fileName,0)), __curP->loc.line, __curP->loc.col);
+        Rf_error("fatal error, '%s' line %d column %d", CHAR(STRING_ELT(sexp_fileName,0)), __curP->loc.line, __curP->loc.col);
       }
       else{
-        error("fatal error, '' line %d", __curP->loc.line);
+        Rf_error("fatal error, '' line %d", __curP->loc.line);
       }
     } else {
       if (d_use_file_name){
         d_use_file_name = 0;
-        error("syntax errors in '%s' line %d column %d.", CHAR(STRING_ELT(sexp_fileName,0)), __curP->loc.line, __curP->loc.col);
+        Rf_error("syntax errors in '%s' line %d column %d.", CHAR(STRING_ELT(sexp_fileName,0)), __curP->loc.line, __curP->loc.col);
       }
       else{
-        error("syntax errors.");
+        Rf_error("syntax errors.");
       }
     }
   }

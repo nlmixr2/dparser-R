@@ -4,6 +4,8 @@
 #ifndef _d_H_
 #define _d_H_
 
+#define R_NO_REMAP
+
 #define __USE_MINGW_ANSI_STDIO 1
 #ifdef MEMWATCH
 #define MEMWATCH_STDIO 1

@@ -3,6 +3,7 @@ Header file for using internal C-level dparser functions in dparser-R (generated
 */
 #ifndef __dparser_H__
 #define __dparser_H__
+#define R_NO_REMAP
 #include <R.h>
 #include <Rinternals.h>
 #include <Rdefines.h>
@@ -689,7 +690,7 @@ d_fail(const char *str, ...) {
   snprintf(nstr, 255, "Parser Fail: %s", str);
   vsnprintf(outstr, 256*2, nstr, ap);
   va_end(ap);
-  error("%s", outstr);
+  Rf_error("%s", outstr);
 }
 
 void
@@ -701,7 +702,7 @@ d_warn(const char *str, ...) {
   snprintf(nstr, 255, "%s", str);
   vsnprintf(outstr, 256*2, nstr, ap);
   va_end(ap);
-  warning("%s", outstr);
+  Rf_warning("%s", outstr);
 }
 
 #if defined(__cplusplus)
