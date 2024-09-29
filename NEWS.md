@@ -1,3 +1,8 @@
+# dparser 1.3.1-13
+
+- R version specific code for calling R within C to match version
+  specific requirements (#19)
+
 # dparser 1.3.1-12
 
 - Changed language access to not use `SET_TYPEOF` (as required by CRAN)
