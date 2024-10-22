@@ -2,6 +2,7 @@
 #include "d.h"
 #include "mkdparse.h"
 #include "dparse.h"
+#define R_NO_REMAP
 #include <R.h>
 #include <Rinternals.h>
 #include <R_ext/Rdynload.h>
@@ -26,7 +27,12 @@ void callparsefn(char *name, char *value, int pos, int depth, SEXP fn, SEXP env)
    fn(name = name, value = value, pos = pos, depth = depth)
    */
   SEXP s, t;
+#if R_MAJOR > 4 || (R_MAJOR == 4 && R_MINOR >= 4)
   t = s = PROTECT(LCONS(R_NilValue, Rf_allocList(4)));
+#else
+  t = s = PROTECT(Rf_allocList(5));
+  sto(s, LANGSXP);
+#endif
   SETCAR(t, fn); t = CDR(t);
   // name = name
   SETCAR(t, Rf_mkString(name));
@@ -51,7 +57,12 @@ int callskipchildrenfn(char *name, char *value, int pos, int depth, SEXP skip_fn
    */
   SEXP s, t;
   int ret;
+#if R_MAJOR > 4 || (R_MAJOR == 4 && R_MINOR >= 4)
   t = s = PROTECT(LCONS(R_NilValue, Rf_allocList(4)));
+#else
+  t = s = PROTECT(Rf_allocList(5));
+  sto(s, LANGSXP);
+#endif
   SETCAR(t, skip_fn); t = CDR(t);
   // name = name
   SETCAR(t, Rf_mkString(name));
