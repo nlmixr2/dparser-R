@@ -34,3 +34,4 @@ dparser.*\.(zip|pdf)$
 ^_pkgdown\.yml$
 ^docs$
 ^pkgdown$
+^revdep$
