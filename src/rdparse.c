@@ -2,7 +2,7 @@
 #include "d.h"
 #include "mkdparse.h"
 #include "dparse.h"
-#define R_NO_REMAP
+#define STRICT_R_HEADERS
 #include <R.h>
 #include <Rinternals.h>
 #include <R_ext/Rdynload.h>
