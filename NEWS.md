@@ -1,7 +1,7 @@
 # dparser 1.3.1-13
 
-- R version specific code for calling R within C to match version
-  specific requirements (#19)
+- Changed `Makevars` header order, strict options so that `dparser`
+  will compile on older versions of R (#19, #20, #22)
 
 # dparser 1.3.1-12
 

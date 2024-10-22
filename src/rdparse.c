@@ -1,12 +1,11 @@
-#include "gramgram.h"
-#include "d.h"
-#include "mkdparse.h"
-#include "dparse.h"
-#define R_NO_REMAP
 #include <R.h>
 #include <Rinternals.h>
 #include <R_ext/Rdynload.h>
 #include <Rmath.h>
+#include "gramgram.h"
+#include "d.h"
+#include "mkdparse.h"
+#include "dparse.h"
 extern int d_use_file_name;
 extern char *d_file_name;
 extern int d_use_r_headers;
@@ -27,12 +26,7 @@ void callparsefn(char *name, char *value, int pos, int depth, SEXP fn, SEXP env)
    fn(name = name, value = value, pos = pos, depth = depth)
    */
   SEXP s, t;
-#if R_MAJOR > 4 || (R_MAJOR == 4 && R_MINOR >= 4)
   t = s = PROTECT(LCONS(R_NilValue, Rf_allocList(4)));
-#else
-  t = s = PROTECT(Rf_allocList(5));
-  SET_TYPEOF(s, LANGSXP);
-#endif
   SETCAR(t, fn); t = CDR(t);
   // name = name
   SETCAR(t, Rf_mkString(name));
@@ -57,12 +51,7 @@ int callskipchildrenfn(char *name, char *value, int pos, int depth, SEXP skip_fn
    */
   SEXP s, t;
   int ret;
-#if R_MAJOR > 4 || (R_MAJOR == 4 && R_MINOR >= 4)
   t = s = PROTECT(LCONS(R_NilValue, Rf_allocList(4)));
-#else
-  t = s = PROTECT(Rf_allocList(5));
-  SET_TYPEOF(s, LANGSXP);
-#endif
   SETCAR(t, skip_fn); t = CDR(t);
   // name = name
   SETCAR(t, Rf_mkString(name));
