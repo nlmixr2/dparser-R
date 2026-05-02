@@ -1,0 +1,5 @@
+# License
+
+    YEAR: 1994-2017
+    COPYRIGHT HOLDER: John Bradley Plevyak (dparser) and Matthew Fidler (R interface)
+    ORGANIZATION: dparser/dparser-R team
