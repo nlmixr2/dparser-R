@@ -12,7 +12,7 @@ checks](https://badges.cranchecks.info/summary/dparser.svg)](https://cran.r-proj
 <!-- badges: end -->
 
 The R version of dparser is meant to be used as a package library where
-you link the C parser to an arbitrary grammer parsed in R. This is what
+you link the C parser to an arbitrary grammar parsed in R. This is what
 is used in `rxode2()`
 
 ### Differences between the R dparser port and the C-version of dparser
@@ -20,8 +20,8 @@ is used in `rxode2()`
 There are a few differences between the R dparser port and the standard
 dparser:
 
-- The R version uses R memory managment instead of C’s memory managment
-  i.e. `malloc`
+- The R version uses R memory management instead of C’s memory
+  management i.e. `malloc`
 
 - The R version is never called from the command line, so all command
   line interface is removed `arg.c`
@@ -32,8 +32,8 @@ dparser:
 - All outputs are using R’s output interface instead of printing to
   `stdout`, or `stderr`.
 
-- Some convience functions are added to translate (and maybe parse)
-  grammers within R.
+- Some convenience functions are added to translate (and maybe parse)
+  grammars within R.
 
 - There is currently some fixes for un-sanitized behaviors that are not
   in the upstream dparser
