@@ -58,6 +58,7 @@ void set_d_file_name(char *x){
 D_Parser *new_D_Parser(struct D_ParserTables *t, int sizeof_ParseNode_User);
 void free_D_Parser(D_Parser *p);
 D_ParseNode *dparse(D_Parser *p, char *buf, int buf_len);
+D_ParseNode *udparse(D_Parser *p, char *buf, unsigned int buf_len);
 void free_D_ParseNode(D_Parser *p, D_ParseNode *pn);
 void free_D_ParseTreeBelow(D_Parser *p, D_ParseNode *pn);
 int d_get_number_of_children(D_ParseNode *pn);
@@ -618,6 +619,7 @@ void R_init_dparser(DllInfo *info){
   R_RegisterCCallable("dparser","free_D_ParseTreeBelow",(DL_FUNC) free_D_ParseTreeBelow);
   R_RegisterCCallable("dparser","free_D_ParseNode",(DL_FUNC) free_D_ParseNode);
   R_RegisterCCallable("dparser","dparse",(DL_FUNC) dparse);
+  R_RegisterCCallable("dparser","udparse",(DL_FUNC) udparse);
   R_RegisterCCallable("dparser","free_D_Parser",(DL_FUNC) free_D_Parser);
   R_RegisterCCallable("dparser","new_D_Parser",(DL_FUNC) new_D_Parser);
 }

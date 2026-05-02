@@ -2119,7 +2119,7 @@ static PNode *handle_top_level_ambiguities(Parser *p, SNode *sn) {
   return pn;
 }
 
-D_ParseNode *dparse(D_Parser *ap, char *buf, int buf_len) {
+D_ParseNode *udparse(D_Parser *ap, char *buf, unsigned int buf_len) {
   uint r;
   Parser *p = (Parser *)ap;
   SNode *sn;
@@ -2176,4 +2176,14 @@ D_ParseNode *dparse(D_Parser *ap, char *buf, int buf_len) {
   free_parser_working_data(p);
   free_whitespace_parser(p);
   return res;
+}
+
+/* Backward-compatible wrapper: keeps the original `int buf_len` ABI for
+ * existing consumers but routes through the unsigned-int implementation
+ * after rejecting negative lengths.  New consumers should call udparse()
+ * directly to use the full unsigned range.
+ */
+D_ParseNode *dparse(D_Parser *ap, char *buf, int buf_len) {
+  if (buf_len < 0) return NULL;
+  return udparse(ap, buf, (unsigned int)buf_len);
 }
