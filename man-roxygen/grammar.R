@@ -69,7 +69,7 @@
 ##' block: '\{' statements* '\}';
 ##' whileblock: 'while' '(' expression ')' block;
 ##' }
-##' \itemize{\item Unicode literals can appear in strings or as charaters with U+ or u+.  For example:}
+##' \itemize{\item Unicode literals can appear in strings or as characters with U+ or u+.  For example:}
 ##'
 ##' \preformatted{
 ##' U+03c9 \{ printf("omega\n"); \}
@@ -393,7 +393,7 @@
 ##'}
 ##' \item{Attributes and Action Specifiers}{
 ##'
-##' Each of the language parser can have some global atrributes and actions associated with each part of the parsed code.
+##' Each of the language parser can have some global attributes and actions associated with each part of the parsed code.
 ##'
 ##' \itemize{\item  Global State ($g)}
 ##'
@@ -548,8 +548,8 @@
 ##'    signature of which is provided in dparse.h.
 ##'
 ##'    If the \bold{verbose_level} flag is set, the default ambiguity
-##' andler will print out parenthesized versions of the ambiguous parse
-##' rees.  This may be of some assistence in disambiguating a grammar.
+##'    handler will print out parenthesized versions of the ambiguous parse
+##'    trees.  This may be of some assistance in disambiguating a grammar.
 ##' }
 ##' \item{Error Recovery}{
 ##'
@@ -561,14 +561,14 @@
 ##'    options (see dparser.h).  These are provided reasonable default
 ##'    values and include:
 ##'    \itemize{
-##'      \item \bold{initial_globals} - the initial global variables accessable through $g
+##'      \item \bold{initial_globals} - the initial global variables accessible through $g
 ##'      \item \bold{initial_skip_space_fn} - the initial whitespace function
 ##'      \item \bold{initial_scope} - the initial symbol table scope
 ##'      \item \bold{syntax_error_fn} - the function called on a syntax error
 ##'      \item \bold{ambiguity_fn} - the function called on an unresolved ambiguity
 ##'      \item \bold{loc} - the initial location (set on an error).
 ##'    }
-##'    In addtion, there are the following user configurables:
+##'    In addition, there are the following user configurables:
 ##'    \itemize{
 ##'      \item \bold{sizeof_user_parse_node} - the sizeof D_ParseNodeUser
 ##'      \item \bold{save_parse_tree} - whether or not the parse tree should be save once the final actions have been executed
