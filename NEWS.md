@@ -1,5 +1,11 @@
 # dparser 1.3.2
 
+- `udparse()` (and therefore the `dparse()` legacy wrapper) now returns
+  `NULL` when called with a `NULL` buffer.  Previously a `NULL` `buf`
+  was forwarded into `exhaustive_parse`, where the scanner dereferenced
+  it (`*s` inside `white_space`) and crashed.  The new guard at the top
+  of `udparse` short-circuits the call before any state is touched.
+
 - Add `udparse(D_Parser*, char *buf, unsigned int buf_len)` as a
   memory-safe alternative to `dparse(D_Parser*, char *buf, int buf_len)`.
   Existing callers of `dparse` still compile and link unchanged; the
