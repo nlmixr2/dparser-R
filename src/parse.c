@@ -1850,7 +1850,8 @@ void d_pass(D_Parser *ap, D_ParseNode *apn, int pass_number) {
   Parser *p = (Parser *)ap;
   D_Pass *pp;
 
-  if (pass_number >= (int)p->t->npasses) d_fail("bad pass number: %d\n", pass_number);
+  if (pass_number < 0 || pass_number >= (int)p->t->npasses)
+    d_fail("bad pass number: %d\n", pass_number);
   pp = &p->t->passes[pass_number];
   if (pp->kind & D_PASS_MANUAL)
     pass_call(p, pp, pn);
