@@ -1,5 +1,54 @@
 # dparser 1.3.2
 
+## Known issues / API caveats (audited, no behavior change)
+
+A May 2026 audit of the public C API and the surrounding scanner /
+table-handling code identified a number of items that are theoretical
+in current use but worth flagging for future work or for downstream
+consumers that exercise unusual code paths:
+
+- `int d_get_number_of_children(D_ParseNode*)` returns `int` for an
+  underlying `uint` field (`pn->children.n`).  Trees with more than
+  `INT_MAX` siblings would wrap negative; not reachable in practice
+  given memory limits.  A future `d_get_number_of_children_u`
+  returning `unsigned int` would address it cleanly.
+- `D_ParseNode *d_get_child(D_ParseNode*, int child)` takes a signed
+  index but is bounds-checked (`child < 0 || (uint)child >= n`), so
+  the signedness is cosmetic.
+- `new_D_Parser(struct D_ParserTables*, int sizeof_ParseNode_User)`
+  takes a signed size.  The negative-input crash is fixed in this
+  release; promoting to `unsigned int` is an ABI change deferred for
+  a separate API expansion (analogous to the
+  `udparse`/`dparse` pair).
+- `read_binary_tables_*` does not bounds-check the `int` count fields
+  in `BinaryTablesHead` (`n_relocs`, `n_strings`, `tables_size`,
+  `strings_size`) before allocation or iteration.  In normal use the
+  binary-tables file is produced by `mkdparser` itself, so the input
+  is trusted; if a consumer ever ingests third-party `.bin` tables,
+  these fields must be validated first.
+- `util.c:stack_push_internal`, `util.c:escape_string_internal`, and
+  `write_tables.c:make_room_in_buf` all double-and-multiply size
+  variables (`int n`, `strlen(s)+1`, `buf->len * 2 + 1`) without
+  overflow checks.  Each requires near-`INT_MAX` / near-`SIZE_MAX`
+  inputs to misbehave, which is unreachable on any real machine.
+- `rdparse.c:rc_dup_str` and `util.c:dup_str` compute
+  `int l = e - s;` (`ptrdiff_t -> int`).  Strings >2 GiB only;
+  matches the same theoretical limit as `buf_read`.
+- `dparser.c:R_RegisterCCallable("dparser","d_ws_after  ", ...)` and
+  `"d_ws_before "` carry trailing spaces in the registered name.
+  The matching `dparser.h` consumer strings have the same trailing
+  spaces, so dispatch works by exact-match — but the names should
+  be normalized in `build/refresh.R` next time that generator is
+  touched.
+- `d_get_child(NULL, ...)` and `d_get_number_of_children(NULL)`
+  dereference NULL.  This is consistent with the rest of the C
+  dparser API ("caller passes valid nodes"); not a contract bug.
+- The `dparse(D_Parser*, char*, int)` legacy ABI now hardens negative
+  `buf_len` to `NULL` (added in this same release).  The behaviour
+  for negative inputs was previously undefined pointer arithmetic, so
+  the type signature is preserved but the runtime semantics are
+  strictly safer.
+
 - Add `udparse(D_Parser*, char *buf, unsigned int buf_len)` as a
   memory-safe alternative to `dparse(D_Parser*, char *buf, int buf_len)`.
   Existing callers of `dparse` still compile and link unchanged; the
