@@ -21,14 +21,17 @@ test_that("dparse_<gram> raises a clean error for a missing input file", {
   # uses an existing user file or writes a tempfile, so the bug is not
   # reachable through normal dparse() use — but TOCTOU (file deleted
   # between check and .Call) and any direct .Call from a downstream
-  # consumer still triggered it.  Test bypasses dpGetFile by reaching
-  # into the closure to grab the registered .Call symbol.
+  # consumer still triggered it.  Test bypasses dpGetFile by looking up
+  # the registered native symbol directly via getNativeSymbolInfo (the
+  # closure-body extraction the earlier draft used breaks under covr,
+  # which rewrites the body for line-coverage tracking).
 
   suppressMessages(suppressWarnings({
     f <- dparse(system.file("tran.g", package = "dparser"), children_first=FALSE)
   }))
-  fn_body <- body(f@.Data)
-  sym <- fn_body[[length(fn_body) - 1]][[2]]   # the .Call(<sym>, ...) symbol
+  gram <- gsub("([^A-Za-z0-9]|[-])", "_", basename(f@env$grammar))
+  pkg <- sprintf("%s_%s", gram, .Platform$r_arch)
+  sym <- getNativeSymbolInfo(sprintf("dparse_%s", gram), PACKAGE = pkg)
   expect_error(
     .Call(sym,
           "/dparser-r-audit-nonexistent-XYZ-12345-ABCDE",
