@@ -1,5 +1,15 @@
 # dparser 1.3.2
 
+- `new_D_Parser()` now rejects a negative `sizeof_ParseNode_User`.
+  Previously a negative argument was stored verbatim, then the per-
+  PNode allocation in `make_PNode`
+      `uint l = sizeof(PNode) - sizeof(d_voidp) + sizeof_user_parse_node`
+  underflowed to a small value, and the rest of `make_PNode` wrote past
+  the resulting tiny buffer.  valgrind on the pre-fix build reported
+  281 invalid writes of size 8, all rooted in `make_PNode (parse.c:965)`.
+  After the fix, `new_D_Parser` calls `Rf_error` with a clear message;
+  valgrind reports 0 errors.
+
 - Add `udparse(D_Parser*, char *buf, unsigned int buf_len)` as a
   memory-safe alternative to `dparse(D_Parser*, char *buf, int buf_len)`.
   Existing callers of `dparse` still compile and link unchanged; the
