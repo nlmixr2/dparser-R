@@ -46,21 +46,35 @@ uint strhashl(const char *s, int l) {
 int buf_read(const char *pathname, char **buf, int *len) {
   struct stat sb;
   int fd;
-  size_t real_size;
+  ssize_t real_size;
+  off_t fsize;
 
   *buf = 0;
   *len = 0;
   fd = open(pathname, O_RDONLY);
-  if (fd <= 0) return -1;
+  if (fd < 0) return -1;
   memset(&sb, 0, sizeof(sb));
-  fstat(fd, &sb);
-  *len = sb.st_size;
-  *buf = (char *)MALLOC(*len + 2);
+  if (fstat(fd, &sb) != 0) { close(fd); return -1; }
+  fsize = sb.st_size;
+  if (fsize < 0 || (uintmax_t)fsize > (uintmax_t)(INT_MAX - 2)) {
+    close(fd);
+    return -1;
+  }
+  *len = (int)fsize;
+  *buf = (char *)MALLOC((size_t)*len + 2);
+  if (!*buf) { close(fd); return -1; }
   /* MINGW likes to convert cr lf => lf which messes with the size */
-  real_size = read(fd, *buf, *len);
+  real_size = read(fd, *buf, (size_t)*len);
+  if (real_size < 0) {
+    FREE(*buf);
+    *buf = NULL;
+    *len = 0;
+    close(fd);
+    return -1;
+  }
   (*buf)[real_size] = 0;
   (*buf)[real_size + 1] = 0;
-  *len = real_size;
+  *len = (int)real_size;
   close(fd);
   return *len;
 }
