@@ -2130,6 +2130,8 @@ D_ParseNode *udparse(D_Parser *ap, char *buf, unsigned int buf_len) {
   PNode *pn;
   D_ParseNode *res = NULL;
 
+  if (!buf) return NULL;
+
   p->states = p->scans = p->shifts = p->reductions = p->compares = 0;
   p->start = buf;
   p->end = buf + buf_len;

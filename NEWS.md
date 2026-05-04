@@ -1,5 +1,11 @@
 # dparser 1.3.2
 
+- `udparse()` (and therefore the `dparse()` legacy wrapper) now returns
+  `NULL` when called with a `NULL` buffer.  Previously a `NULL` `buf`
+  was forwarded into `exhaustive_parse`, where the scanner dereferenced
+  it (`*s` inside `white_space`) and crashed.  The new guard at the top
+  of `udparse` short-circuits the call before any state is touched.
+
 - `new_D_Parser()` now rejects a negative `sizeof_ParseNode_User`.
   Previously a negative argument was stored verbatim, then the per-
   PNode allocation in `make_PNode`
