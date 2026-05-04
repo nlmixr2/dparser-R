@@ -2,6 +2,23 @@
 
 ## dparser 1.3.2
 
+- `dparse_sexp()` (the entry point used by every per-grammar
+  `dparse_<gram>()` wrapper) now reads its input file through
+  `buf_read()` instead of `sbuf_read() + strlen()`. Two bugs are fixed:
+
+  - If the input file could not be opened, `sbuf_read()` returned
+    `NULL`, and the subsequent `strlen(NULL)` was an immediate SIGSEGV.
+    The new path raises
+    `Rf_error("could not read grammar input file: '<path>'")`.
+  - For input \>= 2 GiB, `strlen()` (which returns `size_t`) was
+    narrowed to the `int buf_len` parameter of legacy
+    [`dparse()`](https://nlmixr2.github.io/dparser-R/reference/dparse.md),
+    silently truncating to a negative value. The new path uses the
+    length returned by `buf_read()` directly and forwards it to
+    `udparse()` (full `unsigned int` range). Once `buf_read()` is itself
+    promoted to `size_t` (separate fix), the path will safely handle
+    inputs up to `UINT_MAX`.
+
 - Add `udparse(D_Parser*, char *buf, unsigned int buf_len)` as a
   memory-safe alternative to
   `dparse(D_Parser*, char *buf, int buf_len)`. Existing callers of
