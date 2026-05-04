@@ -2024,7 +2024,11 @@ void null_white_space(D_Parser *p, d_loc_t *loc, void **p_globals) {
 }
 
 D_Parser *new_D_Parser(D_ParserTables *t, int sizeof_ParseNode_User) {
-  Parser *p = MALLOC(sizeof(Parser));
+  Parser *p;
+  if (sizeof_ParseNode_User < 0)
+    d_fail("new_D_Parser: sizeof_ParseNode_User must be non-negative (got %d)",
+           sizeof_ParseNode_User);
+  p = MALLOC(sizeof(Parser));
   memset(p, 0, sizeof(Parser));
   p->t = t;
   p->user.loc.line = 1;
@@ -2126,6 +2130,8 @@ D_ParseNode *udparse(D_Parser *ap, char *buf, unsigned int buf_len) {
   SNode *sn;
   PNode *pn;
   D_ParseNode *res = NULL;
+
+  if (!buf) return NULL;
 
   p->states = p->scans = p->shifts = p->reductions = p->compares = 0;
   p->start = buf;
