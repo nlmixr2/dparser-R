@@ -154,11 +154,14 @@ SEXP dparse_sexp(SEXP sexp_fileName,
   __curP->dont_use_greediness_for_disambiguation = INTEGER(sexp_nogreedy)[0];
   __curP->dont_use_height_for_disambiguation = INTEGER(sexp_noheight)[0];
   d_file_name = (char*)CHAR(STRING_ELT(sexp_fileName,0));
-  __buf = sbuf_read(d_file_name);
+  int __buf_len = 0;
+  if (buf_read(d_file_name, &__buf, &__buf_len) < 0 || __buf == NULL) {
+    Rf_error("could not read grammar input file: '%s'", d_file_name);
+  }
   d_verbose_level = INTEGER(sexp_verbose)[0];
   d_use_file_name = INTEGER(sexp_use_filename)[0];
   children_first = INTEGER(sexp_children_first)[0];
-  __pn = dparse(__curP, __buf, strlen(__buf));
+  __pn = udparse(__curP, __buf, (unsigned int)__buf_len);
   d_verbose_level = 0;
   if (__pn && !__curP->syntax_errors) {
     parsetree(pt, __pn, 0, fn, skip_fn, env, children_first);

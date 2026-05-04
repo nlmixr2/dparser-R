@@ -6,6 +6,32 @@
   it (`*s` inside `white_space`) and crashed.  The new guard at the top
   of `udparse` short-circuits the call before any state is touched.
 
+- `new_D_Parser()` now rejects a negative `sizeof_ParseNode_User`.
+  Previously a negative argument was stored verbatim, then the per-
+  PNode allocation in `make_PNode`
+      `uint l = sizeof(PNode) - sizeof(d_voidp) + sizeof_user_parse_node`
+  underflowed to a small value, and the rest of `make_PNode` wrote past
+  the resulting tiny buffer.  valgrind on the pre-fix build reported
+  281 invalid writes of size 8, all rooted in `make_PNode (parse.c:965)`.
+  After the fix, `new_D_Parser` calls `Rf_error` with a clear message;
+  valgrind reports 0 errors.
+
+- `dparse_sexp()` (the entry point used by every per-grammar
+  `dparse_<gram>()` wrapper) now reads its input file through
+  `buf_read()` instead of `sbuf_read() + strlen()`.  Two bugs are
+  fixed:
+    * If the input file could not be opened, `sbuf_read()` returned
+      `NULL`, and the subsequent `strlen(NULL)` was an immediate
+      SIGSEGV.  The new path raises
+      `Rf_error("could not read grammar input file: '<path>'")`.
+    * For input >= 2 GiB, `strlen()` (which returns `size_t`) was
+      narrowed to the `int buf_len` parameter of legacy `dparse()`,
+      silently truncating to a negative value.  The new path uses the
+      length returned by `buf_read()` directly and forwards it to
+      `udparse()` (full `unsigned int` range).  Once `buf_read()` is
+      itself promoted to `size_t` (separate fix), the path will safely
+      handle inputs up to `UINT_MAX`.
+
 - Add `udparse(D_Parser*, char *buf, unsigned int buf_len)` as a
   memory-safe alternative to `dparse(D_Parser*, char *buf, int buf_len)`.
   Existing callers of `dparse` still compile and link unchanged; the
