@@ -2,6 +2,41 @@
 
 ## dparser 1.3.2
 
+- `buf_read()` (and therefore `sbuf_read()`) is hardened in three ways
+  without changing its `int *len` ABI:
+
+  - Files larger than `INT_MAX - 2` bytes are now rejected with `-1`
+    instead of silently truncating `off_t -> int` and producing a
+    negative `*len` that the rest of the function then misused as a
+    buffer size. Verified: a 3 GiB sparse file used to SIGSEGV in
+    `buf_read` at `(*buf)[real_size] = 0`; after the fix it returns `-1`
+    cleanly.
+  - `read()`’s `ssize_t` return is now stored in `ssize_t`, not
+    `size_t`. On a `read()` error (returning `-1`), the previous code
+    would index `(*buf)[SIZE_MAX]` — heap corruption. The new code frees
+    the buffer and returns `-1`.
+  - `if (fd <= 0)` -\> `if (fd < 0)` so that fd `0` is treated as a
+    valid descriptor (it is the stdin slot, returned by
+    [`open()`](https://rdrr.io/r/base/connections.html) if stdin has
+    been closed).
+
+- `d_pass(D_Parser*, D_ParseNode*, int pass_number)` now rejects
+  negative `pass_number` values explicitly. Previously the bound check
+  was upper-only (`pass_number >= npasses`), so a negative argument fell
+  through to `&p->t->passes[pass_number]` and a subsequent `pp->kind`
+  read landed before the `passes[]` array — typically a SIGSEGV,
+  occasionally a silent garbage dispatch. The fix adds the matching
+  lower bound; the function now calls `Rf_error("bad pass number: %d")`
+  for any negative argument.
+
+- `udparse()` (and therefore the
+  [`dparse()`](https://nlmixr2.github.io/dparser-R/reference/dparse.md)
+  legacy wrapper) now returns `NULL` when called with a `NULL` buffer.
+  Previously a `NULL` `buf` was forwarded into `exhaustive_parse`, where
+  the scanner dereferenced it (`*s` inside `white_space`) and crashed.
+  The new guard at the top of `udparse` short-circuits the call before
+  any state is touched.
+
 - `new_D_Parser()` now rejects a negative `sizeof_ParseNode_User`.
   Previously a negative argument was stored verbatim, then the per-
   PNode allocation in `make_PNode`
