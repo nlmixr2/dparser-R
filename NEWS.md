@@ -1,5 +1,14 @@
 # dparser 1.3.2
 
+- `d_pass(D_Parser*, D_ParseNode*, int pass_number)` now rejects
+  negative `pass_number` values explicitly.  Previously the bound check
+  was upper-only (`pass_number >= npasses`), so a negative argument
+  fell through to `&p->t->passes[pass_number]` and a subsequent
+  `pp->kind` read landed before the `passes[]` array — typically a
+  SIGSEGV, occasionally a silent garbage dispatch.  The fix adds the
+  matching lower bound; the function now calls `Rf_error("bad pass
+  number: %d")` for any negative argument.
+
 - `udparse()` (and therefore the `dparse()` legacy wrapper) now returns
   `NULL` when called with a `NULL` buffer.  Previously a `NULL` `buf`
   was forwarded into `exhaustive_parse`, where the scanner dereferenced
@@ -31,7 +40,7 @@
       `udparse()` (full `unsigned int` range).  Once `buf_read()` is
       itself promoted to `size_t` (separate fix), the path will safely
       handle inputs up to `UINT_MAX`.
-
+      
 - Add `udparse(D_Parser*, char *buf, unsigned int buf_len)` as a
   memory-safe alternative to `dparse(D_Parser*, char *buf, int buf_len)`.
   Existing callers of `dparse` still compile and link unchanged; the
