@@ -35,6 +35,12 @@ D_ParseNode *dparse(D_Parser *p, char *buf, int buf_len){
   return fun(p, buf, buf_len);
 }
 
+D_ParseNode *udparse(D_Parser *p, char *buf, unsigned int buf_len){
+  static D_ParseNode *(*fun)(D_Parser*, char*, unsigned int)=NULL;
+  if (fun == NULL) fun = (D_ParseNode* (*)(D_Parser*, char*, unsigned int)) R_GetCCallable("dparser","udparse");
+  return fun(p, buf, buf_len);
+}
+
 void free_D_ParseNode(D_Parser *p, D_ParseNode *pn){
   static void (*fun)(D_Parser*, D_ParseNode*)=NULL;
   if (fun == NULL) fun = (void (*)(D_Parser*, D_ParseNode*)) R_GetCCallable("dparser","free_D_ParseNode");

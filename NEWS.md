@@ -1,3 +1,24 @@
+# dparser 1.3.2
+
+- Add `udparse(D_Parser*, char *buf, unsigned int buf_len)` as a
+  memory-safe alternative to `dparse(D_Parser*, char *buf, int buf_len)`.
+  Existing callers of `dparse` still compile and link unchanged; the
+  ABI of `dparse` is preserved.  Internally, `dparse` now rejects
+  negative `buf_len` (returns `NULL`) and forwards positive values to
+  `udparse`, which holds the actual parser implementation.
+
+  Previously, callers had to cast `strlen(buf)` to `int`, which
+  silently truncated to a wrong (often negative) value when the input
+  exceeded `INT_MAX` bytes; that negative length then propagated into
+  `p->end = buf + buf_len`, making the parser read random memory before
+  the buffer.
+
+  New code should call `udparse(p, buf, (unsigned int)strlen(buf))` to
+  avoid the cast and safely accept inputs up to `UINT_MAX` bytes.  Both
+  functions are exported and registered via `R_RegisterCCallable` and
+  re-declared in the consumer headers (`src/dparse.h`, `src/dparser.h`,
+  `src/dparser2.h`, `src/dparserPtr.h`).
+
 # dparser 1.3.1-13
 
 - Changed `Makevars` header order, strict options so that `dparser`

@@ -18,6 +18,7 @@ extern "C" {
   extern D_Parser *new_D_Parser(struct D_ParserTables *t, int sizeof_ParseNode_User);
   extern void free_D_Parser(D_Parser *p);
   extern D_ParseNode *dparse(D_Parser *p, char *buf, int buf_len);
+  extern D_ParseNode *udparse(D_Parser *p, char *buf, unsigned int buf_len);
   extern void free_D_ParseNode(D_Parser *p, D_ParseNode *pn);
   extern void free_D_ParseTreeBelow(D_Parser *p, D_ParseNode *pn);
   extern int d_get_number_of_children(D_ParseNode *pn);

@@ -30,6 +30,9 @@ extern "C" {
   typedef  D_ParseNode *(*dparse_type)(D_Parser*, char*, int);
   extern dparse_type dparse;
 
+  typedef  D_ParseNode *(*udparse_type)(D_Parser*, char*, unsigned int);
+  extern udparse_type udparse;
+
   typedef  void (*free_D_ParseNode_type)(D_Parser*, D_ParseNode*);
   extern free_D_ParseNode_type free_D_ParseNode;
 
