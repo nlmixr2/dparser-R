@@ -11,7 +11,9 @@ export(dparse)
 export(gc.dparser)
 export(mkdparse)
 exportClasses(dparserFunction)
-importFrom(methods,is)
-importFrom(methods,new)
+importFrom(methods,
+  is,
+  new
+)
 importFrom(utils,assignInMyNamespace)
 useDynLib(dparser, .registration=TRUE)
