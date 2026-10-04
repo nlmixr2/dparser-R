@@ -12,12 +12,12 @@ Source:
 [`DESCRIPTION`](https://github.com/nlmixr2/dparser-R/blob/main/DESCRIPTION)
 
 Fidler M, Plevyak J (2026). *dparser: Port of 'Dparser' Package*. R
-package version 1.3.2, <https://nlmixr2.github.io/dparser-R/>.
+package version 1.3.1-14, <https://nlmixr2.github.io/dparser-R/>.
 
     @Manual{,
       title = {dparser: Port of 'Dparser' Package},
       author = {Matthew Fidler and John Plevyak},
       year = {2026},
-      note = {R package version 1.3.2},
+      note = {R package version 1.3.1-14},
       url = {https://nlmixr2.github.io/dparser-R/},
     }

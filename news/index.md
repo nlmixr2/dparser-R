@@ -1,6 +1,6 @@
 # Changelog
 
-## dparser 1.3.2
+## dparser 1.3.1-14
 
 - [`dparse()`](https://nlmixr2.github.io/dparser-R/reference/dparse.md)
   can now be called from several threads at once, one parser per thread.
