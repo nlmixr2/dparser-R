@@ -1319,14 +1319,14 @@ static void shift_all(Parser *p, char *pos) {
   }
 }
 
-static VecZNode path1; /* static first path for speed */
-
-static VecZNode *new_VecZNode(VecVecZNode *paths, int n, int parent) {
+/* The first path is the caller's (reduce_one's) stack vector, not a static, so
+   concurrent dparse() calls, one parser per thread, share nothing here. */
+static VecZNode *new_VecZNode(VecVecZNode *paths, int n, int parent, VecZNode *path1) {
   int i;
   VecZNode *pv;
 
   if (!paths->n)
-    pv = &path1;
+    pv = path1;
   else
     pv = MALLOC(sizeof *pv);
   vec_clear(pv);
@@ -1335,7 +1335,7 @@ static VecZNode *new_VecZNode(VecVecZNode *paths, int n, int parent) {
   return pv;
 }
 
-static void build_paths_internal(ZNode *z, VecVecZNode *paths, int parent, int n, int n_to_go) {
+static void build_paths_internal(ZNode *z, VecVecZNode *paths, int parent, int n, int n_to_go, VecZNode *path1) {
   uint j, k, l;
 
   vec_add(paths->v[parent], z);
@@ -1344,26 +1344,26 @@ static void build_paths_internal(ZNode *z, VecVecZNode *paths, int parent, int n
     for (j = 0, l = 0; j < z->sns.v[k]->zns.n; j++) {
       if (z->sns.v[k]->zns.v[j]) {
         if (k + l) {
-          vec_add(paths, new_VecZNode(paths, n - (n_to_go - 1), parent));
+          vec_add(paths, new_VecZNode(paths, n - (n_to_go - 1), parent, path1));
           parent = paths->n - 1;
         }
-        build_paths_internal(z->sns.v[k]->zns.v[j], paths, parent, n, n_to_go - 1);
+        build_paths_internal(z->sns.v[k]->zns.v[j], paths, parent, n, n_to_go - 1, path1);
         l++;
       }
     }
 }
 
-static void build_paths(ZNode *z, VecVecZNode *paths, int nchildren_to_go) {
+static void build_paths(ZNode *z, VecVecZNode *paths, int nchildren_to_go, VecZNode *path1) {
   if (!nchildren_to_go) return;
-  vec_add(paths, new_VecZNode(paths, 0, -1));
-  build_paths_internal(z, paths, 0, nchildren_to_go, nchildren_to_go);
+  vec_add(paths, new_VecZNode(paths, 0, -1, path1));
+  build_paths_internal(z, paths, 0, nchildren_to_go, nchildren_to_go, path1);
 }
 
-static void free_paths(VecVecZNode *paths) {
+static void free_paths(VecVecZNode *paths, VecZNode *path1) {
   uint i;
   for (i = 0; i < paths->n; i++) {
     vec_free(paths->v[i]);
-    if (paths->v[i] != &path1) FREE(paths->v[i]);
+    if (paths->v[i] != path1) FREE(paths->v[i]);
   }
   vec_free(paths);
 }
@@ -1374,6 +1374,7 @@ static void reduce_one(Parser *p, Reduction *r) {
   ZNode *first_z;
   uint i, j, n = r->reduction->nelements;
   VecVecZNode paths;
+  VecZNode path1; /* first path, see new_VecZNode() */
   VecZNode *path;
 
   if (!r->znode) { /* epsilon reduction */
@@ -1382,7 +1383,7 @@ static void reduce_one(Parser *p, Reduction *r) {
   } else {
     DBG(Rprintf("reduce %d %p %d\n", (int)(r->snode->state - p->t->state), (void *)sn, n));
     vec_clear(&paths);
-    build_paths(r->znode, &paths, n);
+    build_paths(r->znode, &paths, n, &path1);
     for (i = 0; i < paths.n; i++) {
       path = paths.v[i];
       if (r->new_snode) { /* prune paths by new right epsilon node */
@@ -1399,7 +1400,7 @@ static void reduce_one(Parser *p, Reduction *r) {
       if (pn)
         for (j = 0; j < first_z->sns.n; j++) goto_PNode(p, &sn->loc, pn, first_z->sns.v[j]);
     }
-    free_paths(&paths);
+    free_paths(&paths, &path1);
   }
   unref_sn(p, sn);
   r->next = p->free_reductions;
