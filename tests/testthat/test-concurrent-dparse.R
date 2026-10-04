@@ -31,7 +31,7 @@ test_that("dparse() is safe to run from several threads at once (rxode2#1427)", 
                    "concurrent.g.d_parser.c"),
                  stdout = TRUE, stderr = TRUE)
   setwd(owd)
-  if (!file.exists(so)) skip(paste(c("could not build the test parser:", out), collapse = "\n"))
+  if (!file.exists(so)) stop(paste(c("could not build the test parser:", out), collapse = "\n"))
   dll <- dyn.load(so)
   on.exit(dyn.unload(so), add = TRUE)
   txt <- paste(sprintf("a%d = f(b + c * %d, g(x, y, z), (d + e) * h);", 1:200, 1:200),
