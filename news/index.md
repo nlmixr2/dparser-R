@@ -2,6 +2,16 @@
 
 ## dparser 1.3.2
 
+- [`dparse()`](https://nlmixr2.github.io/dparser-R/reference/dparse.md)
+  can now be called from several threads at once, one parser per thread.
+  The first reduction path was a single process-wide static vector, so
+  concurrent parses shared and reallocated it, segfaulting rxode2’s
+  multi-threaded `rxOptExpr()` (nlmixr2/rxode2#1427); it now lives on
+  the reducing call’s stack. Callers must resolve the `dparser.h` entry
+  points on the main thread first, and syntax errors, ambiguity errors
+  and R-level callbacks still call the R API, so only error-free parses
+  without R callbacks are safe off the main thread.
+
 - `buf_read()` (and therefore `sbuf_read()`) is hardened in three ways
   without changing its `int *len` ABI:
 
