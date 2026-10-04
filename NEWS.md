@@ -1,4 +1,4 @@
-# dparser 1.3.2
+# dparser 1.3.1-14
 
 - `dparse()` can now be called from several threads at once, one parser
   per thread.  The first reduction path was a single process-wide static
@@ -65,7 +65,7 @@
       `udparse()` (full `unsigned int` range).  Once `buf_read()` is
       itself promoted to `size_t` (separate fix), the path will safely
       handle inputs up to `UINT_MAX`.
-      
+
 - Add `udparse(D_Parser*, char *buf, unsigned int buf_len)` as a
   memory-safe alternative to `dparse(D_Parser*, char *buf, int buf_len)`.
   Existing callers of `dparse` still compile and link unchanged; the
