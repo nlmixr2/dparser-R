@@ -1319,7 +1319,8 @@ static void shift_all(Parser *p, char *pos) {
   }
 }
 
-static VecZNode path1; /* static first path for speed */
+/* thread-local: callers may run dparse() concurrently, one parser per thread */
+static _Thread_local VecZNode path1; /* static first path for speed */
 
 static VecZNode *new_VecZNode(VecVecZNode *paths, int n, int parent) {
   int i;

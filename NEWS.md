@@ -1,5 +1,11 @@
 # dparser 1.3.2
 
+- `dparse()` can now be called from several threads at once (one parser
+  per thread).  The first reduction path was a single process-wide static
+  vector, so concurrent parses shared and reallocated it, segfaulting
+  rxode2's multi-threaded `rxOptExpr()` (nlmixr2/rxode2#1427).  It is now
+  thread-local.
+
 - `buf_read()` (and therefore `sbuf_read()`) is hardened in three
   ways without changing its `int *len` ABI:
     * Files larger than `INT_MAX - 2` bytes are now rejected with `-1`
