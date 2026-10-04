@@ -48,7 +48,12 @@ SEXP concurrent_dparse(SEXP txtS, SEXP nthrS, SEXP repsS) {
   if (!cpParseOnce(txt)) Rf_error("serial parse failed");
   for (t = 0; t < nthr; t++) {
     jobs[t].txt = txt; jobs[t].reps = reps; jobs[t].bad = 0;
-    if (pthread_create(&th[t], NULL, cpWorker, &jobs[t]) != 0) Rf_error("pthread_create failed");
+    if (pthread_create(&th[t], NULL, cpWorker, &jobs[t]) != 0) {
+      int u;
+      /* jobs[] lives on this stack, which Rf_error() unwinds */
+      for (u = 0; u < t; u++) pthread_join(th[u], NULL);
+      Rf_error("pthread_create failed");
+    }
   }
   for (t = 0; t < nthr; t++) {
     pthread_join(th[t], NULL);
