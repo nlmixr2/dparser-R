@@ -1344,7 +1344,8 @@ static void build_paths_internal(ZNode *z, VecVecZNode *paths, int parent, int n
     for (j = 0, l = 0; j < z->sns.v[k]->zns.n; j++) {
       if (z->sns.v[k]->zns.v[j]) {
         if (k + l) {
-          vec_add(paths, new_VecZNode(paths, n - (n_to_go - 1), parent, path1));
+          VecZNode *pv = new_VecZNode(paths, n - (n_to_go - 1), parent, path1);
+          vec_add(paths, pv);
           parent = paths->n - 1;
         }
         build_paths_internal(z->sns.v[k]->zns.v[j], paths, parent, n, n_to_go - 1, path1);
@@ -1354,8 +1355,12 @@ static void build_paths_internal(ZNode *z, VecVecZNode *paths, int parent, int n
 }
 
 static void build_paths(ZNode *z, VecVecZNode *paths, int nchildren_to_go, VecZNode *path1) {
+  VecZNode *pv;
   if (!nchildren_to_go) return;
-  vec_add(paths, new_VecZNode(paths, 0, -1, path1));
+  /* not vec_add(paths, new_VecZNode(...)): vec_add's n++ and the call are
+     unsequenced, so whether path1 was used depended on the compiler */
+  pv = new_VecZNode(paths, 0, -1, path1);
+  vec_add(paths, pv);
   build_paths_internal(z, paths, 0, nchildren_to_go, nchildren_to_go, path1);
 }
 

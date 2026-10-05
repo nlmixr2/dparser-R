@@ -7,7 +7,26 @@
   on the reducing call's stack.  Callers must resolve the `dparser.h` entry
   points on the main thread first, and syntax errors, ambiguity errors and
   R-level callbacks still call the R API, so only error-free parses without
-  R callbacks are safe off the main thread.
+  R callbacks are safe off the main thread.  This is also the
+  `reduce_one()` global-buffer-overflow / SEGV that R-hub's `clang-asan`
+  and `clang-ubsan` checks of babelmixr2 hit (#33).  Only clang builds
+  ever used the shared vector -- `vec_add(paths, new_VecZNode(paths, ...))`
+  left the order of `n++` and the call to the compiler, and gcc builds took
+  a fresh `malloc()`ed path instead -- which is why it showed up on clang
+  platforms only.  `build_paths()` now makes the call first, so every
+  compiler takes the same path and the concurrent test exercises it on gcc
+  too.
+
+- The grammar compiler's hash callbacks (`lex.c`, `write_tables.c`) now
+  have the exact `hash_fn_t` / `cmp_fn_t` types instead of being cast to
+  them, so clang's `-fsanitize=function` (part of `-fsanitize=undefined`)
+  no longer reports "call to function through pointer to incorrect
+  function type" from `mkdparse()`.
+
+- A manually dispatched R-hub workflow (`rhub::rhub_check()`) runs the
+  concurrent `dparse()` test (`NOT_CRAN=true`) and then rxode2's OpenMP
+  common-subexpression pass against this dparser, so sanitizer problems
+  are caught here before they reach rxode2/babelmixr2 checks (#33).
 
 - `buf_read()` (and therefore `sbuf_read()`) is hardened in three
   ways without changing its `int *len` ABI:
