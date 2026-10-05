@@ -341,7 +341,8 @@ static void compute_liveness(Scanner *scanner) {
   }
 }
 
-static uint32 trans_hash_fn(ScanStateTransition *a, hash_fns_t *fns) {
+static uint32 trans_hash_fn(void *va, hash_fns_t *fns) {
+  ScanStateTransition *a = (ScanStateTransition *)va;
   uint h = 0, i;
 
   if (!fns->data[0])
@@ -350,7 +351,9 @@ static uint32 trans_hash_fn(ScanStateTransition *a, hash_fns_t *fns) {
   return h;
 }
 
-static int trans_cmp_fn(ScanStateTransition *a, ScanStateTransition *b, hash_fns_t *fns) {
+static int trans_cmp_fn(void *va, void *vb, hash_fns_t *fns) {
+  ScanStateTransition *a = (ScanStateTransition *)va;
+  ScanStateTransition *b = (ScanStateTransition *)vb;
   uint i;
 
   if (!fns->data[0])
@@ -364,7 +367,7 @@ static int trans_cmp_fn(ScanStateTransition *a, ScanStateTransition *b, hash_fns
   return 0;
 }
 
-static hash_fns_t trans_hash_fns = {(hash_fn_t)trans_hash_fn, (cmp_fn_t)trans_cmp_fn, {0, 0}};
+static hash_fns_t trans_hash_fns = {trans_hash_fn, trans_cmp_fn, {0, 0}};
 
 static void build_transitions(LexState *ls, Scanner *s) {
   uint i, j;

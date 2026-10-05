@@ -54,17 +54,20 @@ OffsetEntry null_entry = {"NULL", sizeof("NULL") - 1, -1};
 OffsetEntry spec_code_entry = {"#spec_code", sizeof("#spec_code") - 1, -2};
 OffsetEntry final_code_entry = {"#final_code", sizeof("#final_code") - 1, -3};
 
-uint32 offset_hash_fn(OffsetEntry *entry, struct hash_fns_t *fn) {
+uint32 offset_hash_fn(void *ventry, struct hash_fns_t *fn) {
+  OffsetEntry *entry = (OffsetEntry *)ventry;
   (void)fn;
   return strhashl(entry->name, entry->len);
 }
 
-int offset_cmp_fn(OffsetEntry *a, OffsetEntry *b, struct hash_fns_t *fn) {
+int offset_cmp_fn(void *va, void *vb, struct hash_fns_t *fn) {
+  OffsetEntry *a = (OffsetEntry *)va;
+  OffsetEntry *b = (OffsetEntry *)vb;
   (void)fn;
   return strcmp(a->name, b->name);
 }
 
-hash_fns_t offset_fns = {(hash_fn_t)offset_hash_fn, (cmp_fn_t)offset_cmp_fn, {0, 0}};
+hash_fns_t offset_fns = {offset_hash_fn, offset_cmp_fn, {0, 0}};
 
 static void write_chk(const void *ptr, size_t size, size_t nmemb, File *file) {
   if (file->fp) {
@@ -492,7 +495,8 @@ static char *make_u_type(int i) {
 
 static char *scanner_u_type(State *s) { return make_u_type(scanner_size(s)); }
 
-static uint32 scanner_block_hash_fn(ScannerBlock *b, hash_fns_t *fns) {
+static uint32 scanner_block_hash_fn(void *vb, hash_fns_t *fns) {
+  ScannerBlock *b = (ScannerBlock *)vb;
   uint32 hash = 0;
   intptr_t i, block_size = (intptr_t)fns->data[0];
   ScanState **sb = b->chars;
@@ -504,7 +508,9 @@ static uint32 scanner_block_hash_fn(ScannerBlock *b, hash_fns_t *fns) {
   return hash;
 }
 
-static int scanner_block_cmp_fn(ScannerBlock *a, ScannerBlock *b, hash_fns_t *fns) {
+static int scanner_block_cmp_fn(void *va, void *vb, hash_fns_t *fns) {
+  ScannerBlock *a = (ScannerBlock *)va;
+  ScannerBlock *b = (ScannerBlock *)vb;
   intptr_t i, block_size = (intptr_t)fns->data[0];
   ScanState **sa = a->chars;
   ScanState **sb = b->chars;
@@ -517,9 +523,10 @@ static int scanner_block_cmp_fn(ScannerBlock *a, ScannerBlock *b, hash_fns_t *fn
   return 0;
 }
 
-hash_fns_t scanner_block_fns = {(hash_fn_t)scanner_block_hash_fn, (cmp_fn_t)scanner_block_cmp_fn, {0, 0}};
+hash_fns_t scanner_block_fns = {scanner_block_hash_fn, scanner_block_cmp_fn, {0, 0}};
 
-static uint32 trans_scanner_block_hash_fn(ScannerBlock *b, hash_fns_t *fns) {
+static uint32 trans_scanner_block_hash_fn(void *vb, hash_fns_t *fns) {
+  ScannerBlock *b = (ScannerBlock *)vb;
   uint32 hash = 0;
   intptr_t i, block_size = (intptr_t)fns->data[0];
   ScanStateTransition **sb = b->transitions;
@@ -531,7 +538,9 @@ static uint32 trans_scanner_block_hash_fn(ScannerBlock *b, hash_fns_t *fns) {
   return hash;
 }
 
-static int trans_scanner_block_cmp_fn(ScannerBlock *a, ScannerBlock *b, hash_fns_t *fns) {
+static int trans_scanner_block_cmp_fn(void *va, void *vb, hash_fns_t *fns) {
+  ScannerBlock *a = (ScannerBlock *)va;
+  ScannerBlock *b = (ScannerBlock *)vb;
   intptr_t i, block_size = (intptr_t)fns->data[0];
   ScanStateTransition **sa = a->transitions;
   ScanStateTransition **sb = b->transitions;
@@ -545,19 +554,22 @@ static int trans_scanner_block_cmp_fn(ScannerBlock *a, ScannerBlock *b, hash_fns
 }
 
 hash_fns_t trans_scanner_block_fns = {
-    (hash_fn_t)trans_scanner_block_hash_fn, (cmp_fn_t)trans_scanner_block_cmp_fn, {0, 0}};
+    trans_scanner_block_hash_fn, trans_scanner_block_cmp_fn, {0, 0}};
 
-static uint32 shift_hash_fn(Action *sa, hash_fns_t *fns) {
+static uint32 shift_hash_fn(void *vsa, hash_fns_t *fns) {
+  Action *sa = (Action *)vsa;
   (void)fns;
   return sa->term->index + (sa->kind == ACTION_SHIFT_TRAILING ? 1000000 : 0);
 }
 
-static int shift_cmp_fn(Action *sa, Action *sb, hash_fns_t *fns) {
+static int shift_cmp_fn(void *vsa, void *vsb, hash_fns_t *fns) {
+  Action *sa = (Action *)vsa;
+  Action *sb = (Action *)vsb;
   (void)fns;
   return (sa->term->index != sb->term->index) || (sa->kind != sb->kind);
 }
 
-hash_fns_t shift_fns = {(hash_fn_t)shift_hash_fn, (cmp_fn_t)shift_cmp_fn, {0, 0}};
+hash_fns_t shift_fns = {shift_hash_fn, shift_cmp_fn, {0, 0}};
 
 static void write_scanner_data(File *fp, Grammar *g, char *tag) {
   State *s;
@@ -1356,7 +1368,8 @@ static void write_reductions(File *file, Grammar *g, char *tag) {
   }
 }
 
-static uint32 er_hint_hash_fn(State *a, hash_fns_t *fns) {
+static uint32 er_hint_hash_fn(void *va, hash_fns_t *fns) {
+  State *a = (State *)va;
   VecHint *sa = &a->error_recovery_hints;
   uint32 hash = 0, i;
   Term *ta;
@@ -1371,7 +1384,9 @@ static uint32 er_hint_hash_fn(State *a, hash_fns_t *fns) {
   return hash;
 }
 
-static int er_hint_cmp_fn(State *a, State *b, hash_fns_t *fns) {
+static int er_hint_cmp_fn(void *va, void *vb, hash_fns_t *fns) {
+  State *a = (State *)va;
+  State *b = (State *)vb;
   uint i;
   VecHint *sa = &a->error_recovery_hints, *sb = &b->error_recovery_hints;
   Term *ta, *tb;
@@ -1387,7 +1402,7 @@ static int er_hint_cmp_fn(State *a, State *b, hash_fns_t *fns) {
   return 0;
 }
 
-hash_fns_t er_hint_hash_fns = {(hash_fn_t)er_hint_hash_fn, (cmp_fn_t)er_hint_cmp_fn, {0, 0}};
+hash_fns_t er_hint_hash_fns = {er_hint_hash_fn, er_hint_cmp_fn, {0, 0}};
 
 static void write_error_data(File *fp, Grammar *g, VecState *er_hash, char *tag) {
   uint i, j;
