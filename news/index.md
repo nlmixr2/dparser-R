@@ -31,10 +31,13 @@
 - A manually dispatched R-hub workflow (`rhub::rhub_check()`) runs the
   concurrent
   [`dparse()`](https://nlmixr2.github.io/dparser-R/reference/dparse.md)
-  test (`NOT_CRAN=true`) and then rxode2’s OpenMP common-subexpression
-  pass against this dparser, so sanitizer problems are caught here
-  before they reach rxode2/babelmixr2 checks
-  ([\#33](https://github.com/nlmixr2/dparser-R/issues/33)).
+  tests (`NOT_CRAN=true`), so sanitizer problems are caught here before
+  they reach rxode2/babelmixr2 checks
+  ([\#33](https://github.com/nlmixr2/dparser-R/issues/33)). One test
+  reproduces rxode2’s parallel common-subexpression parsing – a pool of
+  threads parsing one statement per new parser – in dparser alone, and
+  checks every parse tree against a serial run; it segfaults on
+  1.3.1-13.
 
 - `buf_read()` (and therefore `sbuf_read()`) is hardened in three ways
   without changing its `int *len` ABI:
