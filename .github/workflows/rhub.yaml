@@ -8,11 +8,8 @@
 #
 # * NOT_CRAN=true, so tests/testthat/test-concurrent-dparse.R (skip_on_cran)
 #   runs; it is what catches concurrent dparse() bugs (nlmixr2/dparser-R#33).
-#
-# * After the check, a downstream step installs this checkout's dparser and
-#   rxode2 from GitHub and runs .github/rhub/rxode2-parallel-cse.R, rxode2's
-#   OpenMP common-subexpression pass, which is where #33 crashed first (in
-#   babelmixr2's checks).  Turn it off with the `downstream` input.
+#   It reproduces rxode2's parallel parsing in dparser alone, so the check
+#   needs no downstream packages.
 #
 # For the sanitizer checks, e.g.
 #
@@ -34,10 +31,6 @@ on:
       id:
         description: 'Unique ID. You can leave this empty now.'
         type: string
-      downstream:
-        description: 'Also run the rxode2 parallel CSE smoke test (not on Windows).'
-        type: string
-        default: 'true'
 
 jobs:
 
@@ -82,17 +75,6 @@ jobs:
         with:
           token: ${{ secrets.RHUB_TOKEN }}
           job-config: ${{ matrix.config.job-config }}
-      - name: Downstream rxode2 parallel CSE (dparser-R#33)
-        if: ${{ !cancelled() && github.event.inputs.downstream != 'false' }}
-        shell: bash
-        run: |
-          set -o pipefail
-          Rscript -e 'pak::pak(c("local::.", "nlmixr2/rxode2"), upgrade = FALSE, ask = FALSE)'
-          Rscript .github/rhub/rxode2-parallel-cse.R 2>&1 | tee downstream.out
-          if grep -E 'runtime error|ERROR: AddressSanitizer' downstream.out; then
-            echo "::error::sanitizer report in the rxode2 parallel CSE smoke test"
-            exit 1
-          fi
 
   other-platforms:
     needs: setup
@@ -124,14 +106,3 @@ jobs:
         with:
           job-config: ${{ matrix.config.job-config }}
           token: ${{ secrets.RHUB_TOKEN }}
-      - name: Downstream rxode2 parallel CSE (dparser-R#33)
-        if: ${{ !cancelled() && runner.os != 'Windows' && github.event.inputs.downstream != 'false' }}
-        shell: bash
-        run: |
-          set -o pipefail
-          Rscript -e 'pak::pak(c("local::.", "nlmixr2/rxode2"), upgrade = FALSE, ask = FALSE)'
-          Rscript .github/rhub/rxode2-parallel-cse.R 2>&1 | tee downstream.out
-          if grep -E 'runtime error|ERROR: AddressSanitizer' downstream.out; then
-            echo "::error::sanitizer report in the rxode2 parallel CSE smoke test"
-            exit 1
-          fi
