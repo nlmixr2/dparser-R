@@ -9,7 +9,7 @@
 ## Citation
 
 Source:
-[`DESCRIPTION`](https://github.com/nlmixr2/dparser-R/blob/main/DESCRIPTION)
+[`DESCRIPTION`](https://github.com/nlmixr2/dparser-R/blob/v1.3.1-14/DESCRIPTION)
 
 Fidler M, Plevyak J (2026). *dparser: Port of 'Dparser' Package*. R
 package version 1.3.1-14, <https://nlmixr2.github.io/dparser-R/>.

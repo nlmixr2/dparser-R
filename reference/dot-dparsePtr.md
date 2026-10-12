@@ -21,333 +21,333 @@ Matthew L. Fidler
 ``` r
 .dparsePtr()
 #> $dparse___freeP
-#> <pointer: 0x7f0a692e9640>
+#> <pointer: 0x7fbd66595640>
 #> 
 #> $dparse_dparse_sexp
-#> <pointer: 0x7f0a692e96c0>
+#> <pointer: 0x7fbd665956c0>
 #> 
 #> $dparse_set_d_file_name
-#> <pointer: 0x7f0a692d45a0>
+#> <pointer: 0x7fbd665805a0>
 #> 
 #> $dparse_get_d_debug_level
-#> <pointer: 0x7f0a692d4590>
+#> <pointer: 0x7fbd66580590>
 #> 
 #> $dparse_get_d_verbose_level
-#> <pointer: 0x7f0a692d4570>
+#> <pointer: 0x7fbd66580570>
 #> 
 #> $dparse_get_d_use_file_name
-#> <pointer: 0x7f0a692d4550>
+#> <pointer: 0x7fbd66580550>
 #> 
 #> $dparse_get_d_rdebug_grammar_level
-#> <pointer: 0x7f0a692d4530>
+#> <pointer: 0x7fbd66580530>
 #> 
 #> $dparse_get_d_use_r_headers
-#> <pointer: 0x7f0a692d4510>
+#> <pointer: 0x7fbd66580510>
 #> 
 #> $dparse_set_d_debug_level
-#> <pointer: 0x7f0a692d4580>
+#> <pointer: 0x7fbd66580580>
 #> 
 #> $dparse_set_d_verbose_level
-#> <pointer: 0x7f0a692d4560>
+#> <pointer: 0x7fbd66580560>
 #> 
 #> $dparse_set_d_use_file_name
-#> <pointer: 0x7f0a692d4540>
+#> <pointer: 0x7fbd66580540>
 #> 
 #> $dparse_set_d_rdebug_grammar_level
-#> <pointer: 0x7f0a692d4520>
+#> <pointer: 0x7fbd66580520>
 #> 
 #> $dparse_set_d_use_r_headers
-#> <pointer: 0x7f0a692d4500>
+#> <pointer: 0x7fbd66580500>
 #> 
 #> $dparse_write_binary_tables_to_string
-#> <pointer: 0x7f0a692f4240>
+#> <pointer: 0x7fbd665a0240>
 #> 
 #> $dparse_write_binary_tables_to_file
-#> <pointer: 0x7f0a692f4200>
+#> <pointer: 0x7fbd665a0200>
 #> 
 #> $dparse_write_binary_tables
-#> <pointer: 0x7f0a692f41c0>
+#> <pointer: 0x7fbd665a01c0>
 #> 
 #> $dparse_write_c_tables
-#> <pointer: 0x7f0a692f4180>
+#> <pointer: 0x7fbd665a0180>
 #> 
 #> $dparse_escape_string_single_quote
-#> <pointer: 0x7f0a692eb510>
+#> <pointer: 0x7fbd66597510>
 #> 
 #> $dparse_escape_string
-#> <pointer: 0x7f0a692eb500>
+#> <pointer: 0x7fbd66597500>
 #> 
 #> $dparse_int_list_dup
-#> <pointer: 0x7f0a692eb4a0>
+#> <pointer: 0x7fbd665974a0>
 #> 
 #> $dparse_int_list_intersect
-#> <pointer: 0x7f0a692eb430>
+#> <pointer: 0x7fbd66597430>
 #> 
 #> $dparse_int_list_diff
-#> <pointer: 0x7f0a692eb3a0>
+#> <pointer: 0x7fbd665973a0>
 #> 
 #> $dparse_d_free
-#> <pointer: 0x7f0a692eb520>
+#> <pointer: 0x7fbd66597520>
 #> 
 #> $dparse_strhashl
-#> <pointer: 0x7f0a692ea8b0>
+#> <pointer: 0x7fbd665968b0>
 #> 
 #> $dparse_dup_str
-#> <pointer: 0x7f0a692ea7e0>
+#> <pointer: 0x7fbd665967e0>
 #> 
 #> $dparse_sbuf_read
-#> <pointer: 0x7f0a692eaa20>
+#> <pointer: 0x7fbd66596a20>
 #> 
 #> $dparse_buf_read
-#> <pointer: 0x7f0a692ea900>
+#> <pointer: 0x7fbd66596900>
 #> 
 #> $dparse_set_to_vec
-#> <pointer: 0x7f0a692eb2e0>
+#> <pointer: 0x7fbd665972e0>
 #> 
 #> $dparse_set_union_fn
-#> <pointer: 0x7f0a692eb0d0>
+#> <pointer: 0x7fbd665970d0>
 #> 
 #> $dparse_set_union
-#> <pointer: 0x7f0a692eaf10>
+#> <pointer: 0x7fbd66596f10>
 #> 
 #> $dparse_set_add
-#> <pointer: 0x7f0a692eaf80>
+#> <pointer: 0x7fbd66596f80>
 #> 
 #> $dparse_set_find
-#> <pointer: 0x7f0a692eaec0>
+#> <pointer: 0x7fbd66596ec0>
 #> 
 #> $dparse_vec_eq
-#> <pointer: 0x7f0a692eadd0>
+#> <pointer: 0x7fbd66596dd0>
 #> 
 #> $dparse_vec_add_internal
-#> <pointer: 0x7f0a692eacf0>
+#> <pointer: 0x7fbd66596cf0>
 #> 
 #> $dparse_scan_buffer
-#> <pointer: 0x7f0a692e9d80>
+#> <pointer: 0x7fbd66595d80>
 #> 
 #> $dparse_free_BinaryTables
-#> <pointer: 0x7f0a692e9d60>
+#> <pointer: 0x7fbd66595d60>
 #> 
 #> $dparse_read_binary_tables_from_string
-#> <pointer: 0x7f0a692e9d40>
+#> <pointer: 0x7fbd66595d40>
 #> 
 #> $dparse_read_binary_tables_from_file
-#> <pointer: 0x7f0a692e9d20>
+#> <pointer: 0x7fbd66595d20>
 #> 
 #> $dparse_read_binary_tables
-#> <pointer: 0x7f0a692e9cc0>
+#> <pointer: 0x7fbd66595cc0>
 #> 
 #> $dparse_ambiguity_count_fn
-#> <pointer: 0x7f0a692e8920>
+#> <pointer: 0x7fbd66594920>
 #> 
 #> $dparse_mkdparse_from_string
-#> <pointer: 0x7f0a692e2ae0>
+#> <pointer: 0x7fbd6658eae0>
 #> 
 #> $dparse_mkdparse
-#> <pointer: 0x7f0a692e2ad0>
+#> <pointer: 0x7fbd6658ead0>
 #> 
 #> $dparse_free_Action
-#> <pointer: 0x7f0a692e1fb0>
+#> <pointer: 0x7fbd6658dfb0>
 #> 
 #> $dparse_goto_State
-#> <pointer: 0x7f0a692e2000>
+#> <pointer: 0x7fbd6658e000>
 #> 
 #> $dparse_elem_symbol
-#> <pointer: 0x7f0a692e1f90>
+#> <pointer: 0x7fbd6658df90>
 #> 
 #> $dparse_sort_VecAction
-#> <pointer: 0x7f0a692e1fd0>
+#> <pointer: 0x7fbd6658dfd0>
 #> 
 #> $dparse_build_LR_tables
-#> <pointer: 0x7f0a692e2050>
+#> <pointer: 0x7fbd6658e050>
 #> 
 #> $dparse_build_scanners
-#> <pointer: 0x7f0a692dfff0>
+#> <pointer: 0x7fbd6658bff0>
 #> 
 #> $dparse_state_for_declaration
-#> <pointer: 0x7f0a692db430>
+#> <pointer: 0x7fbd66587430>
 #> 
 #> $dparse_initialize_productions
-#> <pointer: 0x7f0a692daac0>
+#> <pointer: 0x7fbd66586ac0>
 #> 
 #> $dparse_rep_EBNF
-#> <pointer: 0x7f0a692da8d0>
+#> <pointer: 0x7fbd665868d0>
 #> 
 #> $dparse_plus_EBNF
-#> <pointer: 0x7f0a692da3e0>
+#> <pointer: 0x7fbd665863e0>
 #> 
 #> $dparse_star_EBNF
-#> <pointer: 0x7f0a692d9fa0>
+#> <pointer: 0x7fbd66585fa0>
 #> 
 #> $dparse_conditional_EBNF
-#> <pointer: 0x7f0a692d9d40>
+#> <pointer: 0x7fbd66585d40>
 #> 
 #> $dparse_find_pass
-#> <pointer: 0x7f0a692d9630>
+#> <pointer: 0x7fbd66585630>
 #> 
 #> $dparse_add_pass_code
-#> <pointer: 0x7f0a692d9800>
+#> <pointer: 0x7fbd66585800>
 #> 
 #> $dparse_add_pass
-#> <pointer: 0x7f0a692d96f0>
+#> <pointer: 0x7fbd665856f0>
 #> 
 #> $dparse_add_declaration
-#> <pointer: 0x7f0a692d9510>
+#> <pointer: 0x7fbd66585510>
 #> 
 #> $dparse_dup_elem
-#> <pointer: 0x7f0a692d9360>
+#> <pointer: 0x7fbd66585360>
 #> 
 #> $dparse_new_internal_production
-#> <pointer: 0x7f0a692d9bb0>
+#> <pointer: 0x7fbd66585bb0>
 #> 
 #> $dparse_add_global_code
-#> <pointer: 0x7f0a692d93c0>
+#> <pointer: 0x7fbd665853c0>
 #> 
 #> $dparse_new_code
-#> <pointer: 0x7f0a692d9340>
+#> <pointer: 0x7fbd66585340>
 #> 
 #> $dparse_new_token
-#> <pointer: 0x7f0a692d9280>
+#> <pointer: 0x7fbd66585280>
 #> 
 #> $dparse_new_ident
-#> <pointer: 0x7f0a692d91b0>
+#> <pointer: 0x7fbd665851b0>
 #> 
 #> $dparse_new_utf8_char
-#> <pointer: 0x7f0a692d8fb0>
+#> <pointer: 0x7fbd66584fb0>
 #> 
 #> $dparse_new_string
-#> <pointer: 0x7f0a692d8c80>
+#> <pointer: 0x7fbd66584c80>
 #> 
 #> $dparse_new_production
-#> <pointer: 0x7f0a692d9ae0>
+#> <pointer: 0x7fbd66585ae0>
 #> 
 #> $dparse_new_declaration
-#> <pointer: 0x7f0a692d9470>
+#> <pointer: 0x7fbd66585470>
 #> 
 #> $dparse_new_elem_nterm
-#> <pointer: 0x7f0a692d84f0>
+#> <pointer: 0x7fbd665844f0>
 #> 
 #> $dparse_new_rule
-#> <pointer: 0x7f0a692d8490>
+#> <pointer: 0x7fbd66584490>
 #> 
 #> $dparse_lookup_production
-#> <pointer: 0x7f0a692d9a70>
+#> <pointer: 0x7fbd66585a70>
 #> 
 #> $dparse_print_term
-#> <pointer: 0x7f0a692daaf0>
+#> <pointer: 0x7fbd66586af0>
 #> 
 #> $dparse_print_rule
-#> <pointer: 0x7f0a692dad30>
+#> <pointer: 0x7fbd66586d30>
 #> 
 #> $dparse_print_states
-#> <pointer: 0x7f0a692db090>
+#> <pointer: 0x7fbd66587090>
 #> 
 #> $dparse_print_rdebug_grammar
-#> <pointer: 0x7f0a692dd1f0>
+#> <pointer: 0x7fbd665891f0>
 #> 
 #> $dparse_print_grammar
-#> <pointer: 0x7f0a692dadc0>
+#> <pointer: 0x7fbd66586dc0>
 #> 
 #> $dparse_parse_grammar
-#> <pointer: 0x7f0a692dc210>
+#> <pointer: 0x7fbd66588210>
 #> 
 #> $dparse_build_grammar
-#> <pointer: 0x7f0a692dc380>
+#> <pointer: 0x7fbd66588380>
 #> 
 #> $dparse_free_D_Grammar
-#> <pointer: 0x7f0a692dba50>
+#> <pointer: 0x7fbd66587a50>
 #> 
 #> $dparse_new_D_Grammar
-#> <pointer: 0x7f0a692dba00>
+#> <pointer: 0x7fbd66587a00>
 #> 
 #> $dparse_print_scope
-#> <pointer: 0x7f0a692d80a0>
+#> <pointer: 0x7fbd665840a0>
 #> 
 #> $dparse_next_D_Sym_in_Scope
-#> <pointer: 0x7f0a692d7ed0>
+#> <pointer: 0x7fbd66583ed0>
 #> 
 #> $dparse_find_D_Sym_in_Scope
-#> <pointer: 0x7f0a692d7e50>
+#> <pointer: 0x7fbd66583e50>
 #> 
 #> $dparse_current_D_Sym
-#> <pointer: 0x7f0a692d7bf0>
+#> <pointer: 0x7fbd66583bf0>
 #> 
 #> $dparse_update_additional_D_Sym
-#> <pointer: 0x7f0a692d7f90>
+#> <pointer: 0x7fbd66583f90>
 #> 
 #> $dparse_update_D_Sym
-#> <pointer: 0x7f0a692d7ff0>
+#> <pointer: 0x7fbd66583ff0>
 #> 
 #> $dparse_find_global_D_Sym
-#> <pointer: 0x7f0a692d7dd0>
+#> <pointer: 0x7fbd66583dd0>
 #> 
 #> $dparse_find_D_Sym
-#> <pointer: 0x7f0a692d7d70>
+#> <pointer: 0x7fbd66583d70>
 #> 
 #> $dparse_new_D_Sym
-#> <pointer: 0x7f0a692d7b40>
+#> <pointer: 0x7fbd66583b40>
 #> 
 #> $dparse_free_D_Scope
-#> <pointer: 0x7f0a692d7a30>
+#> <pointer: 0x7fbd66583a30>
 #> 
 #> $dparse_scope_D_Scope
-#> <pointer: 0x7f0a692d79d0>
+#> <pointer: 0x7fbd665839d0>
 #> 
 #> $dparse_global_D_Scope
-#> <pointer: 0x7f0a692d79b0>
+#> <pointer: 0x7fbd665839b0>
 #> 
 #> $dparse_equiv_D_Scope
-#> <pointer: 0x7f0a692d78c0>
+#> <pointer: 0x7fbd665838c0>
 #> 
 #> $dparse_commit_D_Scope
-#> <pointer: 0x7f0a692d7c30>
+#> <pointer: 0x7fbd66583c30>
 #> 
 #> $dparse_enter_D_Scope
-#> <pointer: 0x7f0a692d7950>
+#> <pointer: 0x7fbd66583950>
 #> 
 #> $dparse_new_D_Scope
-#> <pointer: 0x7f0a692d7800>
+#> <pointer: 0x7fbd66583800>
 #> 
 #> $dparse_parse_whitespace
-#> <pointer: 0x7f0a692e87a0>
+#> <pointer: 0x7fbd665947a0>
 #> 
 #> $dparse_d_dup_pathname_str
-#> <pointer: 0x7f0a692ea840>
+#> <pointer: 0x7fbd66596840>
 #> 
 #> $dparse_resolve_amb_greedy
-#> <pointer: 0x7f0a692e8840>
+#> <pointer: 0x7fbd66594840>
 #> 
 #> $dparse_d_pass
-#> <pointer: 0x7f0a692e8940>
+#> <pointer: 0x7fbd66594940>
 #> 
 #> $dparse_d_ws_after
-#> <pointer: 0x7f0a692e5f20>
+#> <pointer: 0x7fbd66591f20>
 #> 
 #> $dparse_d_ws_before
-#> <pointer: 0x7f0a692e5f00>
+#> <pointer: 0x7fbd66591f00>
 #> 
 #> $dparse_d_find_in_tree
-#> <pointer: 0x7f0a692e5ea0>
+#> <pointer: 0x7fbd66591ea0>
 #> 
 #> $dparse_d_get_child
-#> <pointer: 0x7f0a692e5e40>
+#> <pointer: 0x7fbd66591e40>
 #> 
 #> $dparse_d_get_number_of_children
-#> <pointer: 0x7f0a692e5e80>
+#> <pointer: 0x7fbd66591e80>
 #> 
 #> $dparse_free_D_ParseTreeBelow
-#> <pointer: 0x7f0a692e8900>
+#> <pointer: 0x7fbd66594900>
 #> 
 #> $dparse_free_D_ParseNode
-#> <pointer: 0x7f0a692e8bd0>
+#> <pointer: 0x7fbd66594bd0>
 #> 
 #> $dparse_dparse
-#> <pointer: 0x7f0a692e9080>
+#> <pointer: 0x7fbd66595080>
 #> 
 #> $dparse_free_D_Parser
-#> <pointer: 0x7f0a692e8ac0>
+#> <pointer: 0x7fbd66594ac0>
 #> 
 #> $dparse_new_D_Parser
-#> <pointer: 0x7f0a692e89e0>
+#> <pointer: 0x7fbd665949e0>
 #> 
 ```

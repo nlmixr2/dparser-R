@@ -2,6 +2,8 @@
 
 ## dparser 1.3.1-14
 
+CRAN release: 2026-10-12
+
 - [`dparse()`](https://nlmixr2.github.io/dparser-R/reference/dparse.md)
   can now be called from several threads at once, one parser per thread.
   The first reduction path was a single process-wide static vector, so
