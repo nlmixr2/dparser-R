@@ -13,6 +13,7 @@ rx_.*\.(so|dll)$
 testthat/.*\.(so|dll)$
 BinaryFiles$
 dparser.*\.(zip|pdf)$
+^src/compile_commands.json$
 ^/?vignettes/figure/.*$
 ^/?inst/Install-windows.md
 ^/?.Rhistory
