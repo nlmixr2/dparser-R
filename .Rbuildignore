@@ -40,3 +40,4 @@ dparser.*\.(zip|pdf)$
 ^revdep$
 ^tests/audit-reproducers$
 ^tests/audit-reproducers/.*$
+^CLAUDE\.md$
