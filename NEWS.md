@@ -13,6 +13,13 @@
   `build_regex_nfa()` was a `uint8` that wrapped from 255 back to 0; it is
   now an `int` (#42, upstream jplevyak/dparser 6d494a3).
 
+- In a regular expression term, a `*` or `+` loop inside one `|`
+  alternative no longer leaks into the sibling alternatives: `"a*|b"`
+  used to also accept `"ab"` and `"aab"`.  `build_regex_nfa()` now gives
+  each group level and each alternative its own start state (#42,
+  upstream jplevyak/dparser 6d494a3).  The tables generated for rxode2's
+  grammars are unchanged.
+
 # dparser 1.3.1-14
 
 - `dparse()` can now be called from several threads at once, one parser

@@ -173,11 +173,17 @@ static void nfa_to_scanner(NFAState *n, Scanner *s) {
 /* build a NFA for the regular expression */
 static int build_regex_nfa(LexState *ls, uint8 **areg, NFAState *pp, NFAState *nn, Action *trailing) {
   uint8 c, pc, *reg = *areg;
-  NFAState *p = pp, *s, *x, *n = nn;
+  NFAState *p, *s, *x, *n = nn;
   int reversed, i, has_trailing = 0;
   uint8 mark[256];
 
-  s = p;
+  /* Each group level, and each '|' alternative within it, starts from its
+     own fresh state reached by an epsilon from pp.  Hanging the
+     alternatives directly off pp let a loop in one alternative ('*' / '+'
+     linking back to pp) reach its siblings, so "a*|b" matched "ab". */
+  s = x = new_NFAState(ls);
+  vec_add(&pp->epsilon, x);
+  p = x;
   while ((c = *reg++)) {
     switch (c) {
       case '(':
@@ -189,7 +195,9 @@ static int build_regex_nfa(LexState *ls, uint8 **areg, NFAState *pp, NFAState *n
         goto Lreturn;
       case '|':
         vec_add(&s->epsilon, nn);
-        vec_add(&pp->epsilon, (s = new_NFAState(ls)));
+        s = x = new_NFAState(ls);
+        vec_add(&pp->epsilon, x);
+        p = x;
         break;
       case '[':
         if (*reg == '^') {
