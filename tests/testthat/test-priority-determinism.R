@@ -62,6 +62,7 @@
 ite_text <- "proc P = true -> tau.true -> (tau.P) <> P;"
 
 test_that("unary-priority if-then-else parses deterministically", {
+  skip_on_cran() # dparse() compiles a DLL
   skip_on_os("solaris")
   trees <- .priority_trees("priority-ite.g", ite_text, "ProcExpr")
   expect_length(trees, 1L)
@@ -83,13 +84,14 @@ rx_text <- "y = a ? -b^2 : c ? !d : -e*f + g ? h : -(i) ^ 2;"
 # greediness and height disabled these inputs end in an unresolved ambiguity,
 # which the R binding settles with ambiguity_count_fn() (first candidate).
 test_that("rxode2-style ternary/unary expression is deterministic", {
+  skip_on_cran() # dparse() compiles a DLL
   skip_on_os("solaris")
   trees <- .priority_trees("priority-rx.g", rx_text, "expr")
   expect_length(trees, 1L)
 })
 
 test_that("priority parses agree across fresh R sessions", {
-  skip_on_cran()
+  skip_on_cran() # dparse() compiles a DLL
   skip_on_os("solaris")
   ref <- .priority_trees("priority-ite.g", ite_text, "ProcExpr", n = 1)[[1]]
   ref_rx <- .priority_trees("priority-rx.g", rx_text, "expr", n = 1)[[1]]
