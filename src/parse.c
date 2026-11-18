@@ -743,11 +743,25 @@ static void get_exp_one_down(Parser *p, PNode *x, StackPNode *psx, StackInt *isx
     if (x->children.v[i]->assoc) get_exp_one(p, x->children.v[i], psx, isx);
 }
 
+/* order the heads of two unshared priority stacks: deepest first, then by
+   start location, then by priority.  Never compare PNode addresses, which
+   vary between runs and made the parse non-deterministic
+   (jplevyak/dparser#31).  Returns >0 to expand x, <0 to expand y and 0 to
+   treat them as shared. */
+static int cmp_unshared_heads(PNode *x, PNode *y) {
+  if (x->height != y->height) return x->height > y->height ? 1 : -1;
+  if (x->parse_node.start_loc.s != y->parse_node.start_loc.s)
+    return x->parse_node.start_loc.s > y->parse_node.start_loc.s ? 1 : -1;
+  if (x->priority != y->priority) return x->priority > y->priority ? 1 : -1;
+  return 0;
+}
+
 /* get the set of priorities for unshared nodes,
    eliminating shared subtrees via priority queues */
 static void get_unshared_priorities(Parser *p, StackPNode *psx, StackPNode *psy, StackInt *isx, StackInt *isy) {
   StackPNode *psr;
   PNode *t;
+  int c;
 
   while (1) {
     if (is_stack_empty(psx)) {
@@ -757,17 +771,10 @@ static void get_unshared_priorities(Parser *p, StackPNode *psx, StackPNode *psy,
       psr = psx;
       break;
     }
-    if (stack_head(psx)->height > stack_head(psy)->height)
+    c = cmp_unshared_heads(stack_head(psx), stack_head(psy));
+    if (c > 0)
       psr = psx;
-    else if (stack_head(psx)->height < stack_head(psy)->height)
-      psr = psy;
-    else if (stack_head(psx)->parse_node.start_loc.s > stack_head(psy)->parse_node.start_loc.s)
-      psr = psx;
-    else if (stack_head(psx)->parse_node.start_loc.s < stack_head(psy)->parse_node.start_loc.s)
-      psr = psy;
-    else if (stack_head(psx)->priority > stack_head(psy)->priority)
-      psr = psx;
-    else if (stack_head(psx)->priority < stack_head(psy)->priority)
+    else if (c < 0)
       psr = psy;
     else {
       (void)stack_pop(psx);
