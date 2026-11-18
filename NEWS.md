@@ -1,3 +1,12 @@
+# dparser 1.3.1-15
+
+- `mkdparse(rdebug = TRUE)` no longer overflows the stack: the debug
+  grammar printer read the version into a 30-byte buffer although
+  `d_version()` writes about 46 characters, and `d_version()` measured an
+  uninitialised buffer.  The printer also no longer leaks the
+  double-escaped copy of string and regex terminals (#40,
+  jplevyak/dparser#34).
+
 # dparser 1.3.1-14
 
 - Token locations are now correct for grammars large enough to need 16-
