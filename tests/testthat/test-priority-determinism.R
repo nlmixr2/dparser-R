@@ -107,3 +107,22 @@ test_that("priority parses agree across fresh R sessions", {
     )
   }
 })
+
+# check_child() looked up N-ary children ($left/$right N) in the binary row
+# of child_table, so if-then / if-then-else written as N-ary productions
+# rejected valid input (upstream jplevyak/dparser@5542d84).
+test_that("N-ary if-then-else productions parse, deterministically", {
+  skip_on_cran() # dparse() compiles a DLL
+  skip_on_os("solaris")
+  for (ng in c(FALSE, TRUE)) {
+    trees <- .priority_trees(
+      "priority-nary.g",
+      ite_text,
+      "ProcExpr",
+      nogreedy = ng,
+      noheight = ng
+    )
+    expect_length(trees, 1L)
+    expect_equal(trees[[1]][1], " true -> tau.true -> (tau.P) <> P")
+  }
+})
