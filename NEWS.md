@@ -35,6 +35,13 @@
   failed in `gsub()` with "'replacement' is invalid"; such bytes are now
   always written as `\xNN` escapes (#42).
 
+- In a regular expression term, a `*` or `+` loop inside one `|`
+  alternative no longer leaks into the sibling alternatives: `"a*|b"`
+  used to also accept `"ab"` and `"aab"`.  `build_regex_nfa()` now gives
+  each group level and each alternative its own start state (#42,
+  upstream jplevyak/dparser 6d494a3).  The tables generated for rxode2's
+  grammars are unchanged.
+
 # dparser 1.3.1-14
 
 - Ambiguous parses that depend on operator priorities (for example an
