@@ -91,6 +91,8 @@ char *escape_string_for_regex(const char *s) {
       case '*':
       case '?':
       case '+':
+      case '|':
+      case '/':
       case '\\':
         *ss++ = '\\';
         /* fall through */
