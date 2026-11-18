@@ -208,7 +208,11 @@ static int build_regex_nfa(LexState *ls, uint8 **areg, NFAState *pp, NFAState *n
               if (!c) goto Lerror;
               if (c == '\\') c = *reg++;
               if (!c) goto Lerror;
-              for (; pc <= c; pc++) mark[pc] = 1;
+              {
+                /* int, not uint8: a range ending at \xff would wrap pc to 0 and never stop */
+                int u_pc = pc, u_c = c;
+                for (; u_pc <= u_c; u_pc++) mark[u_pc] = 1;
+              }
               break;
             case '\\':
               c = *reg++;
