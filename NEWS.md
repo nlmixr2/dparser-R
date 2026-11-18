@@ -1,4 +1,4 @@
-# dparser 1.3.1-14
+# dparser 1.3.1-15
 
 - `mkdparse(rdebug = TRUE)` no longer overflows the stack: the debug
   grammar printer read the version into a 30-byte buffer although
@@ -6,6 +6,8 @@
   uninitialised buffer.  The printer also no longer leaks the
   double-escaped copy of string and regex terminals (#40,
   jplevyak/dparser#34).
+
+# dparser 1.3.1-14
 
 - `dparse()` can now be called from several threads at once, one parser
   per thread.  The first reduction path was a single process-wide static
