@@ -8,6 +8,13 @@
   `x ::= 'a|b';` matched `a` or `b` instead of `a|b`.  Ported from
   upstream jplevyak/dparser@51a4d04 (#43).
 
+- Compiling a grammar with a regex production (`::=`) whose quoted
+  strings are mostly regex metacharacters, such as `x ::= '||||||||';` or
+  `x ::= '++++++++';`, no longer overflows a heap buffer (with
+  `_FORTIFY_SOURCE` it aborted the R session).  `convert_regex_production_one()`
+  sized the combined regex from the unescaped string lengths, but escaping
+  can double them (#43).
+
 - `mkdparse(rdebug = TRUE)` no longer overflows the stack: the debug
   grammar printer read the version into a 30-byte buffer although
   `d_version()` writes about 46 characters, and `d_version()` measured an
