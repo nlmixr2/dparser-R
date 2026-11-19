@@ -743,11 +743,25 @@ static void get_exp_one_down(Parser *p, PNode *x, StackPNode *psx, StackInt *isx
     if (x->children.v[i]->assoc) get_exp_one(p, x->children.v[i], psx, isx);
 }
 
+/* order the heads of two unshared priority stacks: deepest first, then by
+   start location, then by priority.  Never compare PNode addresses, which
+   vary between runs and made the parse non-deterministic
+   (jplevyak/dparser#31).  Returns >0 to expand x, <0 to expand y and 0 to
+   treat them as shared. */
+static int cmp_unshared_heads(PNode *x, PNode *y) {
+  if (x->height != y->height) return x->height > y->height ? 1 : -1;
+  if (x->parse_node.start_loc.s != y->parse_node.start_loc.s)
+    return x->parse_node.start_loc.s > y->parse_node.start_loc.s ? 1 : -1;
+  if (x->priority != y->priority) return x->priority > y->priority ? 1 : -1;
+  return 0;
+}
+
 /* get the set of priorities for unshared nodes,
    eliminating shared subtrees via priority queues */
 static void get_unshared_priorities(Parser *p, StackPNode *psx, StackPNode *psy, StackInt *isx, StackInt *isy) {
   StackPNode *psr;
   PNode *t;
+  int c;
 
   while (1) {
     if (is_stack_empty(psx)) {
@@ -757,13 +771,10 @@ static void get_unshared_priorities(Parser *p, StackPNode *psx, StackPNode *psy,
       psr = psx;
       break;
     }
-    if (stack_head(psx)->height > stack_head(psy)->height)
+    c = cmp_unshared_heads(stack_head(psx), stack_head(psy));
+    if (c > 0)
       psr = psx;
-    else if (stack_head(psx)->height < stack_head(psy)->height)
-      psr = psy;
-    else if (stack_head(psx) > stack_head(psy))
-      psr = psx;
-    else if (stack_head(psx) < stack_head(psy))
+    else if (c < 0)
       psr = psy;
     else {
       (void)stack_pop(psx);
@@ -842,7 +853,7 @@ static void get_unshared_pnodes(Parser *p, PNode *x, PNode *y, VecPNode *pvx, Ve
 static int greedycmp(const void *ax, const void *ay) {
   PNode *x = *(PNode **)ax;
   PNode *y = *(PNode **)ay;
-  /* first by start */
+  /* first by earliest start */
   if (x->parse_node.start_loc.s < y->parse_node.start_loc.s) return -1;
   if (x->parse_node.start_loc.s > y->parse_node.start_loc.s) return 1;
   /* second by symbol */
