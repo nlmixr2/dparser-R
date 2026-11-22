@@ -28,6 +28,13 @@
   `build_regex_nfa()` was a `uint8` that wrapped from 255 back to 0; it is
   now an `int` (#42, upstream jplevyak/dparser 6d494a3).
 
+- Generated parser tables no longer contain raw bytes 0x80-0xff on
+  macOS.  `escape_string()` used `isprint()`, which macOS treats as true
+  for those bytes in a UTF-8 locale, so a grammar such as
+  `"[\x80-\xff]+"` produced invalid UTF-8 C source and `dparse()`
+  failed in `gsub()` with "'replacement' is invalid"; such bytes are now
+  always written as `\xNN` escapes (#42).
+
 # dparser 1.3.1-14
 
 - Ambiguous parses that depend on operator priorities (for example an
