@@ -48,6 +48,14 @@
   `\xNN` escapes
   ([\#42](https://github.com/nlmixr2/dparser-R/issues/42)).
 
+- In a regular expression term, a `*` or `+` loop inside one `|`
+  alternative no longer leaks into the sibling alternatives: `"a*|b"`
+  used to also accept `"ab"` and `"aab"`. `build_regex_nfa()` now gives
+  each group level and each alternative its own start state
+  ([\#42](https://github.com/nlmixr2/dparser-R/issues/42), upstream
+  jplevyak/dparser 6d494a3). The tables generated for rxode2’s grammars
+  are unchanged.
+
 ## dparser 1.3.1-14
 
 CRAN release: 2026-10-12
