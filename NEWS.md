@@ -1,11 +1,26 @@
 # dparser 1.3.1-15
 
+- A quoted string in a regex production (`::=`) that contains `|` or `/`
+  is now matched literally.  When such a production is folded into one
+  regular expression, `escape_string_for_regex()` escaped `( ) [ ] - ^ *
+  ? +` and `\` but not `|` (alternation) or `/` (trailing context), so
+  `bars ::= '||'+;` rejected `||||`, `slash ::= '/'+;` rejected `/`, and
+  `x ::= 'a|b';` matched `a` or `b` instead of `a|b`.  Ported from
+  upstream jplevyak/dparser@51a4d04 (#43).
+
 - `mkdparse(rdebug = TRUE)` no longer overflows the stack: the debug
   grammar printer read the version into a 30-byte buffer although
   `d_version()` writes about 46 characters, and `d_version()` measured an
   uninitialised buffer.  The printer also no longer leaks the
   double-escaped copy of string and regex terminals (#40,
   jplevyak/dparser#34).
+
+- Token locations are now correct for grammars large enough to need 16-
+  or 32-bit scanner tables.  `scan_buffer()` recorded a token's end line
+  and column before consuming its last character, so positions after it
+  -- including syntax error positions -- were one column short, or one
+  line short after a token ending in a newline.  Small grammars were not
+  affected.  Ported from upstream DParser a1f64e7 (#44).
 
 # dparser 1.3.1-14
 
