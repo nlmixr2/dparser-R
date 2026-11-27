@@ -582,6 +582,9 @@ static int child_table[4][3][6] = {{
 
 /* returns 1 if legal for child reduction and illegal for child shift */
 static int check_child(int ppri, AssocKind passoc, int cpri, AssocKind cassoc, int left, int right) {
+  /* two non-associative operators of equal priority may not nest
+     (upstream jplevyak/dparser@ae30c16) */
+  if (IS_NO_ASSOC(passoc) && IS_NO_ASSOC(cassoc) && ppri == cpri) return 0;
   uint p = IS_BINARY_NARY_ASSOC(passoc) ? (right ? 1 : 0) : (passoc == ASSOC_UNARY_LEFT ? 2 : 3);
   uint c = IS_BINARY_ASSOC(cassoc) ? 0 : (cassoc == ASSOC_UNARY_LEFT ? 1 : 2);
   uint r =
@@ -693,7 +696,8 @@ static void intreverse(int *xp, int n) {
   }
 }
 
-/* sort by deepest, then by location */
+/* sort by deepest, then by location, then by shortest extent (so the
+   longest extent is expanded last, as in upstream jplevyak/dparser@ae30c16) */
 static void priority_insert(StackPNode *psx, PNode *x) {
   PNode *t, **start, **cur;
 
@@ -703,6 +707,9 @@ static void priority_insert(StackPNode *psx, PNode *x) {
   for (; cur > start + 1; cur--) {
     if (cur[-1]->height > cur[-2]->height) continue;
     if (cur[-1]->height == cur[-2]->height && cur[-1]->parse_node.start_loc.s > cur[-2]->parse_node.start_loc.s)
+      continue;
+    if (cur[-1]->height == cur[-2]->height && cur[-1]->parse_node.start_loc.s == cur[-2]->parse_node.start_loc.s &&
+        cur[-1]->parse_node.end < cur[-2]->parse_node.end)
       continue;
     t = cur[-1];
     cur[-1] = cur[-2];
@@ -744,7 +751,8 @@ static void get_exp_one_down(Parser *p, PNode *x, StackPNode *psx, StackInt *isx
 }
 
 /* order the heads of two unshared priority stacks: deepest first, then by
-   start location, then by priority.  Never compare PNode addresses, which
+   start location, then shortest extent (the order priority_insert() keeps),
+   then by priority.  Never compare PNode addresses, which
    vary between runs and made the parse non-deterministic
    (jplevyak/dparser#31).  Returns >0 to expand x, <0 to expand y and 0 to
    treat them as shared. */
@@ -752,6 +760,7 @@ static int cmp_unshared_heads(PNode *x, PNode *y) {
   if (x->height != y->height) return x->height > y->height ? 1 : -1;
   if (x->parse_node.start_loc.s != y->parse_node.start_loc.s)
     return x->parse_node.start_loc.s > y->parse_node.start_loc.s ? 1 : -1;
+  if (x->parse_node.end != y->parse_node.end) return x->parse_node.end < y->parse_node.end ? 1 : -1;
   if (x->priority != y->priority) return x->priority > y->priority ? 1 : -1;
   return 0;
 }

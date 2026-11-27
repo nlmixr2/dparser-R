@@ -1,5 +1,15 @@
 # dparser 1.3.1-15
 
+- Ambiguous operator-priority parses: when two candidate subtrees have the
+  same height and start, the longer one is now ordered first when their
+  priorities are compared (in both the per-tree priority stacks and when
+  the two trees' stacks are merged), matching upstream
+  jplevyak/dparser@ae30c16.
+  `check_child()` also rejects nesting two non-associative (`ASSOC_NO`)
+  operators of equal priority, and `gram.h` gains `IS_NO_ASSOC()`; the
+  grammar reader does not assign `ASSOC_NO` yet, so this guard has no
+  effect on current grammars (#47).
+
 - A quoted string in a regex production (`::=`) that contains `|` or `/`
   is now matched literally.  When such a production is folded into one
   regular expression, `escape_string_for_regex()` escaped `( ) [ ] - ^ *
