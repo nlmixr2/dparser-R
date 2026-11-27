@@ -27,6 +27,27 @@
   affected. Ported from upstream DParser a1f64e7
   ([\#44](https://github.com/nlmixr2/dparser-R/issues/44)).
 
+- A regular expression bracket range that ends at `\xff` (for example
+  `"[\x80-\xff]+"`) no longer makes
+  [`mkdparse()`](https://nlmixr2.github.io/dparser-R/reference/mkdparse.md)
+  /
+  [`dparse()`](https://nlmixr2.github.io/dparser-R/reference/dparse.md)
+  loop forever while building the scanner. The range counter in
+  `build_regex_nfa()` was a `uint8` that wrapped from 255 back to 0; it
+  is now an `int`
+  ([\#42](https://github.com/nlmixr2/dparser-R/issues/42), upstream
+  jplevyak/dparser 6d494a3).
+
+- Generated parser tables no longer contain raw bytes 0x80-0xff on
+  macOS. `escape_string()` used `isprint()`, which macOS treats as true
+  for those bytes in a UTF-8 locale, so a grammar such as
+  `"[\x80-\xff]+"` produced invalid UTF-8 C source and
+  [`dparse()`](https://nlmixr2.github.io/dparser-R/reference/dparse.md)
+  failed in [`gsub()`](https://rdrr.io/r/base/grep.html) with
+  “‘replacement’ is invalid”; such bytes are now always written as
+  `\xNN` escapes
+  ([\#42](https://github.com/nlmixr2/dparser-R/issues/42)).
+
 ## dparser 1.3.1-14
 
 CRAN release: 2026-10-12
