@@ -84,6 +84,16 @@ CRAN release: 2026-10-12
   ([\#39](https://github.com/nlmixr2/dparser-R/issues/39),
   jplevyak/dparser#31).
 
+- N-ary productions with a priority (`$left N` / `$right N`) are now
+  checked against the right row of the parent/child priority table when
+  they appear as the child of an operator. They were treated as binary,
+  so, for example, an if-then / if-then-else written as
+  `X '->' Y $right 5` and `X '->' Y '<>' Y $right 6` rejected valid
+  input. This ports upstream <jplevyak/dparser@5542d84>
+  ([\#39](https://github.com/nlmixr2/dparser-R/issues/39)); the
+  reduction and compare counts recorded in the `g40` and
+  `sample.test.g.20/26` test baselines change accordingly.
+
 - [`dparse()`](https://nlmixr2.github.io/dparser-R/reference/dparse.md)
   can now be called from several threads at once, one parser per thread.
   The first reduction path was a single process-wide static vector, so
