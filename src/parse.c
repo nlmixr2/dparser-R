@@ -751,7 +751,8 @@ static void get_exp_one_down(Parser *p, PNode *x, StackPNode *psx, StackInt *isx
 }
 
 /* order the heads of two unshared priority stacks: deepest first, then by
-   start location, then by priority.  Never compare PNode addresses, which
+   start location, then shortest extent (the order priority_insert() keeps),
+   then by priority.  Never compare PNode addresses, which
    vary between runs and made the parse non-deterministic
    (jplevyak/dparser#31).  Returns >0 to expand x, <0 to expand y and 0 to
    treat them as shared. */
@@ -759,6 +760,7 @@ static int cmp_unshared_heads(PNode *x, PNode *y) {
   if (x->height != y->height) return x->height > y->height ? 1 : -1;
   if (x->parse_node.start_loc.s != y->parse_node.start_loc.s)
     return x->parse_node.start_loc.s > y->parse_node.start_loc.s ? 1 : -1;
+  if (x->parse_node.end != y->parse_node.end) return x->parse_node.end < y->parse_node.end ? 1 : -1;
   if (x->priority != y->priority) return x->priority > y->priority ? 1 : -1;
   return 0;
 }
