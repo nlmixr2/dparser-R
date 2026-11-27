@@ -22,6 +22,19 @@
   line short after a token ending in a newline.  Small grammars were not
   affected.  Ported from upstream DParser a1f64e7 (#44).
 
+- A regular expression bracket range that ends at `\xff` (for example
+  `"[\x80-\xff]+"`) no longer makes `mkdparse()` / `dparse()` loop
+  forever while building the scanner.  The range counter in
+  `build_regex_nfa()` was a `uint8` that wrapped from 255 back to 0; it is
+  now an `int` (#42, upstream jplevyak/dparser 6d494a3).
+
+- Generated parser tables no longer contain raw bytes 0x80-0xff on
+  macOS.  `escape_string()` used `isprint()`, which macOS treats as true
+  for those bytes in a UTF-8 locale, so a grammar such as
+  `"[\x80-\xff]+"` produced invalid UTF-8 C source and `dparse()`
+  failed in `gsub()` with "'replacement' is invalid"; such bytes are now
+  always written as `\xNN` escapes (#42).
+
 # dparser 1.3.1-14
 
 - Ambiguous parses that depend on operator priorities (for example an
