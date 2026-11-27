@@ -928,7 +928,11 @@ static void convert_regex_production_one(Grammar *g, Production *p) {
       } else { /* e->kind == ELEM_TERM */
         if (e->e.term->kind == TERM_CODE || e->e.term->kind == TERM_TOKEN)
           d_fail("regex production '%s' cannot include scanners or tokens");
-        buf_len += e->e.term->string_len + 5;
+        /* escape_string_for_regex() may double every character */
+        if (e->e.term->kind == TERM_STRING)
+          buf_len += 2 * e->e.term->string_len + 5;
+        else
+          buf_len += e->e.term->string_len + 5;
       }
     }
   }

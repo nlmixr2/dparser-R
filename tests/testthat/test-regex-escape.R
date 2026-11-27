@@ -51,3 +51,19 @@ test_that("'/' in a regex production string is literal (#43)", {
   expect_true(r$ok)
   expect_equal(sum(r$vals == "slashes=/"), 2L)
 })
+
+test_that("strings made only of regex metacharacters fit the regex buffer", {
+  skip_on_cran()
+  skip_on_os("solaris")
+  ## Every character below is escaped, doubling the string; the regex
+  ## buffer used to be sized for the unescaped length and overflowed.
+  g <- "S: x; x ::= '||||||||++++++++(((())))';"
+  r <- .regexEscapeParse(g, "||||||||++++++++(((())))")
+  expect_true(r$ok)
+  expect_true("x=||||||||++++++++(((())))" %in% r$vals)
+
+  g <- "S: y*; y ::= '|/|/|/|/|/|/'+;"
+  r <- .regexEscapeParse(g, "|/|/|/|/|/|/|/|/|/|/|/|/")
+  expect_true(r$ok)
+  expect_true("y=|/|/|/|/|/|/|/|/|/|/|/|/" %in% r$vals)
+})
