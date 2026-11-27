@@ -14,8 +14,12 @@
   no longer depend on heap addresses, so an ambiguous parse gives the same
   tree in every R session.  Each internal `PNode` now records its creation
   order (`serial`) and that breaks the remaining ties, as in upstream
-  jplevyak/dparser@ef9b0d3.  `PNode` and `Parser` each gain one field; the
-  public `D_ParseNode` and the `dparser.h` entry points are unchanged (#47).
+  jplevyak/dparser@ef9b0d3.  The internal `PNode` and `Parser` structs
+  each gain one field, so `sizeof(PNode)` changes; the public `D_ParseNode`
+  and the `dparser.h` entry points are unchanged, and grammar actions get
+  the node offset at run time, so compiled parsers keep working.  Code
+  outside dparser that uses `DPN_TO_PN()` or `PNode` directly must be
+  rebuilt (#47).
 
 - A quoted string in a regex production (`::=`) that contains `|` or `/`
   is now matched literally.  When such a production is folded into one
