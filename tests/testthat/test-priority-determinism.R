@@ -126,3 +126,27 @@ test_that("N-ary if-then-else productions parse, deterministically", {
     expect_equal(trees[[1]][1], " true -> tau.true -> (tau.P) <> P")
   }
 })
+
+# Ambiguous unary/binary operator parses with priority ties between
+# subtrees that start at the same place now prefer the longest extent
+# (upstream jplevyak/dparser@ae30c16, nlmixr2/dparser-R#47).  The chosen
+# tree must follow the declared priorities and be the same on every parse.
+assoc_cases <- list(
+  list(text = "-a + b * c", has = c(" -a", " b * c")),
+  list(text = "-a ^ b", has = " a ^ b"),
+  list(text = "a ^ b ^ c", has = " b ^ c"),
+  list(text = "a + b + c", has = " a + b"),
+  list(text = "-a! * b", has = c(" -a!", "  a!"))
+)
+
+test_that("unary/binary priority ties pick a stable tree", {
+  skip_on_cran() # dparse() compiles a DLL
+  skip_on_os("solaris")
+  for (case in assoc_cases) {
+    trees <- .priority_trees("priority-assoc.g", case$text, "E", n = 10)
+    expect_length(trees, 1L)
+    for (h in case$has) {
+      expect_true(h %in% trees[[1]], info = paste(case$text, "->", h))
+    }
+  }
+})
