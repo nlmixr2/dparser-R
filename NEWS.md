@@ -2,7 +2,9 @@
 
 - Ambiguous operator-priority parses: when two candidate subtrees have the
   same height and start, the longer one is now ordered first when their
-  priorities are compared, matching upstream jplevyak/dparser@ae30c16.
+  priorities are compared (in both the per-tree priority stacks and when
+  the two trees' stacks are merged), matching upstream
+  jplevyak/dparser@ae30c16.
   `check_child()` also rejects nesting two non-associative (`ASSOC_NO`)
   operators of equal priority, and `gram.h` gains `IS_NO_ASSOC()`; the
   grammar reader does not assign `ASSOC_NO` yet, so this guard has no
