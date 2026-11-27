@@ -70,7 +70,9 @@
 #define isspace_(_c) isspace((unsigned char)(_c))
 #define isdigit_(_c) isdigit((unsigned char)(_c))
 #define isxdigit_(_c) isxdigit((unsigned char)(_c))
-#define isprint_(_c) isprint((unsigned char)(_c))
+/* ASCII only: macOS isprint() is true for 0x80-0xff in UTF-8 locales, so
+   escape_string() would write raw high bytes into generated tables (#42) */
+#define isprint_(_c) ((unsigned char)(_c) < 0x80 && isprint((unsigned char)(_c)))
 
 /* Compilation Options
  */
