@@ -10,6 +10,14 @@
   ([\#40](https://github.com/nlmixr2/dparser-R/issues/40),
   jplevyak/dparser#34).
 
+- Token locations are now correct for grammars large enough to need 16-
+  or 32-bit scanner tables. `scan_buffer()` recorded a token’s end line
+  and column before consuming its last character, so positions after it
+  – including syntax error positions – were one column short, or one
+  line short after a token ending in a newline. Small grammars were not
+  affected. Ported from upstream DParser a1f64e7
+  ([\#44](https://github.com/nlmixr2/dparser-R/issues/44)).
+
 ## dparser 1.3.1-14
 
 CRAN release: 2026-10-12
