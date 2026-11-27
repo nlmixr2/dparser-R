@@ -232,6 +232,14 @@ static int build_regex_nfa(LexState *ls, uint8 **areg, NFAState *pp, NFAState *n
           }
         }
       Lsetdone:
+        /* fold case before any negation so that [^a]/i rejects 'A' too */
+        if (ls->ignore_case) {
+          for (i = 1; i < 256; i++) {
+            if (mark[i] && isalpha(i)) {
+              mark[islower(i) ? toupper(i) : tolower(i)] = 1;
+            }
+          }
+        }
         x = new_NFAState(ls);
         for (i = 1; i < 256; i++)
           if ((!reversed && mark[i]) || (reversed && !mark[i])) vec_add(&s->chars[i], x);

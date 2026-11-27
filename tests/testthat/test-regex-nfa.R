@@ -61,3 +61,23 @@ test_that("a loop in one alternative does not reach its siblings (#42)", {
   expect_false(regex_parses(f, "xaby"))
   expect_false(regex_parses(f, "xaaby"))
 })
+
+test_that("ignore_case folds bracket classes before negation (#42)", {
+  skip_on_cran()
+  skip_on_os("solaris")
+  ## "[^a]"/i used to accept "A": the class was negated without folding
+  f <- regex_parser(c("s : t ;", "t : \"[^a]\"/i ;"))
+  expect_true(regex_parses(f, "b"))
+  expect_false(regex_parses(f, "a"))
+  expect_false(regex_parses(f, "A"))
+
+  f <- regex_parser(c("s : t ;", "t : \"[a-c]+\"/i ;"))
+  expect_true(regex_parses(f, "aBc"))
+  expect_true(regex_parses(f, "CBA"))
+  expect_false(regex_parses(f, "abd"))
+
+  ## without /i the class stays case sensitive
+  f <- regex_parser(c("s : t ;", "t : \"[^a]\" ;"))
+  expect_true(regex_parses(f, "A"))
+  expect_false(regex_parses(f, "a"))
+})

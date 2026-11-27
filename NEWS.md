@@ -42,6 +42,11 @@
   upstream jplevyak/dparser 6d494a3).  The tables generated for rxode2's
   grammars are unchanged.
 
+- A case-insensitive regular expression term (`"..."/i`) now folds case
+  inside bracket classes before negating them, so `"[^a]"/i` no longer
+  matches `A` and `"[a-c]+"/i` matches `aBc` (#42, upstream
+  jplevyak/dparser 6d494a3).
+
 # dparser 1.3.1-14
 
 - Ambiguous parses that depend on operator priorities (for example an
