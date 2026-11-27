@@ -88,6 +88,7 @@ typedef struct Parser {
 #ifdef TRACK_PNODES
   struct PNode *xall;
 #endif
+  uint32 pnode_serial_counter; /* next PNode serial, for deterministic ordering */
 } Parser;
 
 /*
@@ -99,6 +100,7 @@ typedef struct PNode {
   int priority;
   AssocKind op_assoc;
   int op_priority;
+  uint32 serial; /* creation order within the parser, for deterministic ties */
 #ifndef USE_GC
   uint32 refcount;
 #endif
