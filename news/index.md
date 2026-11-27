@@ -14,6 +14,16 @@
 
 CRAN release: 2026-10-12
 
+- Ambiguous parses that depend on operator priorities (for example an
+  if-then / if-then-else written with `$unary_op_right` priorities) now
+  give the same tree every time. `get_unshared_priorities()` broke ties
+  between equal-height subtrees by comparing `PNode` heap addresses, so
+  the chosen grouping could change from one parse, or R session, to the
+  next. It now compares start position and then priority, as in upstream
+  <jplevyak/dparser@c0eea8b>
+  ([\#39](https://github.com/nlmixr2/dparser-R/issues/39),
+  jplevyak/dparser#31).
+
 - [`dparse()`](https://nlmixr2.github.io/dparser-R/reference/dparse.md)
   can now be called from several threads at once, one parser per thread.
   The first reduction path was a single process-wide static vector, so
