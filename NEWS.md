@@ -29,6 +29,31 @@
   line short after a token ending in a newline.  Small grammars were not
   affected.  Ported from upstream DParser a1f64e7 (#44).
 
+- A regular expression bracket range that ends at `\xff` (for example
+  `"[\x80-\xff]+"`) no longer makes `mkdparse()` / `dparse()` loop
+  forever while building the scanner.  The range counter in
+  `build_regex_nfa()` was a `uint8` that wrapped from 255 back to 0; it is
+  now an `int` (#42, upstream jplevyak/dparser 6d494a3).
+
+- Generated parser tables no longer contain raw bytes 0x80-0xff on
+  macOS.  `escape_string()` used `isprint()`, which macOS treats as true
+  for those bytes in a UTF-8 locale, so a grammar such as
+  `"[\x80-\xff]+"` produced invalid UTF-8 C source and `dparse()`
+  failed in `gsub()` with "'replacement' is invalid"; such bytes are now
+  always written as `\xNN` escapes (#42).
+
+- In a regular expression term, a `*` or `+` loop inside one `|`
+  alternative no longer leaks into the sibling alternatives: `"a*|b"`
+  used to also accept `"ab"` and `"aab"`.  `build_regex_nfa()` now gives
+  each group level and each alternative its own start state (#42,
+  upstream jplevyak/dparser 6d494a3).  The tables generated for rxode2's
+  grammars are unchanged.
+
+- A case-insensitive regular expression term (`"..."/i`) now folds case
+  inside bracket classes before negating them, so `"[^a]"/i` no longer
+  matches `A` and `"[a-c]+"/i` matches `aBc` (#42, upstream
+  jplevyak/dparser 6d494a3).
+
 # dparser 1.3.1-14
 
 - Ambiguous parses that depend on operator priorities (for example an
