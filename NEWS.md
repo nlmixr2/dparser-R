@@ -9,6 +9,14 @@
 
 # dparser 1.3.1-14
 
+- Ambiguous parses that depend on operator priorities (for example an
+  if-then / if-then-else written with `$unary_op_right` priorities) now
+  give the same tree every time.  `get_unshared_priorities()` broke ties
+  between equal-height subtrees by comparing `PNode` heap addresses, so the
+  chosen grouping could change from one parse, or R session, to the next.
+  It now compares start position and then priority, as in upstream
+  jplevyak/dparser@c0eea8b (#39, jplevyak/dparser#31).
+
 - `dparse()` can now be called from several threads at once, one parser
   per thread.  The first reduction path was a single process-wide static
   vector, so concurrent parses shared and reallocated it, segfaulting
