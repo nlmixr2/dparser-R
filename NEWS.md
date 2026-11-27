@@ -10,6 +10,17 @@
   grammar reader does not assign `ASSOC_NO` yet, so this guard has no
   effect on current grammars (#47).
 
+- Ties in greedy disambiguation, and the order of parser-state node sets,
+  no longer depend on heap addresses, so an ambiguous parse gives the same
+  tree in every R session.  Each internal `PNode` now records its creation
+  order (`serial`) and that breaks the remaining ties, as in upstream
+  jplevyak/dparser@ef9b0d3.  The internal `PNode` and `Parser` structs
+  each gain one field, so `sizeof(PNode)` changes; the public `D_ParseNode`
+  and the `dparser.h` entry points are unchanged, and grammar actions get
+  the node offset at run time, so compiled parsers keep working.  Code
+  outside dparser that uses `DPN_TO_PN()` or `PNode` directly must be
+  rebuilt (#47).
+
 - A quoted string in a regex production (`::=`) that contains `|` or `/`
   is now matched literally.  When such a production is folded into one
   regular expression, `escape_string_for_regex()` escaped `( ) [ ] - ^ *

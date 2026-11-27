@@ -871,6 +871,10 @@ static int greedycmp(const void *ax, const void *ay) {
   /* third by length */
   if (x->parse_node.end < y->parse_node.end) return -1;
   if (x->parse_node.end > y->parse_node.end) return 1;
+  /* finally by creation order, so qsort() ties do not depend on heap
+     addresses (upstream jplevyak/dparser@ef9b0d3) */
+  if (x->serial < y->serial) return -1;
+  if (x->serial > y->serial) return 1;
   return 0;
 }
 
@@ -969,6 +973,7 @@ static PNode *make_PNode(Parser *p, uint hash, int symbol, d_loc_t *start_loc, c
   if (p->xall) p->xall->xprev = new_pn;
   p->xall = new_pn;
 #endif
+  new_pn->serial = p->pnode_serial_counter++;
   new_pn->hash = hash;
   new_pn->parse_node.symbol = symbol;
   new_pn->parse_node.start_loc = *start_loc;
@@ -1116,7 +1121,7 @@ static ZNode *set_find_znode(VecZNode *v, PNode *pn) {
       if (v->v[i]->pn == pn) return v->v[i];
     return NULL;
   }
-  h = ((uintptr_t)pn) % n;
+  h = pn->serial % n;
   for (i = h, j = 0; i < v->n && j < SET_MAX_SEQUENTIAL; i = ((i + 1) % n), j++) {
     if (!v->v[i])
       return NULL;
@@ -1131,7 +1136,7 @@ static void set_add_znode_hash(VecZNode *v, ZNode *z) {
   VecZNode vv;
   vec_clear(&vv);
   if (n) {
-    uint h = ((uintptr_t)z->pn) % n;
+    uint h = z->pn->serial % n;
     for (i = h, j = 0; i < v->n && j < SET_MAX_SEQUENTIAL; i = ((i + 1) % n), j++) {
       if (!v->v[i]) {
         v->v[i] = z;

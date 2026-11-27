@@ -150,3 +150,22 @@ test_that("unary/binary priority ties pick a stable tree", {
     }
   }
 })
+
+# greedycmp() fell back to qsort()'s unspecified order for ties and ZNode
+# sets were hashed by PNode address, so a tie could resolve differently from
+# one R session to the next.  PNodes now carry a creation serial that breaks
+# those ties (upstream jplevyak/dparser@ef9b0d3, nlmixr2/dparser-R#47).
+test_that("ambiguous unary/binary parses agree across fresh R sessions", {
+  skip_on_cran() # dparse() compiles a DLL
+  skip_on_os("solaris")
+  txt <- "-a! * b + a ^ b ^ c + -a * b + c! ^ (a + b * c) * -b!"
+  ref <- .priority_trees("priority-assoc.g", txt, "E", n = 10)
+  expect_length(ref, 1L)
+  for (i in 1:3) {
+    fresh <- .priority_tree_fresh("priority-assoc.g", txt, "E")
+    if (is.null(fresh)) {
+      skip("could not run a fresh R session")
+    }
+    expect_equal(fresh, ref[[1]])
+  }
+})
