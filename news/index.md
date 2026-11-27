@@ -2,6 +2,15 @@
 
 ## dparser 1.3.1-15
 
+- A quoted string in a regex production (`::=`) that contains `|` or `/`
+  is now matched literally. When such a production is folded into one
+  regular expression, `escape_string_for_regex()` escaped
+  `( ) [ ] - ^ * ? +` and `\` but not `|` (alternation) or `/` (trailing
+  context), so `bars ::= '||'+;` rejected `||||`, `slash ::= '/'+;`
+  rejected `/`, and `x ::= 'a|b';` matched `a` or `b` instead of `a|b`.
+  Ported from upstream <jplevyak/dparser@51a4d04>
+  ([\#43](https://github.com/nlmixr2/dparser-R/issues/43)).
+
 - `mkdparse(rdebug = TRUE)` no longer overflows the stack: the debug
   grammar printer read the version into a 30-byte buffer although
   `d_version()` writes about 46 characters, and `d_version()` measured
